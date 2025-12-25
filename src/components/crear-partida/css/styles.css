@@ -1,0 +1,716 @@
+/* ============================================================
+   CREAR SALA - ESTILOS GENERALES
+   ============================================================ */
+
+.content-crear-partida {
+  width: 98%;
+  height: 84%;
+  margin-top: 5%;
+  border-radius: 25px;
+  background: var(--Azul---Gris, #25293d);
+  box-shadow: 21px 94px 27px 0px rgba(0, 0, 0, 0),
+    13px 60px 25px 0px rgba(0, 0, 0, 0.01),
+    7px 34px 21px 0px rgba(0, 0, 0, 0.05), 3px 15px 15px 0px rgba(0, 0, 0, 0.09),
+    1px 4px 8px 0px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  padding: 2%;
+}
+
+.content-crear-partida > h3 {
+  margin: 0%;
+  color: var(--Azul-Principal, #3cebff);
+  font-family: Montserrat;
+  font-size: clamp(24px, 5vw, 40px);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.content-crear-partida > form {
+  margin-top: 2%;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 80%;
+  gap: 5%;
+}
+
+.content-crear-partida > form > div {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  gap: 2%;
+}
+
+.content-crear-partida > form > div > label {
+  color: var(--Blanco, #fff);
+  font-family: Montserrat;
+  font-size: clamp(16px, 2vw, 20px);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 24px;
+  white-space: nowrap;
+}
+
+.content-crear-partida > form > div > input[type="text"] {
+  outline: none;
+  background-color: transparent;
+  border-radius: 5px;
+  border: 1px solid var(--Gris-4, #a09f9f);
+  color: var(--Blanco, #fff);
+  font-family: Montserrat;
+  font-size: clamp(14px, 1.5vw, 16px);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 24px;
+  padding: 8px 12px;
+  height: 100%;
+  width: 92%;
+  min-height: 40px;
+}
+
+.content-crear-partida > form > div > input[type="text"]::placeholder {
+  font-family: Montserrat;
+  font-weight: 500;
+}
+
+.content-crear-partida > form > div > select {
+  padding: 8px;
+  color: var(--Azul---Gris, #25293d);
+  font-family: Montserrat;
+  font-size: clamp(14px, 1.5vw, 16px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  border-radius: 4px;
+  background: var(--Azul-Principal, #3cebff);
+  width: 13%;
+  min-width: 100px;
+  min-height: 40px;
+}
+
+.content-crear-partida > form > div > select > option:hover {
+  background-color: #f26a2f;
+}
+
+.content-crear-partida > div {
+  display: flex;
+}
+
+.content-crear-partida > div > button {
+  margin-left: 70%;
+  padding: 0.48%;
+  border-radius: 5px;
+  background: var(--Naranja, #f26a2f);
+  color: var(--Negro, #000);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: clamp(14px, 1.5vw, 16px);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 20px;
+}
+
+.div-carrusel-crear-partida {
+  width: 100% !important;
+  height: 50% !important;
+  display: flex !important;
+  justify-content: center !important;
+  gap: 4%;
+}
+
+.div-carrusel-crear-partida > div {
+  width: 90%;
+  height: 100%;
+  display: flex;
+}
+
+.div-carrusel-crear-partida > div > div > div > div > div {
+  height: 100%;
+  margin: 0%;
+  margin-top: 3%;
+  margin-inline: 2%;
+}
+
+.div-carrusel-item-crear-partida {
+  width: 20%;
+  height: 200px;
+  border-radius: 10px;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* BACKGROUNDS */
+.back-purple {
+  background: #a1098a;
+}
+.back-orange {
+  background: #ff6e14;
+}
+.back-aquamarine {
+  background: #109cac;
+}
+.back-blue {
+  background: #134e9d;
+}
+.back-green {
+  background: #2b8800;
+}
+
+.gradient-blue {
+  background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.35) 100%
+    ),
+    linear-gradient(106deg, #3c80ff 1.02%, #4cffc3 116.82%);
+}
+.gradient-purple {
+  background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.35) 100%
+    ),
+    linear-gradient(106deg, #e23cff 1.02%, #ff4c4f 116.82%);
+}
+.gradient-green {
+  background: linear-gradient(
+      0deg,
+      rgba(0, 0, 0, 0.35) 0%,
+      rgba(0, 0, 0, 0.35) 100%
+    ),
+    linear-gradient(106deg, #00d307 1.02%, #d4d000 116.82%);
+}
+
+.div-carrusel-item-crear-partida::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  mix-blend-mode: multiply;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-crear-partida {
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 1;
+  color: white;
+  font-size: 24px;
+  text-align: center;
+  mix-blend-mode: multiply;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.item-crear-partida::before {
+  border-radius: 10px;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("/images/Fondos/Example-category.png") center/cover no-repeat;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: -1;
+  mix-blend-mode: multiply;
+}
+
+.titulo-categoria-crear-partida {
+  margin: 0%;
+  width: 250px;
+  height: 80%;
+  position: absolute;
+  color: var(--Blanco, #fff);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: clamp(18px, 2vw, 24px);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.2;
+  z-index: 2;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.category-selected {
+  margin: 0%;
+  width: 250px;
+  height: 80%;
+  position: absolute;
+  color: var(--Blanco, #fff);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: clamp(18px, 2vw, 24px);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 1.2;
+  z-index: 2;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px dashed #fff;
+  border-radius: 10px;
+}
+
+.slick-initialized:has(.div-carrusel-item-crear-partida) .slick-next:before,
+.slick-initialized:has(.div-carrusel-item-crear-partida) .slick-prev:before {
+  font-size: 36px !important;
+}
+
+.slick-initialized:has(.div-carrusel-item-crear-partida) .slick-prev {
+  left: -70px;
+}
+
+.slick-initialized:has(.div-carrusel-item-crear-partida) .slick-next {
+  right: -40px;
+}
+
+.div-buttons-crear-partida {
+  width: 100% !important;
+  height: 10% !important;
+  display: flex !important;
+  justify-content: center !important;
+  align-items: center !important;
+  gap: 2%;
+}
+
+.div-buttons-crear-partida > button {
+  width: 30% !important;
+  margin: 0% !important;
+  margin-top: 1% !important;
+}
+
+.save-button-crear-partida {
+  height: 100%;
+  min-height: 48px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2%;
+  color: var(--Azul---Gris, #25293d) !important;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: clamp(16px, 2vw, 20px) !important;
+  font-style: normal;
+  font-weight: 800 !important;
+  line-height: 24px !important;
+  border-radius: 10px !important;
+  background: var(--Azul-Principal, #3cebff) !important;
+  transition: all 0.3s ease;
+}
+
+.save-button-crear-partida:hover {
+  background: var(--Azul-Principal, #f26a2f) !important;
+}
+
+.save-button-crear-partida > .hover-create-room {
+  display: none;
+}
+
+.save-button-crear-partida:hover .hover-create-room {
+  display: block;
+}
+
+.save-button-crear-partida:hover > img {
+  display: none;
+}
+
+.cancelar-button-crear-partida {
+  height: 100%;
+  min-height: 48px;
+  background-color: transparent !important;
+  color: var(--Gris-4, #a09f9f) !important;
+  text-align: center !important;
+  font-family: Montserrat;
+  font-size: clamp(16px, 2vw, 20px) !important;
+  font-style: normal;
+  font-weight: 800 !important;
+  line-height: 24px !important;
+  border-radius: 5px !important;
+  border: 1px solid var(--Gris-4, #a09f9f) !important;
+  transition: all 0.3s ease;
+}
+
+.no-hover {
+  display: block;
+}
+
+.iniciar:hover .no-hover {
+  display: none;
+}
+
+.hover:hover {
+  display: none;
+}
+
+.iniciar:hover .hover {
+  display: block;
+}
+
+/* ============================================================
+   TABLET - 768px a 1024px
+   ============================================================ */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .content-crear-partida {
+    padding: 3%;
+    height: 90%;
+  }
+
+  .content-crear-partida > h3 {
+    font-size: 28px;
+    margin-bottom: 2%;
+  }
+
+  .content-crear-partida > form {
+    gap: 3%;
+  }
+
+  .content-crear-partida > form > div {
+    height: auto;
+    min-height: 50px;
+    flex-wrap: wrap;
+  }
+
+  .content-crear-partida > form > div > label {
+    font-size: 16px;
+    width: 100%;
+    margin-bottom: 5px;
+  }
+
+  .content-crear-partida > form > div > input[type="text"] {
+    width: 100%;
+    padding: 10px;
+  }
+
+  .content-crear-partida > form > div > select {
+    width: 100%;
+    max-width: 200px;
+    padding: 10px;
+  }
+
+  .div-carrusel-crear-partida {
+    height: 40% !important;
+  }
+
+  .div-carrusel-item-crear-partida {
+    height: 160px;
+  }
+
+  .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-prev {
+    left: -50px;
+  }
+
+  .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-next {
+    right: -30px;
+  }
+
+  .div-buttons-crear-partida > button {
+    width: 45% !important;
+  }
+}
+
+/* ============================================================
+   PORTÁTIL - 1025px a 1700px
+   ============================================================ */
+@media (min-width: 1025px) and (max-width: 1700px) {
+  .content-crear-partida {
+    padding: 2.5%;
+  }
+
+  .content-crear-partida > h3 {
+    font-size: 32px;
+  }
+
+  .content-crear-partida > form > div > label {
+    font-size: 18px;
+  }
+
+  .content-crear-partida > form > div > input[type="text"] {
+    font-size: 14px;
+  }
+
+  .content-crear-partida > form > div > select {
+    font-size: 14px;
+  }
+
+  .div-carrusel-crear-partida {
+    height: 45% !important;
+  }
+
+  .div-carrusel-item-crear-partida {
+    height: 180px;
+  }
+
+  .titulo-categoria-crear-partida,
+  .category-selected {
+    font-size: 20px;
+  }
+}
+
+/* ============================================================
+   MÓVIL - Menos de 768px
+   ============================================================ */
+@media (max-width: 767px) {
+  .content-crear-partida {
+    width: 96%;
+    height: auto;
+    min-height: 100vh;
+    margin-top: 3%;
+    padding: 5%;
+    border-radius: 15px;
+  }
+
+  .content-crear-partida > h3 {
+    font-size: 22px;
+    margin-bottom: 4%;
+  }
+
+  /* Formulario */
+  .content-crear-partida > form {
+    margin-top: 4%;
+    gap: 6%;
+    height: auto;
+  }
+
+  .content-crear-partida > form > div {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    margin-bottom: 4%;
+  }
+
+  .content-crear-partida > form > div > label {
+    font-size: 16px;
+    width: 100%;
+  }
+
+  .content-crear-partida > form > div > input[type="text"] {
+    font-size: 14px;
+    width: 100%;
+    padding: 12px;
+    min-height: 48px;
+  }
+
+  .content-crear-partida > form > div > select {
+    font-size: 14px;
+    width: 100%;
+    max-width: 100%;
+    padding: 12px;
+    min-height: 48px;
+  }
+
+  /* Header layout: mantener el título a la izquierda y el botón a la
+     derecha como en el diseño (solo afecta al primer div dentro del
+     contenedor). No tocar las reglas de los botones del formulario. */
+  .content-crear-partida > div:first-child {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .content-crear-partida > div:first-child > button {
+    margin-left: 0 !important;
+    width: auto !important;
+    min-height: 40px !important;
+    padding: 8px 14px !important;
+    border-radius: 10px !important;
+    white-space: nowrap;
+    align-self: center !important;
+  }
+
+  /* Carrusel */
+  .div-carrusel-crear-partida {
+    height: 250px !important;
+    margin: 5% 0;
+    gap: 2%;
+  }
+
+  .div-carrusel-crear-partida > div {
+    width: 100%;
+  }
+
+  .div-carrusel-item-crear-partida {
+    width: 100%;
+    height: 200px;
+    margin: 0 5px;
+  }
+
+  .titulo-categoria-crear-partida,
+  .category-selected {
+    width: 85%;
+    height: 75%;
+    font-size: 18px;
+    padding: 10px;
+  }
+
+  .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-next:before,
+  .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-prev:before {
+    font-size: 24px !important;
+  }
+
+  .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-prev {
+    left: -25px;
+    z-index: 10;
+  }
+
+  .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-next {
+    right: -15px;
+    z-index: 10;
+  }
+
+  /* Botones guardar/cancelar */
+  .div-buttons-crear-partida {
+    flex-direction: column;
+    gap: 3%;
+    height: auto !important;
+    margin-top: 5%;
+  }
+
+  .div-buttons-crear-partida > button {
+    width: 100% !important;
+    min-height: 50px;
+    margin: 0 !important;
+  }
+
+  .save-button-crear-partida,
+  .cancelar-button-crear-partida {
+    font-size: 16px !important;
+    padding: 12px !important;
+  }
+}
+
+/* ============================================================
+   MÓVIL PEQUEÑO - Menos de 480px
+   ============================================================ */
+@media (max-width: 480px) {
+  .content-crear-partida {
+    width: 94%;
+    padding: 6%;
+    border-radius: 12px;
+  }
+
+  .content-crear-partida > h3 {
+    font-size: 20px;
+  }
+
+  .content-crear-partida > form > div > label {
+    font-size: 14px;
+  }
+
+  .content-crear-partida > form > div > input[type="text"],
+  .content-crear-partida > form > div > select {
+    font-size: 13px;
+    padding: 10px;
+  }
+  .div-carrusel-crear-partida > div {
+    width: 90%;
+    height: 100%;
+    display: flex;
+  }
+  .div-carrusel-crear-partida > div > div > div > div > div {
+    height: 100%;
+    margin: 0%;
+    margin-top: 3%;
+    margin-inline: 2%;
+  }
+
+  .div-carrusel-item-crear-partida {
+    width: 20%;
+    height: 200px;
+    border-radius: 10px;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .div-carrusel-item-crear-partida {
+    height: 180px;
+  }
+
+  .titulo-categoria-crear-partida,
+  .category-selected {
+    font-size: 16px;
+    width: 90%;
+  }
+  .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-next:before,
+  .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-prev:before {
+    font-size: 36px !important;
+  }
+
+  .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-prev {
+    left: -70px;
+  }
+
+  .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-next {
+    right: -40px;
+  }
+  .save-button-crear-partida,
+  .cancelar-button-crear-partida {
+    font-size: 14px !important;
+  }
+
+  .div-carrusel-item-crear-partida::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    mix-blend-mode: multiply;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .category-selected {
+    margin: 0%;
+    width: 80%;
+    height: 80%;
+    position: absolute;
+    color: var(--Blanco, #fff);
+    text-align: center;
+
+    /* H4 Bold */
+    font-family: Montserrat;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 24px; /* 100% */
+    z-index: 2;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #fff;
+    border-radius: 10px;
+  }
+}

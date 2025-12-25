@@ -1,0 +1,1608 @@
+@import "tailwindcss";
+
+/*GLOABL*/
+::-webkit-scrollbar {
+  -webkit-appearance: none;
+}
+
+::-webkit-scrollbar:vertical {
+  width:10px;
+}
+
+::-webkit-scrollbar-button:increment,.contenedor::-webkit-scrollbar-button {
+  display: none;
+} 
+
+::-webkit-scrollbar:horizontal {
+  height: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #797979;
+  border-radius: 20px;
+  border: 0px solid #f1f2f3;
+}
+
+::-webkit-scrollbar-track {
+  border-radius: 10px;  
+}
+
+.ant-popover-title{
+  font-family: Montserrat;
+  font-weight: 800;
+  font-size: 16px;
+}
+.div-notifications{
+  font-family: Montserrat;
+  font-weight: 600;
+  overflow-y: auto;
+  height: 350px;
+}
+
+.ant-popover-inner-content a {
+  font-family: Montserrat;
+}
+
+.notificaciones {
+  position: relative;
+}
+.notificaciones-flotantes{
+  position: absolute;
+  right: -10px;
+  top: -6px;
+  background-color: #00ffff;
+  border-radius: 100px;
+  padding: 6px;
+  font-family: Montserrat;
+  font-weight: 800;
+  font-size: 10px;
+  margin: 0%;
+  width: 28px;
+}
+
+:root {
+  font-family: Montserrat;
+  font-style: normal;
+  background-color: #1F2336 !important;
+}
+
+body {
+  margin: 0px !important;
+  max-width: 100%;
+  background-color: #1F2336 !important;
+}
+
+h3 {
+  font-family: Montserrat;
+  font-size: 40px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 40px; 
+}
+
+.azul {
+  color: var(--Azul-Secundario, #134E9D);
+}
+/*END::GLOABL*/
+
+
+  .all-dashboard{
+    width: 100%;
+    height: 95vh;
+    display: flex;
+    gap: 4%;
+  }
+
+  .content-dashboard{
+    width: 80%;
+    height: 98%;
+    margin-top: 2%;
+  }
+
+  .wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 200px;
+}
+
+.ball {
+  --size: 16px;
+  width: var(--size);
+  height: var(--size);
+  border-radius: 11px;
+  margin: 0 10px;
+
+  animation: 2s bounce ease infinite;
+}
+
+.blue {
+  background-color: #ff914c;
+}
+
+.red {
+  background-color: #3cebff;
+  animation-delay: 0.25s;
+}
+
+.yellow {
+  background-color: #ff914c;
+  animation-delay: 0.5s;
+}
+
+.green {
+  background-color: #3cebff;
+  animation-delay: 0.75s;
+}
+
+@keyframes bounce {
+  50% {
+    transform: translateY(25px);
+  }
+}
+
+
+.carrusel{
+  height: 85%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4%;
+}
+
+.carrusel > div {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titulos-azules {
+  display: flex;
+  align-items: center;
+  margin: 0%;
+  color: var(--Azul-Principal, #3CEBFF);
+  font-family: Montserrat;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 24px;
+}
+
+button, 
+a,
+[role="button"] {
+  cursor: pointer !important;
+}
+
+
+/* --- Responsive helpers (mobile / tablet / laptop / desktop) --- */
+/* ==========================================================================
+   RESPONSIVE STYLES - MEDIA QUERIES
+   ========================================================================== */
+
+/* =========================================
+   LAPTOP/TABLET (768px - 1700px)
+   ========================================= */
+@media (min-width: 768px) and (max-width: 1700px) {
+  /* TEXT */
+  .text-aprobar {
+    font-size: 12px !important;
+  }
+
+  .carrusel{
+  height: 85%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 4%;
+}
+
+.carrusel > div {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+  /* LOGIN */
+  .div-form-login {
+    width: 479px;
+    height: 633px;
+  }
+
+  /* REGISTRO */
+  .div-form-registro {
+    width: 667px;
+    height: 80%;
+  }
+
+  /* RESTABLECER */
+  .div-form-reset {
+    width: 667px;
+    height: 633px;
+  }
+
+  /* SEND */
+  .div-form-send {
+    width: 616px;
+    height: 460px;
+  }
+
+  /* SIDEBAR */
+  .sidebar {
+    width: 14%;
+    height: 96%;
+  }
+
+  .header-side {
+    height: 15%;
+  }
+
+  .img-header-side {
+    width: 75px;
+    height: 79px;
+  }
+
+  .content-side > a {
+    font-size: 12px;
+    height: 10%;
+  }
+
+  .content-side > a > img {
+    width: 12%;
+  }
+
+  .unlock-div-side > img {
+    width: 30%;
+  }
+
+  .unlock-div-side > p {
+    font-size: 12px;
+  }
+
+  .unlock-div-side > button {
+    font-size: 10px;
+    width: 90%;
+  }
+
+  .logout-side > button {
+    font-size: 12px;
+  }
+
+  .logout-side > button > img {
+    width: 15%;
+  }
+
+  /* HEADER */
+  .div-input-search-header {
+    width: 35%;
+  }
+
+  .button-question {
+    width: 25%;
+    font-size: 12px;
+  }
+
+  .button-question > img,
+  .button-match > img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .button-match {
+    width: 25%;
+    font-size: 12px;
+  }
+
+  .div-accesos-rapidos {
+    width: 8%;
+    gap: 1%;
+  }
+
+  /* DASHBOARD */
+  .parrafos-div > h2 {
+    font-size: 24px;
+    line-height: 40px;
+  }
+
+  .parrafos-div > p {
+    font-size: 12px;
+  }
+
+  .header-puntajes > p {
+    font-size: 12px;
+  }
+
+  .header-puntajes > a {
+    font-size: 12px;
+  }
+
+  .user-ranking > img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .user-ranking > p {
+    font-size: 12px;
+  }
+
+  .p-puntos {
+    font-size: 12px;
+  }
+
+  .p-preguntas-correctas {
+    font-size: 12px;
+  }
+
+  .stats-level {
+    width: 55%;
+  }
+
+  .stats-level > img {
+    width: 35%;
+  }
+
+  .stats-title {
+    font-size: 20px;
+  }
+
+  .stats-description {
+    font-size: 9px;
+  }
+
+  .div-preguntas-stats > img {
+    width: 30%;
+  }
+
+  .div-puntos-stats > img {
+    width: 25%;
+  }
+
+  .header-carrusel > h3 {
+    font-size: 26px;
+  }
+
+  .div-info-match-dash > p {
+    font-size: 14px;
+  }
+
+  .div-info-match-dash > p > span {
+    font-size: 12px;
+  }
+
+  .gomatch-button > button {
+    font-size: 14px;
+  }
+
+  /* SALAS */
+  .div-header-carrusel-salas > h3 {
+    font-size: 20px;
+  }
+
+  .gomatch-button-salas > button {
+    font-size: 14px;
+  }
+
+  .header-salas-todas-las-partidas > h3 {
+    font-size: 20px;
+  }
+
+  .tr-thead-salas > td {
+    font-size: 12px;
+  }
+
+  .tr-salas-body > td {
+    font-size: 12px;
+  }
+
+  .td-entrar-salas-body > button {
+    font-size: 14px;
+  }
+
+  /* PARTIDA */
+  .container-logo-juagadores-partidas > img {
+    width: 80%;
+  }
+
+  .header-jugadores-lista-partida > h3 {
+    font-size: 20px;
+  }
+
+  .div-lista-partida > div > img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .div-lista-partida > p {
+    font-size: 12px;
+  }
+
+  .puntaje-lista-jugadores {
+    align-items: end !important;
+    padding-left: 2% !important;
+  }
+
+  .p-puntos-lista-partida-jugadores {
+    font-size: 12px;
+  }
+
+  .p-aciertos-lista-partida-jugadores {
+    font-size: 9px;
+  }
+
+  .header-contador-partida > h2 {
+    font-size: 24px;
+  }
+
+  .div-posicion-contador > p {
+    font-size: 12px;
+  }
+
+  .category-partida > p {
+    font-size: 24px;
+  }
+
+  .pregunta-respuesta > p {
+    font-size: 20px;
+  }
+
+  .respuestas > p {
+    font-size: 14px;
+  }
+
+  .name-user-chat {
+    font-size: 12px;
+  }
+
+  .message-text-user {
+    font-size: 12px;
+  }
+
+  /* CREAR SALA */
+  .content-crear-partida > div > h3 {
+    font-size: 24px;
+  }
+
+  .content-crear-partida > form > div > input[type=text] {
+    font-size: 12px;
+  }
+
+  .content-crear-partida > form > div > select {
+    font-size: 12px;
+  }
+
+  .content-crear-partida > div > button {
+    font-size: 12px;
+  }
+
+  .div-carrusel-item-crear-partida {
+    height: 150px;
+  }
+
+  .category-selected {
+    width: 160px;
+    height: 120px;
+  }
+
+  /* PERFIL */
+  .h3-content-perfil {
+    font-size: 24px;
+  }
+
+  .form-editar-perfil > button {
+    width: 35%;
+    height: 20%;
+    font-size: 12px;
+  }
+
+  .imagen-perfil {
+    width: 62px;
+    height: 62px;
+  }
+
+  .header-ultimos-pagos > h6 {
+    font-size: 16px !important;
+  }
+
+  .header-ultimos-pagos > a {
+    font-size: 12px;
+  }
+
+  .fecha-pagos-perfil,
+  .plan-pagos-perfil,
+  .valor-pagos-perfil,
+  .pagado-pagos-perfil {
+    font-size: 12px;
+  }
+
+  .carrusel-perfil > p {
+    font-size: 16px;
+  }
+
+  .carrusel-perfil > div > div > p {
+    font-size: 14px;
+  }
+
+  .carrusel-perfil > div > button {
+    font-size: 14px;
+  }
+
+  .carrusel-perfil > div > button > img {
+    width: 25%;
+  }
+
+  .div-puntos-respuestas-perfil {
+    margin-top: 10%;
+  }
+
+  .div-preguntas-stats-perfil > img {
+    width: 50%;
+  }
+
+  .div-preguntas-stats-perfil > p {
+    font-size: 14px;
+  }
+
+  .div-puntos-stats-perfil > img {
+    width: 30%;
+  }
+
+  .div-puntos-stats-perfil > p {
+    font-size: 14px;
+  }
+
+  .stats-title-perfil {
+    font-size: 24px;
+  }
+
+  .stats-description-perfil {
+    font-size: 14px;
+  }
+
+  .pagination {
+    font-size: 14px;
+  }
+
+  /* USUARIOS-RANKING */
+  .thead-suaurios > tr {
+    font-size: 14px;
+  }
+
+  .tr-usuarios {
+    font-size: 14px;
+  }
+
+  .td-estadopago > select {
+    font-size: 14px;
+  }
+
+  /* HEADER USUARIOS */
+  .button-question-usuarios {
+    font-size: 12px;
+  }
+
+  .button-question-usuarios > img {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* SUSCRIPCIÓN */
+  .div-modal-pagar > img {
+    width: 150px;
+  }
+
+  .div-tusdatos > div > div > input {
+    font-size: 9px;
+  }
+
+  .div-plan > div > span {
+    font-size: 9px;
+  }
+
+  .div-plan > div > p {
+    font-size: 12px;
+  }
+
+  .div-pagar-ahora > div > span {
+    font-size: 9px;
+  }
+
+  .div-pagar-ahora > div > p {
+    font-size: 20px;
+  }
+
+  .div-cancelar-suscripcion > button {
+    font-size: 9px;
+  }
+
+  .ultimos-pagos-suscripcion > p {
+    font-size: 16px;
+  }
+
+  .header-banco > p {
+    font-size: 12px;
+  }
+
+  .div-pregunta > p {
+    font-size: 9px;
+  }
+
+  .div-pregunta > button {
+    font-size: 12px;
+  }
+
+
+  .modal-title {
+    font-size: 24px;
+  }
+
+  /* SALA DE ESPERA */
+  .text-esperando {
+    font-size: 34px;
+  }
+
+  .div-logo-espera {
+    width: 110px;
+    height: 110px;
+    bottom: 10%;
+    right: 8%;
+  }
+
+  .div-lista-partida-espera {
+    width: 250px;
+    height: 55px;
+  }
+
+  /* FIN */
+  .div-jugador-final {
+    width: 100%;
+  }
+
+  .nickname-final {
+    font-size: 12px;
+  }
+
+  .img-jugador-final {
+    width: 24px;
+    height: 24px;
+  }
+
+  .puntos-final {
+    font-size: 10px;
+  }
+
+  .aciertos-final {
+    font-size: 8px;
+  }
+
+  .div-jugadores-final-index > p {
+    font-size: 14px !important;
+  }
+}
+
+/* =========================================
+   MOBILE (max-width: 767px)
+   ========================================= */
+@media (max-width: 767px) {
+  /* LOGIN */
+  .div-form-login {
+    width: 390px;
+    height: 533px;
+  }
+
+  /* REGISTRO */
+  .div-form-registro {
+    width: 390px;
+    height: 80%;
+  }
+
+  /* RESTABLECER */
+  .div-form-reset {
+    width: 390px;
+    height: 633px;
+  }
+
+  .h3-class-reset {
+    font-size: 35px;
+  }
+
+  .descripcion-reset {
+    font-size: 14px;
+  }
+
+  .Label-contraseñas {
+    font-size: 16px;
+  }
+
+  .p-reset {
+    font-size: 13px;
+  }
+
+  .button-ingresar-reset {
+    font-size: 14px;
+    width: 50%;
+  }
+
+  .reset-link {
+    font-size: 12px;
+    width: 40%;
+    gap: 1%;
+  }
+
+  .input2-reset,
+  .input2-reset-2 {
+    font-size: 12px;
+  }
+
+  /* SEND */
+  .sm-w-full {
+    width: 100%;
+  }
+
+  .div-form-send {
+    width: 390px;
+    height: 460px;
+  }
+
+  /* SIDEBAR */
+  .activador-sidebar-movil {
+    display: block;
+    position: absolute;
+    top: 10%;
+    left: 85%;
+    transition: all 0.5s linear;
+    z-index: 10;
+  }
+
+  .sidebar {
+    position: fixed;
+    width: 60%;
+    height: 96%;
+    transition: all 0.5s linear;
+    z-index: 5;
+  }
+
+  .sidebar-hidden {
+    width: 0%;
+    transition: all 0.5s linear;
+  }
+
+  .sidebar-hidden .activador-sidebar-movil {
+    top: 10%;
+    left: 5%;
+    transition: all 0.5s linear;
+  }
+
+  .sidebar-hidden .header-side,
+  .sidebar-hidden .content-side,
+  .sidebar-hidden .unlock-div-side,
+  .sidebar-hidden .logout-side {
+    display: none;
+  }
+
+  .div-steps {
+    width: 100%;
+  }
+
+  .header-side {
+    height: 15%;
+  }
+
+  .img-header-side {
+    width: 109px;
+    height: 119px;
+  }
+
+  .content-side {
+    padding-top: 10%;
+    gap: 6%;
+  }
+
+  .content-side > a {
+    font-size: 14px;
+    height: 10%;
+  }
+
+  .content-side > a > img {
+    width: 10%;
+  }
+
+  .unlock-div-side > img {
+    width: 35%;
+  }
+
+  .unlock-div-side > p {
+    font-size: 14px;
+  }
+
+  .unlock-div-side > button {
+    font-size: 14px;
+    width: 90%;
+  }
+
+  .logout-side > button {
+    font-size: 14px;
+  }
+
+  .logout-side > button > img {
+    width: 15%;
+  }
+
+  /* BUTTONS MOBILE */
+  .buttons-movil {
+    font-size: 12px;
+    align-items: center;
+    font-weight: 800;
+  }
+
+  /* HEADER */
+  .header {
+    height: 20%;
+    flex-wrap: wrap;
+  }
+
+  .div-input-search-header {
+    width: 100%;
+    height: 30%;
+  }
+
+  .input-search-header {
+    width: 100%;
+  }
+
+  .button-question {
+    width: 48%;
+    height: 30%;
+    font-size: 12px;
+  }
+
+  .button-match {
+    width: 50%;
+    height: 30%;
+    font-size: 12px;
+  }
+
+  .button-question > img,
+  .button-match > img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .div-accesos-rapidos {
+    width: 100%;
+    gap: 25%;
+  }
+
+  /* DASHBOARD */
+  .all-dashboard{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  gap: 4%;
+}
+
+ .content-dashboard{
+  width: 100%;
+  height: 100%;
+  margin-top: 2%;
+  padding: 2%;
+}
+
+  .div-banner-puntajes {
+    height: 80%;
+    flex-direction: column;
+  }
+
+  .div-banner {
+    width: 100%;
+    padding: 4%;
+  }
+
+  .parrafos-div {
+    width: 100%;
+  }
+
+  .parrafos-div > h2 {
+    font-size: 24px;
+    line-height: 24px;
+  }
+
+  .parrafos-div > p {
+    font-size: 12px;
+    line-height: 24px;
+  }
+
+  .imagen-banner-div {
+    display: none;
+  }
+
+  .div-puntajes {
+    width: 100%;
+    height: 100%;
+  }
+
+  .header-puntajes {
+    height: 30%;
+    padding-inline: 1%;
+  }
+
+  .header-puntajes > p {
+    font-size: 14px;
+  }
+
+  .header-puntajes > a {
+    font-size: 14px;
+  }
+
+  .div-user-ranking {
+    height: 33%;
+  }
+
+  .user-ranking > img {
+    width: 35px;
+    height: 35px;
+  }
+
+  .user-ranking > p {
+    font-size: 12px;
+  }
+
+  .p-puntos {
+    font-size: 12px;
+  }
+
+  .p-preguntas-correctas {
+    font-size: 12px;
+  }
+
+ .div-carrusel-stats{
+  width: 99%;
+  height: 100%;
+  margin-top: 2%;
+  display: flex;
+  flex-direction: column;
+  gap: 5%;
+}
+
+.div-stats{
+    display: flex;
+    flex-direction: column;
+    width: 34%;
+    height: 100%;
+    gap: 5%;
+    z-index: 2;
+  }
+
+  .stats-level {
+    width: 55%;
+  }
+
+  .stats-level > img {
+    width: 35%;
+  }
+
+  .stats-title {
+    font-size: 20px;
+  }
+
+  .stats-description {
+    font-size: 9px;
+  }
+
+  .div-preguntas-stats > img {
+    width: 30%;
+  }
+
+  .div-puntos-stats > img {
+    width: 25%;
+  }
+
+ .div-carrusel {
+  display: flex;
+  flex-direction: column;
+  width: 94%;
+  margin-right: -30%;
+  height: 40%;
+  gap: 5%;
+}
+
+  .slick-next:before,
+  .slick-prev:before {
+    display: none;
+  }
+
+  .header-carrusel {
+    height: 20%;
+    padding-inline: 1%;
+  }
+
+  .header-carrusel > h3 {
+    width: 50%;
+    font-size: 16px;
+  }
+
+  .header-carrusel > a {
+    width: 50%;
+    margin-right: 0%;
+  }
+
+  .slick-initialized:has(.div-carrusel-item) .slick-next {
+    right: -5% !important;
+  }
+
+  .div-info-match-dash > p {
+    font-size: 16px;
+  }
+
+  .div-info-match-dash > p > span {
+    font-size: 14px;
+  }
+
+  .gomatch-button > button {
+    font-size: 14px;
+  }
+
+  /* SALAS */
+  .div-header-carrusel-salas > h3 {
+    font-size: 20px;
+  }
+
+  .gomatch-button-salas > button {
+    font-size: 14px;
+  }
+
+  .header-salas-todas-las-partidas > h3 {
+    font-size: 20px;
+  }
+
+  .tr-thead-salas {
+    gap: 2%;
+  }
+
+  .tr-thead-salas > td {
+    font-size: 12px;
+  }
+
+  .tr-salas-body {
+    gap: 2%;
+  }
+
+  .tr-salas-body > td {
+    font-size: 12px;
+  }
+
+  .td-created-salas {
+    display: none;
+  }
+  
+  .td-nivel-salas {
+    display: none;
+  }
+  
+  .td-count-salas {
+    display: none;
+  }
+  
+  .td-response-salas {
+    display: none;
+  }
+
+  .td-nom-salas {
+    width: 25%;
+  }
+  
+  .td-temas-salas {
+    width: 25% !important;
+  }
+  
+  .td-fecha-salas {
+    width: 25% !important;
+  }
+
+  .td-created-salas-body {
+    display: none;
+  }
+  
+  .td-nivel-salas-body {
+    display: none;
+  }
+  
+  .td-count-salas-body {
+    display: none;
+  }
+  
+  .td-response-salas-body {
+    display: none;
+  }
+
+  .td-nom-salas-body {
+    width: 25%;
+  }
+  
+  .td-temas-salas-body {
+    width: 25% !important;
+  }
+  
+  .td-fecha-salas-body {
+    width: 25% !important;
+  }
+  
+  .td-entrar-salas-body {
+    width: 25% !important;
+  }
+
+  .td-entrar-salas-body > button {
+    font-size: 12px;
+  }
+
+  /* PARTIDA */
+  .all-match {
+    flex-direction: column;
+    overflow-y: scroll;
+  }
+
+  .container-jugadores-partida {
+    width: 100%;
+    height: 25%;
+  }
+
+  .container-logo-juagadores-partidas {
+    display: none;
+  }
+
+  .div-jugadores-lista-partida {
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .header-jugadores-lista-partida {
+    margin-bottom: 2%;
+  }
+
+  .header-jugadores-lista-partida > h3 {
+    font-size: 20px;
+  }
+
+  .div-lista-partida {
+    width: 350px;
+    height: 40px;
+    margin-bottom: 1%;
+    margin-top: 1%;
+  }
+
+  .div-lista-partida > div > img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .div-lista-partida > p {
+    width: 45%;
+    font-size: 12px;
+  }
+
+  .puntaje-lista-jugadores {
+    width: 35%;
+    align-items: end !important;
+    padding-left: 2% !important;
+  }
+
+  .p-puntos-lista-partida-jugadores {
+    font-size: 12px;
+  }
+
+  .p-aciertos-lista-partida-jugadores {
+    font-size: 9px;
+  }
+
+  .container-partida {
+    width: 100%;
+    height: 100%;
+  }
+
+  .content-partida {
+    height: 100%;
+  }
+
+  .header-contador-partida {
+    height: 15%;
+  }
+
+  .header-contador-partida > h2 {
+    font-size: 24px;
+  }
+
+  .div-posicion-contador > p {
+    font-size: 12px;
+  }
+
+  .category-partida {
+    height: 15%;
+  }
+
+  .category-partida > p {
+    font-size: 16px;
+  }
+
+  .pregunta-respuesta {
+    height: 60%;
+  }
+
+  .pregunta-respuesta > p {
+    font-size: 20px;
+  }
+
+  .respuestas {
+    height: 20%;
+  }
+
+  .respuestas > p {
+    font-size: 14px;
+  }
+
+  .movil-chat {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 100px;
+    background-color: #F26A2F;
+    width: 70px;
+    height: 70px;
+    z-index: 8;
+  }
+
+  .movil-chat > img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .container-chat {
+    position: absolute;
+    bottom: 10%;
+    left: 25%;
+    width: 80%;
+    height: 40%;
+    z-index: 4;
+  }
+
+  .container-chat-hidden .container-chat,
+  .container-chat-hidden > div {
+    display: none;
+  }
+
+  .name-user-chat {
+    font-size: 12px;
+  }
+
+  .message-text-user {
+    font-size: 12px;
+  }
+
+  /* CREAR SALA */
+  .content-crear-partida {
+    height: 100vh;
+  }
+
+  .content-crear-partida > div {
+    width: 100% !important;
+    justify-content: space-between;
+  }
+
+  .content-crear-partida > div > h3 {
+    width: 80%;
+    font-size: 22px;
+  }
+
+  .content-crear-partida > form > div {
+    height: 30%;
+    flex-wrap: wrap;
+  }
+
+  .content-crear-partida > form > div > input[type=text] {
+    font-size: 12px;
+    width: 80%;
+  }
+
+  .content-crear-partida > form > div > select {
+    font-size: 12px;
+    width: 30%;
+  }
+
+  .content-crear-partida > div {
+    justify-content: space-between;
+    width: 80%;
+  }
+
+  .content-crear-partida > div > button {
+    width: 50%;
+    margin-left: 0%;
+    padding: 0%;
+    font-size: 12px;
+  }
+
+  .div-carrusel-crear-partida {
+    height: 50% !important;
+  }
+
+  .div-buttons-crear-partida > button {
+    width: 40% !important;
+  }
+
+  .save-button-crear-partida {
+    font-size: 16px !important;
+  }
+
+  /* PERFIL */
+  .h3-content-perfil {
+    margin-top: 5%;
+    width: 65%;
+    font-size: 20px;
+  }
+
+  .content-perfil {
+    width: 100%;
+    display: block;
+  }
+
+  .content-perfil-editar {
+    width: 100%;
+    display: block;
+  }
+
+  .content-perfil-stats {
+    width: 100%;
+    height: 65%;
+    margin-top: 5%;
+  }
+
+  .form-editar-perfil {
+    height: 40%;
+  }
+
+  .sm-items-center {
+    align-items: center;
+  }
+
+  .link-categorias-movil {
+    width: 25%;
+    font-size: 12px;
+    margin-top: 6%;
+  }
+
+  .form-editar-perfil > button {
+    width: 35%;
+    height: 10%;
+    padding: 0%;
+    font-size: 12px;
+  }
+
+  .form-editar-perfil > div {
+    height: 90%;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .imagen-perfil {
+    width: 62px;
+    height: 62px;
+  }
+
+  .form-editar-perfil > div > div {
+    width: 48%;
+    height: 50%;
+  }
+
+  .ultimos-pagos-perfil {
+    height: 35%;
+  }
+
+  .header-ultimos-pagos > h6 {
+    font-size: 16px !important;
+  }
+
+  .header-ultimos-pagos > a {
+    font-size: 12px;
+  }
+
+  .ultimos-pagos-perfil > div {
+    height: 20%;
+    margin-top: 2%;
+  }
+
+  .fecha-pagos-perfil,
+  .plan-pagos-perfil,
+  .valor-pagos-perfil,
+  .pagado-pagos-perfil {
+    font-size: 12px;
+  }
+
+  .carrusel-perfil {
+    height: 20%;
+  }
+
+  .carrusel-perfil > p {
+    font-size: 16px;
+  }
+
+  .carrusel-perfil > div > div > p {
+    font-size: 14px;
+  }
+
+  .carrusel-perfil > div > button {
+    font-size: 14px;
+  }
+
+  .carrusel-perfil > div > button > img {
+    width: 25%;
+  }
+
+  .div-puntos-respuestas-perfil {
+    flex-wrap: wrap;
+  }
+
+  .div-preguntas-stats-perfil {
+    width: 33%;
+  }
+
+  .div-preguntas-stats-perfil > img {
+    width: 50%;
+  }
+
+  .div-preguntas-stats-perfil > p {
+    font-size: 14px;
+  }
+
+  .div-puntos-stats-perfil {
+    width: 33%;
+  }
+
+  .div-puntos-stats-perfil > img {
+    width: 30%;
+  }
+
+  .div-puntos-stats-perfil > p {
+    font-size: 16px;
+  }
+
+  .stats-level-perfil {
+    height: 60%;
+  }
+
+  .stats-level-perfil > img {
+    width: 20%;
+  }
+
+  .stats-title-perfil {
+    font-size: 24px;
+  }
+
+  .stats-description-perfil {
+    font-size: 12px;
+  }
+
+  /* USUARIOS-RANKING */
+  .thead-suaurios > tr {
+    font-size: 16px;
+  }
+
+  .tr-usuarios {
+    font-size: 16px;
+  }
+
+  .td-tel {
+    display: none;
+  }
+  
+  .td-ciudad {
+    display: none;
+  }
+  
+  .td-puntosusers {
+    display: none;
+  }
+  
+  .td-eliminar {
+    display: none;
+  }
+
+  .td-name {
+    width: 20%;
+  }
+  
+  .td-verified {
+    width: 10%;
+  }
+  
+  .td-nivel {
+    width: 15%;
+  }
+  
+  .td-estadopago {
+    width: 45%;}
+  }
+
+  @media (max-width: 767px) {
+    .fondo-login {
+        background-image: url(/src/assets/images/Fondo-Login.png);
+        background-size: cover;
+        background-repeat: no-repeat;
+        height: 100vh;
+        width: 100%
+375.2px
+;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+}
+
+/* Notifications mobile improvements */
+@media (max-width: 767px) {
+  .div-notifications {
+    max-height: 50vh;
+    overflow-y: auto;
+    padding: 12px;
+    font-size: 14px;
+    line-height: 1.4;
+    box-sizing: border-box;
+  }
+
+  .notificaciones {
+    position: relative;
+  }
+
+  .notificaciones-flotantes{
+    right: 6px !important;
+    top: -6px !important;
+    background-color: #00ffff;
+    padding: 4px 8px;
+    font-family: Montserrat;
+    font-weight: 800;
+    font-size: 12px;
+    margin: 0%;
+    width: auto;
+    min-width: 24px;
+    height: auto;
+    border-radius: 12px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Make popover behave like a panel on mobile */
+  .ant-popover.ant-popover-placement-bottomLeft {
+    left: 8px !important;
+    right: 8px !important;
+    max-width: calc(100% - 16px) !important;
+  }
+
+  .ant-popover-inner-content {
+    padding: 12px !important;
+  }
+
+  .ant-popover-arrow { display: none; }
+
+  /* Increase tap target for the notifications button */
+  .notificaciones { padding: 6px; border-radius: 8px; }
+}
+
+
+/* Solo para el tamaño - se adapta al contenedor */
+.btn-fluid {
+  flex: 1;
+  min-width: 0; /* Importante para que flex funcione correctamente */
+}
+/* Si están en un contenedor flex y quieres que se repartan el espacio */
+.btn-flex {
+  flex: 1;
+}
