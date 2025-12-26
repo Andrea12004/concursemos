@@ -1,110 +1,86 @@
+import EditarPregunta from "@/components/categorias/editar-categoria";
 import type { GridColDef } from "@mui/x-data-grid";
-import EditarCategoria from "@/components/categorias/editar-categoria";
-import '@/components/categorias/css/styles.css';
-
-interface Category {
-  id: string;
-  category: string;
-  photo_category: string;
-}
-
-interface UserProfile {
-  id: string;
-}
-
-interface User {
-  profile: UserProfile | null;
-}
 
 export const getColumnsCategorias = (
   token: string,
-  user: User | null,
-  onDelete: (id: string) => void
-): GridColDef<Category>[] => {
-  const columns: GridColDef<Category>[] = [
+  profile: any,
+  confirmDelete: (id: string) => void
+): GridColDef[] => {
+  return [
     {
       field: "photo_category",
       headerName: "Imágenes",
-      width: 240,
-      minWidth: 240,
-      maxWidth: 240,
+      width: 280,
       sortable: false,
-      resizable: false,
-      headerClassName: "text-[#A09F9F] font-montserrat",
-      cellClassName: "py-2",
-      headerAlign: "center",
-      align: "center",
+      filterable: false,
+      disableColumnMenu: true,
       renderCell: (params) => (
         <div className="categoria-img-container">
-          <img 
-            src={params.value} 
-            alt={params.row.category}
-            className="categoria-thumb responsive-img-category"
-          />   
+          <img
+            src={params.value || "https://via.placeholder.com/220x100?text=Sin+Imagen"}
+            alt={params.row.category || "Categoría"}
+            className="categoria-thumb"
+            onError={(e) => {
+              const target = e.target as HTMLImageElement;
+              target.src = "https://via.placeholder.com/220x100?text=Error";
+            }}
+          />
         </div>
       ),
     },
     {
       field: "category",
       headerName: "Nombre",
-      flex: 0.6,
-      minWidth: 180,
-      sortable: true,
-      resizable: false,
-      headerClassName: "text-[#A09F9F] font-montserrat",
-      cellClassName: "text-white font-montserrat font-semibold text-base",
+      flex: 1,
+      minWidth: 200,
+      sortable: false,
+      filterable: false,
+      disableColumnMenu: true,
       renderCell: (params) => (
-        <p className="font-semibold text-[16px]">{params.value}</p>
+        <span style={{ 
+          color: "white", 
+          fontFamily: "Montserrat",
+          fontSize: "inherit"
+        }}>
+          {params.value}
+        </span>
       ),
     },
     {
       field: "eliminar",
       headerName: "Eliminar",
-      width: 150,
-      minWidth: 150,
-      maxWidth: 150,
+      width: 100,
       sortable: false,
-      resizable: false,
+      filterable: false,
+      disableColumnMenu: true,
       align: "center",
       headerAlign: "center",
-      headerClassName: "text-[#A09F9F] font-montserrat",
-      cellClassName: "text-center",
       renderCell: (params) => (
-        <div className="flex items-center justify-center">
-          <img
-            src="/svg/iconos/eliminar-blanco.svg"
-            alt="Eliminar"
-            className="cursor-pointer w-[20px] h-[20px] hover:scale-110 transition-transform"
-            onClick={() => onDelete(params.row.id)}
-          />
-        </div>
+        <img
+          src="/svg/iconos/eliminar-blanco.svg"
+          alt="Eliminar"
+          className="categoria-delete-icon"
+          onClick={() => confirmDelete(params.row.id)}
+          style={{ cursor: "pointer" }}
+        />
       ),
     },
     {
       field: "editar",
       headerName: "Editar",
-      width: 200,
-      minWidth: 200,
-      maxWidth: 200,
+      width: 140,
       sortable: false,
-      resizable: false,
+      filterable: false,
+      disableColumnMenu: true,
       align: "center",
       headerAlign: "center",
-      headerClassName: "text-[#A09F9F] font-montserrat",
-      cellClassName: "text-center",
       renderCell: (params) => (
-        <div className="w-full flex items-center justify-center">
-          {user && (
-            <EditarCategoria
-              pregunta={params.row}
-              token={token}
-              profile={user?.profile ?? null}
-            />
-          )}
-        </div>
+        <EditarPregunta
+          pregunta={params.row}
+          token={token}
+          profile={profile}
+        />
       ),
     },
   ];
-
-  return columns;
 };

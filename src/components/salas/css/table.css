@@ -1,30 +1,40 @@
+
+.table-wrapper{
+  background-color: transparent;
+   border: none !important;
+  border-radius: 8px;
+  flex: 1 1 auto;  /* Ocupa todo el espacio disponible */
+    min-height: 0;  /* Importante para que funcione el flex */
+    overflow: visible; 
+}
 /* Override de estilos para MuiTable en salas */
-.div-salas-todas-las-partidas .MuiDataGrid-root {
+.table-wrapper .MuiDataGrid-root {
   border: none !important;
   background: #1F2336 !important;
   color: white !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
 }
 
-/* Contenedor principal del DataGrid */
-.div-salas-todas-las-partidas .MuiDataGrid-main {
-  border: none !important;
-}
+/* Asegurar que el contenido de la tabla pueda crecer y dejar la paginación al final */
+
 
 /* Header de la tabla */
-.div-salas-todas-las-partidas .MuiDataGrid-columnHeaders {
+.table-wrapper .MuiDataGrid-columnHeaders {
   background: #1F2336 !important;
   min-height: 40px !important;
   max-height: 40px !important;
   border-bottom: none !important;
 }
 
-.div-salas-todas-las-partidas .MuiDataGrid-columnHeader {
+.table-wrapper .MuiDataGrid-columnHeader {
   padding: 0 8px !important;
   background: transparent !important;
   border: none !important;
 }
 
-.div-salas-todas-las-partidas .MuiDataGrid-columnHeaderTitle {
+.table-wrapper .MuiDataGrid-columnHeaderTitle {
   color: #A09F9F !important;
   font-family: Montserrat !important;
   font-size: 16px !important;
@@ -35,30 +45,29 @@
 }
 
 /* Container de las filas - Sin scroll */
-.div-salas-todas-las-partidas .MuiDataGrid-virtualScroller {
+.table-wrapper .MuiDataGrid-virtualScroller {
   background: transparent !important;
-  margin-top: 8px !important;
-  overflow: visible !important;
-  height: auto !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow: auto !important;
 }
 
 /* Filas de la tabla - Compacto */
-.div-salas-todas-las-partidas .MuiDataGrid-row {
+.table-wrapper .MuiDataGrid-row {
   background: #25293D !important;
   border-radius: 15px !important;
-  margin-bottom: 0 !important;
-  margin-top: 6px !important;
-  min-height: 50px !important;
-  max-height: 50px !important;
+  margin-top: 8px !important;
+  min-height: 60px !important;
+  max-height: 60px !important;
   border: none !important;
 }
 
-.div-salas-todas-las-partidas .MuiDataGrid-row:hover {
+.table-wrapper .MuiDataGrid-row:hover {
   background: #2d3249 !important;
 }
 
 /* Celdas */
-.div-salas-todas-las-partidas .MuiDataGrid-cell {
+.table-wrapper .MuiDataGrid-cell {
   border-bottom: none !important;
   border-top: none !important;
   border-left: none !important;
@@ -74,18 +83,18 @@
 }
 
 /* Celda enfocada */
-.div-salas-todas-las-partidas .MuiDataGrid-cell:focus,
-.div-salas-todas-las-partidas .MuiDataGrid-cell:focus-within {
+.table-wrapper .MuiDataGrid-cell:focus,
+.table-wrapper .MuiDataGrid-cell:focus-within {
   outline: none !important;
 }
 
 /* Quitar todos los bordes del contenedor de filas */
-.div-salas-todas-las-partidas .MuiDataGrid-rowsContainer {
+.table-wrapper .MuiDataGrid-rowsContainer {
   border: none !important;
 }
 
 /* Botón "Entrar a la partida" */
-.div-salas-todas-las-partidas .MuiDataGrid-cell button {
+.table-wrapper .MuiDataGrid-cell button {
   border: none !important;
   border-radius: 7px !important;
   background: #3CEBFF !important;
@@ -101,70 +110,63 @@
   text-transform: none !important;
 }
 
-.div-salas-todas-las-partidas .MuiDataGrid-cell button:hover {
+.table-wrapper .MuiDataGrid-cell button:hover {
   opacity: 0.9 !important;
   background: #3CEBFF !important;
 }
 
 /* Paginación - Siempre visible y compacta */
-.div-salas-todas-las-partidas .MuiDataGrid-footerContainer {
-  background: transparent !important;
-  border-top: 1px solid #3a3f52 !important;
-  padding: 8px 0 !important;
-  justify-content: center !important;
-  min-height: 50px !important;
-  max-height: 50px !important;
-  height: 50px !important;
-  margin-top: 8px !important;
-  overflow: visible !important;
+.table-wrapper .MuiDataGrid-footerContainer {
+   background-color: transparent;
+  border-top: 1px solid rgba(160, 159, 159, 0.1);
 }
 
-.div-salas-todas-las-partidas .MuiTablePagination-root {
+.table-wrapper .MuiTablePagination-root {
   color: white !important;
 }
 
-.div-salas-todas-las-partidas .MuiTablePagination-selectIcon {
+.table-wrapper .MuiTablePagination-selectIcon {
   color: white !important;
 }
 
-.div-salas-todas-las-partidas .MuiTablePagination-actions button {
+.table-wrapper .MuiTablePagination-actions button {
   color: white !important;
 }
 
-.div-salas-todas-las-partidas .MuiTablePagination-select {
+.table-wrapper .MuiTablePagination-select {
   color: white !important;
 }
 
-.div-salas-todas-las-partidas .MuiTablePagination-displayedRows {
+.table-wrapper .MuiTablePagination-displayedRows {
   color: white !important;
 }
 
 /* Cuando no hay datos */
-.div-salas-todas-las-partidas .MuiDataGrid-overlay {
+.table-wrapper .MuiDataGrid-overlay {
   background: transparent !important;
   color: white !important;
   font-family: Montserrat !important;
 }
 
 /* Asegurar que no haya borders en ningún elemento */
-.div-salas-todas-las-partidas .MuiDataGrid-root *,
-.div-salas-todas-las-partidas .MuiDataGrid-root *::before,
-.div-salas-todas-las-partidas .MuiDataGrid-root *::after {
+.table-wrapper .MuiDataGrid-root *,
+.table-wrapper .MuiDataGrid-root *::before,
+.table-wrapper .MuiDataGrid-root *::after {
   border-color: transparent !important;
 }
 
 /* Eliminar líneas entre filas */
-.div-salas-todas-las-partidas .MuiDataGrid-withBorderColor {
+.table-wrapper .MuiDataGrid-withBorderColor {
   border-color: transparent !important;
 }
 
 /* Espaciado entre filas */
-.div-salas-todas-las-partidas .MuiDataGrid-virtualScrollerContent {
-  gap: 8px;
+.table-wrapper .MuiDataGrid-virtualScrollerContent {
+  background-color: transparent;
 }
 
 /* Ajustar imágenes de nivel */
-.div-salas-todas-las-partidas .MuiDataGrid-cell img {
+.table-wrapper .MuiDataGrid-cell img {
   border: 1px solid #fff;
   border-radius: 50%;
   width: 40px;
@@ -173,46 +175,41 @@
 }
 
 /* Estilo para textos truncados */
-.div-salas-todas-las-partidas .MuiDataGrid-cell .truncate {
+.table-wrapper .MuiDataGrid-cell .truncate {
   white-space: nowrap !important;
   overflow: hidden !important;
   text-overflow: ellipsis !important;
 }
 
 /* Iconos y botones de acción */
-.div-salas-todas-las-partidas .MuiDataGrid-cell .MuiIconButton-root {
+.table-wrapper .MuiDataGrid-cell .MuiIconButton-root {
   color: white !important;
 }
 
-/* Eliminar padding extra */
-.div-salas-todas-las-partidas .MuiDataGrid-columnHeaders,
-.div-salas-todas-las-partidas .MuiDataGrid-virtualScroller {
-  padding-left: 0 !important;
-  padding-right: 0 !important;
-}
 
 /* Asegurar que las filas tengan el ancho completo */
-.div-salas-todas-las-partidas .MuiDataGrid-row {
+.table-wrapper .MuiDataGrid-row {
   width: 100% !important;
   max-width: 100% !important;
 }
 
 /* Scrollbar personalizado */
-.div-salas-todas-las-partidas .MuiDataGrid-virtualScroller::-webkit-scrollbar {
+.table-wrapper .MuiDataGrid-virtualScroller::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
 
-.div-salas-todas-las-partidas .MuiDataGrid-virtualScroller::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.div-salas-todas-las-partidas .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb {
-  background: #3CEBFF;
+.table-wrapper .MuiDataGrid-virtualScroller::-webkit-scrollbar-track {
+ background: rgba(37, 41, 61, 0.5);
   border-radius: 4px;
 }
 
-.div-salas-todas-las-partidas .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb:hover {
+.table-wrapper .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb {
+  background: #A09F9F;
+  border-radius: 4px;
+}
+
+.table-wrapper .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb:hover {
   background: #2dd4e8;
 }
 
@@ -220,20 +217,20 @@
 
 /* PC - Escritorio grande (≥1200px) */
 @media (min-width: 1200px) {
-  .div-salas-todas-las-partidas .MuiDataGrid-root {
+  .table-wrapper .MuiDataGrid-root {
     min-height: 600px;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-columnHeaderTitle {
+  .table-wrapper .MuiDataGrid-columnHeaderTitle {
     font-size: 16px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell {
+  .table-wrapper .MuiDataGrid-cell {
     font-size: 15px !important;
     padding: 8px 16px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell button {
+  .table-wrapper .MuiDataGrid-cell button {
     font-size: 15px !important;
     padding: 10px 20px !important;
   }
@@ -241,38 +238,46 @@
 
 /* Portátil - Tablet horizontal (992px - 1199px) */
 @media (min-width: 992px) and (max-width: 1199px) {
-  .div-salas-todas-las-partidas .MuiDataGrid-root {
+  .table-wrapper .MuiDataGrid-root {
     min-height: 500px;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-columnHeaderTitle {
+  .table-wrapper .MuiDataGrid-columnHeaderTitle {
     font-size: 15px !important;
     line-height: 18px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell {
+  .table-wrapper .MuiDataGrid-cell {
     font-size: 14px !important;
     padding: 8px 10px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell button {
+  .table-wrapper .MuiDataGrid-cell button {
     font-size: 14px !important;
     padding: 8px 12px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell img {
+  .table-wrapper .MuiDataGrid-cell img {
     width: 35px;
     height: 35px;
+  }
+
+    .header-salas-todas-las-partidas {
+    padding-right: 16px !important;
+  }
+  
+  .header-salas-todas-las-partidas .MuiSelect-select {
+    min-width: 140px !important;
   }
 }
 
 /* Tablet vertical (768px - 991px) */
 @media (min-width: 768px) and (max-width: 991px) {
-  .div-salas-todas-las-partidas .MuiDataGrid-root {
+  .table-wrapper .MuiDataGrid-root {
     min-height: 450px;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-columnHeaderTitle {
+  .table-wrapper .MuiDataGrid-columnHeaderTitle {
     font-size: 14px !important;
     line-height: 16px !important;
     white-space: nowrap !important;
@@ -280,34 +285,34 @@
     text-overflow: ellipsis !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell {
+  .table-wrapper .MuiDataGrid-cell {
     font-size: 13px !important;
     padding: 6px 8px !important;
     min-height: 55px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-row {
+  .table-wrapper .MuiDataGrid-row {
     min-height: 55px !important;
     max-height: 55px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell button {
+  .table-wrapper .MuiDataGrid-cell button {
     font-size: 12px !important;
     padding: 6px 10px !important;
     font-weight: 700 !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell img {
+  .table-wrapper .MuiDataGrid-cell img {
     width: 32px;
     height: 32px;
   }
   
   /* Reducir paginación */
-  .div-salas-todas-las-partidas .MuiTablePagination-root {
+  .table-wrapper .MuiTablePagination-root {
     font-size: 13px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-select {
+  .table-wrapper .MuiTablePagination-select {
     font-size: 13px !important;
     padding: 4px 8px !important;
   }
@@ -315,11 +320,11 @@
 
 /* Móvil (576px - 767px) */
 @media (min-width: 576px) and (max-width: 767px) {
-  .div-salas-todas-las-partidas .MuiDataGrid-root {
+  .table-wrapper .MuiDataGrid-root {
     min-height: 400px;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-columnHeaderTitle {
+  .table-wrapper .MuiDataGrid-columnHeaderTitle {
     font-size: 12px !important;
     line-height: 14px !important;
     white-space: nowrap !important;
@@ -327,66 +332,84 @@
     text-overflow: ellipsis !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell {
+  .table-wrapper .MuiDataGrid-cell {
     font-size: 12px !important;
     padding: 5px 6px !important;
     min-height: 50px !important;
     line-height: 16px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-row {
+  .table-wrapper .MuiDataGrid-row {
     min-height: 50px !important;
     max-height: 50px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell button {
+  .table-wrapper .MuiDataGrid-cell button {
     font-size: 11px !important;
     padding: 5px 8px !important;
     font-weight: 700 !important;
     white-space: nowrap !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell img {
+  .table-wrapper .MuiDataGrid-cell img {
     width: 28px;
     height: 28px;
   }
   
   /* Ajustar paginación para móvil */
-  .div-salas-todas-las-partidas .MuiDataGrid-footerContainer {
+  .table-wrapper .MuiDataGrid-footerContainer {
     padding: 12px 0 !important;
     min-height: 50px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-root {
+  .table-wrapper .MuiTablePagination-root {
     font-size: 11px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-select {
+  .table-wrapper .MuiTablePagination-select {
     font-size: 11px !important;
     padding: 2px 4px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-actions {
+  .table-wrapper .MuiTablePagination-actions {
     margin-left: 4px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-displayedRows {
+  .table-wrapper .MuiTablePagination-displayedRows {
     font-size: 11px !important;
+  }
+
+    .header-salas-todas-las-partidas {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding-right: 0 !important;
+  }
+  
+  .header-salas-todas-las-partidas > div {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+  
+  .header-salas-todas-las-partidas .MuiSelect-select {
+    min-width: 160px !important;
   }
 }
 
 /* Móvil pequeño (≤575px) */
 @media (max-width: 575px) {
-  .div-salas-todas-las-partidas .MuiDataGrid-root {
+  .table-wrapper .MuiDataGrid-root {
     min-height: 350px;
     overflow-x: auto !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-main {
-    min-width: 600px; /* Ancho mínimo para que no se rompa el layout */
+  .table-wrapper .MuiDataGrid-main {
+    min-width: 100% !important; /* Cambia de 600px a 100% */
+    width: 100% !important;
+    overflow: visible !important; /* Ancho mínimo para que no se rompa el layout */
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-columnHeaderTitle {
+  .table-wrapper .MuiDataGrid-columnHeaderTitle {
     font-size: 11px !important;
     line-height: 13px !important;
     white-space: nowrap !important;
@@ -394,91 +417,93 @@
     text-overflow: ellipsis !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell {
+  .table-wrapper .MuiDataGrid-cell {
     font-size: 11px !important;
     padding: 4px 5px !important;
     min-height: 45px !important;
     line-height: 14px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-row {
+  .table-wrapper .MuiDataGrid-row {
     min-height: 45px !important;
     max-height: 45px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell button {
+  .table-wrapper .MuiDataGrid-cell button {
     font-size: 10px !important;
     padding: 4px 6px !important;
     font-weight: 700 !important;
     white-space: nowrap !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell img {
+  .table-wrapper .MuiDataGrid-cell img {
     width: 24px;
     height: 24px;
   }
   
   /* Paginación compacta para móvil pequeño */
-  .div-salas-todas-las-partidas .MuiDataGrid-footerContainer {
+  .table-wrapper .MuiDataGrid-footerContainer {
     padding: 8px 0 !important;
     min-height: 40px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-root {
+  .table-wrapper .MuiTablePagination-root {
     font-size: 10px !important;
     min-height: 40px !important;
+    
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-toolbar {
+  .table-wrapper .MuiTablePagination-toolbar {
     min-height: 40px !important;
     padding: 0 !important;
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-select {
+  .table-wrapper .MuiTablePagination-select {
     font-size: 10px !important;
     padding: 2px 4px !important;
     margin: 0 4px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-selectLabel {
+  .table-wrapper .MuiTablePagination-selectLabel {
     display: none !important; /* Ocultar label para ahorrar espacio */
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-displayedRows {
+  .table-wrapper .MuiTablePagination-displayedRows {
     font-size: 10px !important;
     margin: 0 8px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-actions {
+  .table-wrapper .MuiTablePagination-actions {
     margin-left: 4px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiTablePagination-actions button {
+  .table-wrapper .MuiTablePagination-actions button {
     padding: 4px !important;
   }
   
   /* Mejorar scroll horizontal en móvil */
-  .div-salas-todas-las-partidas .MuiDataGrid-virtualScroller {
+  .table-wrapper .MuiDataGrid-virtualScroller {
     overflow-x: auto !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-virtualScroller::-webkit-scrollbar {
+  .table-wrapper .MuiDataGrid-virtualScroller::-webkit-scrollbar {
     height: 6px;
   }
 }
 
 /* Para pantallas muy altas (PC grande) */
 @media (min-width: 1400px) and (min-height: 900px) {
-  .div-salas-todas-las-partidas .MuiDataGrid-root {
-    min-height: 700px;
+  .table-wrapper .MuiDataGrid-root {
+    min-height: 400px;
+    overflow: visible !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-row {
+  .table-wrapper .MuiDataGrid-row {
     min-height: 65px !important;
     max-height: 65px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell {
+  .table-wrapper .MuiDataGrid-cell {
     min-height: 65px !important;
     font-size: 16px !important;
   }
@@ -486,31 +511,31 @@
 
 /* Orientación landscape en móviles */
 @media (max-width: 991px) and (orientation: landscape) {
-  .div-salas-todas-las-partidas .MuiDataGrid-root {
+  .table-wrapper .MuiDataGrid-root {
     min-height: 300px;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-row {
+  .table-wrapper .MuiDataGrid-row {
     min-height: 45px !important;
     max-height: 45px !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-cell {
+  .table-wrapper .MuiDataGrid-cell {
     min-height: 45px !important;
   }
 }
 
 /* Ajustes para dark mode si es necesario */
 @media (prefers-color-scheme: dark) {
-  .div-salas-todas-las-partidas .MuiDataGrid-root {
+  .table-wrapper .MuiDataGrid-root {
     background: #1F2336 !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-row {
+  .table-wrapper .MuiDataGrid-row {
     background: #25293D !important;
   }
   
-  .div-salas-todas-las-partidas .MuiDataGrid-row:hover {
+  .table-wrapper .MuiDataGrid-row:hover {
     background: #2d3249 !important;
   }
 }
@@ -521,20 +546,3 @@
   -webkit-overflow-scrolling: touch;
 }
 
-/* Forzar que el contenido del virtual scroller crezca según las columnas */
-.table-wrapper .MuiDataGrid-virtualScrollerContent {
-  min-width: max-content !important;
-}
-
-/* Asegurar que el virtual scroller permita desplazamiento horizontal */
-.table-wrapper .MuiDataGrid-virtualScroller {
-  overflow-x: auto !important;
-  overflow-y: auto !important;
-}
-
-/* Evitar que elementos internos oculten la barra de scroll */
-.table-wrapper .MuiDataGrid-root,
-.table-wrapper .MuiDataGrid-main {
-  width: 100% !important;
-  overflow: visible !important;
-}

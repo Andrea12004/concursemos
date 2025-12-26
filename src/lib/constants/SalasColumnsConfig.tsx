@@ -178,7 +178,7 @@ export const getColumnsSalas = (
       cellClassName: 'cell-eliminar-sala',
       renderCell: (params) => (
         (userRole === 'ADMIN' || params.row.can_delete) ? (
-          <div className="flex items-center justify-end w-full pr-2">
+          <div className="flex gap-2 items-center justify-center">
             <Eliminar id={params.row.id} token={token} />
           </div>
         ) : null

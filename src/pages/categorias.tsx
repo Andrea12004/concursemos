@@ -190,18 +190,19 @@ export const Categorias: React.FC = () => {
 
       <div className="content-usuarios">
         <div className=" banco-table-container categorias-datagrid">
-          <Table
-            columns={columns}
-            rows={rows}
-            totalItems={filteredRooms.length}
-            limit={itemsPerPage}
-            page={currentPage}
-            setPage={setCurrentPage}
-            pageSize={itemsPerPage}
-            showExport={false}
-            enableFiltering={false}
-            autoHeight={false}
-          />
+         <Table
+      columns={columns}
+      rows={rows}
+      totalItems={filteredRooms.length}
+      limit={itemsPerPage}
+      page={currentPage}
+      setPage={setCurrentPage}
+      pageSize={itemsPerPage}
+      rowHeight={120}  // ← IMPORTANTE: Altura de 120px para las filas
+      showExport={false}
+      enableFiltering={false}
+      autoHeight={false}
+    />
         </div>
       </div>
     </Layout>

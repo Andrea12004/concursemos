@@ -3,15 +3,15 @@
   width: 100%;
   height: 100%;
 }
-.div-carrusel-salas-global > div {
+.div-carrusel-salas-global > div{
   width: 100%;
 }
 
-.div-carrusel-salas-global > div > div > div > div > div {
+.div-carrusel-salas-global > div > div > div > div > div{
   margin: 0%;
   height: 85%;
 }
-.div-carrusel-salas {
+.div-carrusel-salas{
   width: 97%;
   height: 38%;
   margin-top: 2%;
@@ -24,9 +24,9 @@
   align-items: center;
 }
 
-.div-header-carrusel-salas > h3 {
+.div-header-carrusel-salas > h3{
   margin: 0%;
-  color: var(--Azul-Principal, #3cebff);
+  color: var(--Azul-Principal, #3CEBFF);
   /* H4 Bold */
   font-family: Montserrat;
   font-size: 24px;
@@ -39,10 +39,7 @@
   width: 95% !important;
   height: 100%;
   border-radius: 25px;
-  box-shadow: 19px 53px 16px 0px rgba(0, 0, 0, 0),
-    12px 34px 14px 0px rgba(0, 0, 0, 0.01),
-    7px 19px 12px 0px rgba(0, 0, 0, 0.05), 3px 8px 9px 0px rgba(0, 0, 0, 0.09),
-    1px 2px 5px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 19px 53px 16px 0px rgba(0, 0, 0, 0.00), 12px 34px 14px 0px rgba(0, 0, 0, 0.01), 7px 19px 12px 0px rgba(0, 0, 0, 0.05), 3px 8px 9px 0px rgba(0, 0, 0, 0.09), 1px 2px 5px 0px rgba(0, 0, 0, 0.10);
   position: relative;
   display: flex !important;
   flex-direction: column;
@@ -51,12 +48,12 @@
   margin: 4%;
 }
 
-.slick-initialized:has(.div-carrusel-item-salas) .slick-next {
+.slick-initialized:has(.div-carrusel-item-salas) .slick-next{
   right: 0px !important;
 }
 
 .slick-initialized:has(.div-carrusel-item-salas) .slick-next:before,
-.slick-initialized:has(.div-carrusel-item-salas) .slick-prev:before {
+.slick-initialized:has(.div-carrusel-item-salas) .slick-prev:before{
   font-size: 28px !important;
 }
 
@@ -66,11 +63,11 @@
   padding-bottom: 4%;
 }
 
-.gomatch-button-salas > button {
+.gomatch-button-salas > button{
   outline: none;
   border: 0px solid;
   border-radius: 5px;
-  background: var(--Blanco, #fff);
+  background: var(--Blanco, #FFF);
   color: var(--Negro, #000);
 
   padding: 1%;
@@ -82,52 +79,18 @@
   line-height: 20px; /* 125% */
 }
 
-.div-salas-todas-las-partidas {
+.div-salas-todas-las-partidas{
   margin-top: 2%;
 }
 
-/* PAGE-SALAS: mantener comportamiento por defecto (sin forzar altura/overflow) */
-.page-salas-root {
-  display: block;
-}
-
-/* Contenedor principal dentro de la página: comportamiento por defecto */
-.page-salas-root > .div-salas-todas-las-partidas {
-  display: block;
-}
-
-/* Wrapper de la tabla: permitir scroll horizontal y vertical solo dentro de la tabla */
-.table-wrapper {
-  flex: 1 1 auto;
-  max-height: 100%;
-  overflow-x: auto; /* permite desplazamiento horizontal si faltan columnas */
-  overflow-y: auto; /* scroll vertical dentro de la tabla */
-  -webkit-overflow-scrolling: touch;
-  padding-right: 8px; /* espacio para scrollbar */
-}
-
-/* Asegurar que el DataGrid use todo el ancho y no provoque scroll vertical adicional */
-.table-wrapper .MuiDataGrid-root {
-  width: 100%;
-  height: auto !important;
-}
-
-/* Footer con comportamiento por defecto */
-.table-wrapper .MuiDataGrid-footerContainer {
-  position: static;
-  bottom: auto;
-  z-index: 1;
-  background: transparent;
-}
-
-.header-salas-todas-las-partidas {
+.header-salas-todas-las-partidas{
   height: 10%;
   margin-bottom: 0.5%;
 }
 
-.header-salas-todas-las-partidas > h3 {
+.header-salas-todas-las-partidas > h3{
   margin: 0%;
-  color: var(--Azul-Principal, #3cebff);
+  color: var(--Azul-Principal, #3CEBFF);
 
   /* H4 Bold */
   font-family: Montserrat;
@@ -137,185 +100,6 @@
   line-height: 24px; /* 100% */
 }
 
-.table-salas {
-  width: 97%;
-  display: flex;
-  flex-direction: column;
-}
-
-.thead-salas {
-  width: 100%;
-}
-
-.tr-thead-salas {
-  width: 100%;
-  height: 5%;
-  display: flex;
-  padding-left: 2%;
-}
-
-.tr-thead-salas > td {
-  color: var(--Gris-4, #a09f9f);
-  /* Texto */
-  font-family: Montserrat;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 125% */
-  text-align: left;
-}
-
-.tbody-salas {
-  width: 100%;
-}
-
-.tr-salas-body {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  height: 10%;
-  border-radius: 15px;
-  background: var(--Azul---Gris, #25293d);
-  padding-left: 2%;
-  margin-top: 1%;
-}
-
-.tr-salas-body > td {
-  color: var(--Blanco, #fff);
-  /* Texto */
-  font-family: Montserrat;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 20px; /* 125% */
-}
-
-.td-nom-salas {
-  width: 15%;
-}
-.td-created-salas {
-  width: 10%;
-}
-.td-nivel-salas {
-  width: 10%;
-}
-.td-temas-salas {
-  width: 15%;
-}
-.td-fecha-salas {
-  width: 15%;
-}
-.td-count-salas {
-  width: 15%;
-}
-.td-response-salas {
-  width: 15%;
-}
-
-.td-nom-salas-body {
-  width: 15%;
-}
-.td-created-salas-body {
-  width: 10%;
-}
-/* Celda de nivel / eliminar: centrar y tamaño consistente del icono */
-.td-nivel-salas-body {
-  width: 5%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 0 6px;
-  overflow: visible;
-}
-.td-nivel-salas-body img {
-  width: 20px;
-  height: 20px;
-  background: var(
-    --Azul---Gris,
-    #25293d
-  ); /* fondo oscuro circular para ocultar artefactos blancos */
-  border-radius: 50%;
-  padding: 3px;
-  border: none;
-  display: block;
-  box-shadow: none;
-}
-.td-nivel-salas-body img:hover {
-  opacity: 0.95;
-  transform: scale(1.04);
-}
-.td-temas-salas-body {
-  width: 15%;
-}
-.td-fecha-salas-body {
-  width: 15%;
-}
-.td-count-salas-body {
-  width: 15%;
-}
-.td-response-salas-body {
-  width: 10%;
-}
-.td-entrar-salas-body {
-  width: 12%;
-}
-
-.td-entrar-salas-body > button {
-  border: 0px;
-  border-radius: 7px;
-  background: var(--Azul-Principal, #3cebff);
-  color: var(--Azul---Gris, #25293d);
-  /* Texto Bold */
-  font-family: Montserrat;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 800;
-  line-height: 20px; /* 125% */
-  padding: 2%;
-  width: 100%;
-}
-
-.MuiDataGrid-columnHeaders {
-  margin-bottom: 8px !important; /* Separación adicional del header */
-}
-/*END::SALAS*/
-
-/* ===== BOTÓN ELIMINAR SALA ===== */
-.btn-eliminar-sala {
-  width: 35px;
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.btn-eliminar-sala img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-  display: block;
-}
-
-/* Hover sutil */
-.btn-eliminar-sala:hover img {
-  transform: scale(1.1);
-  opacity: 0.85;
-  transition: all 0.2s ease;
-}
-.cell-eliminar-sala {
-  display: flex !important;
-  justify-content: center;
-  align-items: center;
-  padding: 0 !important;
-}
-.cell-eliminar-sala img {
-  background: transparent !important;
-  padding: 0 !important;
-  border-radius: 0 !important;
-  width: 18px !important;
-  height: 18px !important;
-}
 
 .div-info-match-dash {
   width: 100%;
@@ -347,67 +131,238 @@
   font-weight: 500;
   line-height: 20px; /* 125% */
 }
-/* Estilos compactos - Sin scroll */
-.div-salas-todas-las-partidas .MuiDataGrid-root {
-  height: auto !important;
-  min-height: auto !important;
-  max-height: none !important;
-  overflow: visible !important;
+
+/* ===== BOTÓN ELIMINAR SALA ===== */
+.btn-eliminar-sala {
+  width: 35px;
+  height: 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
 }
 
-.div-salas-todas-las-partidas .MuiDataGrid-virtualScroller {
-  height: auto !important;
-  min-height: 0 !important;
-  max-height: none !important;
-  overflow: visible !important;
+.btn-eliminar-sala img {
+  width: 5px;
+  height: 5px;
+  object-fit: contain;
+  display: block;
 }
 
-/* Eliminar espacio entre filas - Compacto */
-.div-salas-todas-las-partidas .MuiDataGrid-row {
-  min-height: 50px !important;
-  max-height: 50px !important;
-  margin: 0 !important;
-  margin-top: 6px !important;
-  padding: 0 !important;
+
+/*portatil*/
+@media (min-width: 768px) and (max-width: 1700px) {
+    :root {
+      font-family: Montserrat;
+      font-style: normal;
+      background-color: #1F2336 !important;
+    }
+
+    /*SALAS*/
+  .div-carrusel-salas-global {
+    width: 100%;
+    height: 100%;
+  }
+  .div-carrusel-salas-global > div{
+    width: 100%;
+  }
+
+  .div-carrusel-salas-global > div > div > div > div > div{
+    margin: 0%;
+    height: 85%;
+  }
+  .div-carrusel-salas{
+    width: 97%;
+    height: 38%;
+    margin-top: 2%;
+  }
+
+  .div-header-carrusel-salas {
+    height: 10%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+
+  .div-header-carrusel-salas > h3{
+    margin: 0%;
+    color: var(--Azul-Principal, #3CEBFF);
+    /* H4 Bold */
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 24px; /* 100% */
+  }
+
+  .div-carrusel-item-salas {
+    width: 95% !important;
+    height: 100%;
+    border-radius: 25px;
+    box-shadow: 19px 53px 16px 0px rgba(0, 0, 0, 0.00), 12px 34px 14px 0px rgba(0, 0, 0, 0.01), 7px 19px 12px 0px rgba(0, 0, 0, 0.05), 3px 8px 9px 0px rgba(0, 0, 0, 0.09), 1px 2px 5px 0px rgba(0, 0, 0, 0.10);
+    position: relative;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1%;
+    margin: 4%;
+  }
+
+  .slick-initialized:has(.div-carrusel-item-salas) .slick-next{
+    right: 0px !important;
+  }
+
+  .slick-initialized:has(.div-carrusel-item-salas) .slick-next:before,
+  .slick-initialized:has(.div-carrusel-item-salas) .slick-prev:before{
+    font-size: 28px !important;
+  }
+
+  .gomatch-button-salas {
+    padding-left: 4%;
+    padding-top: 8%;
+    padding-bottom: 4%;
+  }
+
+  .gomatch-button-salas > button{
+    outline: none;
+    border: 0px solid;
+    border-radius: 5px;
+    background: var(--Blanco, #FFF);
+    color: var(--Negro, #000);
+
+    padding: 1%;
+    /* Texto Bold */
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 20px; /* 125% */
+  }
+
+  .div-salas-todas-las-partidas{
+    margin-top: 2%;
+  }
+
+  .header-salas-todas-las-partidas{
+    height: 10%;
+    margin-bottom: 2%;
+  }
+
+  .header-salas-todas-las-partidas > h3{
+    margin: 0%;
+    color: var(--Azul-Principal, #3CEBFF);
+
+    /* H4 Bold */
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 24px; /* 100% */
+  }
+  
+  }
+
+  @media (max-width: 767px) {
+/*SALAS*/
+.div-carrusel-salas-global {
+  width: 100%;
+  height: 100%;
+}
+.div-carrusel-salas-global > div{
+  width: 100%;
 }
 
-/* Reducir espacio en celdas */
-.div-salas-todas-las-partidas .MuiDataGrid-cell {
-  padding: 6px 8px !important;
-  line-height: 1.3 !important;
+.div-carrusel-salas-global > div > div > div > div > div{
+  margin: 0%;
+  height: 85%;
+}
+.div-carrusel-salas{
+  width: 97%;
+  height: 38%;
+  margin-top: 2%;
 }
 
-/* SOLUCIÓN - Sin scroll, paginación siempre visible */
-.div-salas-todas-las-partidas .MuiDataGrid-main {
-  height: auto !important;
-  min-height: 0 !important;
-  overflow: visible !important;
+.div-header-carrusel-salas {
+  height: 10%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
 }
 
-.div-salas-todas-las-partidas .MuiDataGrid-mainContent {
-  height: auto !important;
-  min-height: 0 !important;
-  overflow: visible !important;
+.div-header-carrusel-salas > h3{
+  margin: 0%;
+  color: var(--Azul-Principal, #3CEBFF);
+  /* H4 Bold */
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 24px; /* 100% */
 }
 
-.div-salas-todas-las-partidas .MuiDataGrid-virtualScrollerRenderZone {
-  height: auto !important;
-  min-height: 0 !important;
-  overflow: visible !important;
+.div-carrusel-item-salas {
+  width: 95% !important;
+  height: 100%;
+  border-radius: 25px;
+  box-shadow: 19px 53px 16px 0px rgba(0, 0, 0, 0.00), 12px 34px 14px 0px rgba(0, 0, 0, 0.01), 7px 19px 12px 0px rgba(0, 0, 0, 0.05), 3px 8px 9px 0px rgba(0, 0, 0, 0.09), 1px 2px 5px 0px rgba(0, 0, 0, 0.10);
+  position: relative;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1%;
+  margin: 4%;
 }
 
-.div-salas-todas-las-partidas .MuiDataGrid-footerContainer {
-  min-height: 50px !important;
-  max-height: 50px !important;
-  height: 50px !important;
-  margin-top: 8px !important;
-  padding: 8px 0 !important;
-  border-top: 1px solid #3a3f52 !important;
-  overflow: visible !important;
+.slick-initialized:has(.div-carrusel-item-salas) .slick-next{
+  right: 0px !important;
 }
 
-/* Contenedor sin overflow */
-.div-salas-todas-las-partidas .rounded-lg {
-  height: auto !important;
-  overflow: visible !important;
+.slick-initialized:has(.div-carrusel-item-salas) .slick-next:before,
+.slick-initialized:has(.div-carrusel-item-salas) .slick-prev:before{
+  font-size: 28px !important;
 }
+
+.gomatch-button-salas {
+  padding-left: 4%;
+  padding-top: 4%;
+  padding-bottom: 4%;
+}
+
+.gomatch-button-salas > button{
+  outline: none;
+  border: 0px solid;
+  border-radius: 5px;
+  background: var(--Blanco, #FFF);
+  color: var(--Negro, #000);
+
+  padding: 1%;
+  /* Texto Bold */
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 20px; /* 125% */
+}
+
+.div-salas-todas-las-partidas{
+  margin-top: 2%;
+}
+
+.header-salas-todas-las-partidas{
+  height: 10%;
+  margin-bottom: 0.5%;
+}
+
+.header-salas-todas-las-partidas > h3{
+  margin: 0%;
+  color: var(--Azul-Principal, #3CEBFF);
+
+  /* H4 Bold */
+  font-family: Montserrat;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 24px; /* 100% */
+}
+
+  }

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import MuiTable from "@/components/UI/Table/Table/index";
 import { getColumnsSalas } from "@/lib/constants/SalasColumnsConfig";
-import "@/css/table.css";
+import "./css/table.css";
 
 import { LevelSelect } from "@/components/UI/Select/LevelSelect";
 import "@/components/salas/css/styles.css";
@@ -260,13 +260,13 @@ export function SalasLista({ searchQuery }: SalasListaProps) {
       <div className="header-salas-todas-las-partidas flex items-center justify-between w-full">
         <h3 className="text-xl font-semibold">Todas las Partidas</h3>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 mr-4">
           <LevelSelect value={selectedLevel} onChange={handleLevelChange} />
         </div>
       </div>
 
       {/* Tabla */}
-      <div className="rounded-lg table-wrapper" style={{ height: "calc(100vh - 300px)" }}>
+      <div className="w-full table-wrapper" style={{ height: "calc(100vh - 300px)", overflow: "visible" }}>
         <MuiTable
           columns={columns}
           rows={tableRows}
@@ -276,7 +276,7 @@ export function SalasLista({ searchQuery }: SalasListaProps) {
           setPage={setPage}
           page={page}
           showExport={false}
-          autoHeight={false} 
+          autoHeight={true} 
         />
       </div>
     </div>
