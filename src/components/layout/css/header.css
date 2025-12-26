@@ -233,61 +233,6 @@
     }
 }
 
-/* PORTÁTIL (pantallas pequeñas: 576px - 767px) */
-@media screen and (max-width: 767px) {
-    .header {
-        flex-direction: column;
-        gap: 12px;
-        padding: 10px;
-        height: auto;
-    }
-    
-    .div-input-search-header {
-        width: 100%;
-        order: 1;
-        min-height: 40px;
-    }
-    
-    .button-question {
-        width: 100%;
-        order: 2;
-        min-height: 40px;
-        font-size: 14px;
-    }
-
-    .button-question-usuarios {
-        width: 100%;
-        order: 2;
-        min-height: 40px;
-        font-size: 14px;
-    }
-    
-    .button-match {
-        width: 100%;
-        order: 3;
-        min-height: 40px;
-        font-size: 14px;
-    }
-    
-    .div-accesos-rapidos {
-        width: 100%;
-        order: 4;
-        justify-content: center;
-        margin-top: 5px;
-        gap: 20px;
-    }
-    
-    .input-search-header {
-        font-size: 14px;
-    }
-    
-    .input-search-header::placeholder {
-        font-size: 14px;
-    }
-
-    
-
-}
 
 /* MÓVIL (pantallas extra pequeñas: hasta 575px) */
 @media screen and (max-width: 575px) {

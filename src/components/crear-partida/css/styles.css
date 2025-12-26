@@ -375,8 +375,9 @@
    ============================================================ */
 @media (min-width: 768px) and (max-width: 1024px) {
   .content-crear-partida {
-    padding: 3%;
+    padding: 2%;
     height: 90%;
+    height: 90px;
   }
 
   .content-crear-partida > h3 {
@@ -385,9 +386,21 @@
   }
 
   .content-crear-partida > form {
+    margin-top: 1%;
     gap: 3%;
   }
-
+ .content-crear-partida > div > button {
+  margin-left: 70%;
+  border-radius: 5px;
+  background: var(--Naranja, #f26a2f);
+  color: var(--Negro, #000);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: clamp(14px, 1.5vw, 16px);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 20px;
+}
   .content-crear-partida > form > div {
     height: auto;
     min-height: 50px;
@@ -416,7 +429,7 @@
   }
 
   .div-carrusel-item-crear-partida {
-    height: 160px;
+    height: 80px;
   }
 
   .slick-initialized:has(.div-carrusel-item-crear-partida) .slick-prev {
@@ -435,17 +448,33 @@
 /* ============================================================
    PORTÁTIL - 1025px a 1700px
    ============================================================ */
-@media (min-width: 1025px) and (max-width: 1700px) {
+@media (min-width: 768px) and (max-width: 1700px) {
   .content-crear-partida {
-    padding: 2.5%;
+   margin-top: 2%;
+    padding: 2%;
+    height: 83%;
   }
 
+  .content-crear-partida > div > button {
+  margin-left: 68%;
+  padding: 0.48%;
+  border-radius: 5px;
+  background: var(--Naranja, #f26a2f);
+  color: var(--Negro, #000);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: clamp(14px, 1.5vw, 16px);
+  font-style: normal;
+  font-weight: 800;
+  line-height: 20px;
+}
+
   .content-crear-partida > h3 {
-    font-size: 32px;
+    font-size: 20px;
   }
 
   .content-crear-partida > form > div > label {
-    font-size: 18px;
+    font-size: 15px;
   }
 
   .content-crear-partida > form > div > input[type="text"] {
@@ -457,17 +486,31 @@
   }
 
   .div-carrusel-crear-partida {
-    height: 45% !important;
+    height: 32% !important;
   }
 
   .div-carrusel-item-crear-partida {
-    height: 180px;
+    height: 120px;
+    width: 15px;
   }
 
   .titulo-categoria-crear-partida,
   .category-selected {
     font-size: 20px;
   }
+
+  .cancelar-button-crear-partida {
+  height: 70%;
+  min-height: 48px;
+}
+
+ .div-buttons-crear-partida > button {
+    width: 100% !important;
+    min-height: 40px;
+    height: 30px;
+  }
+
+
 }
 
 /* ============================================================
@@ -523,9 +566,7 @@
     min-height: 48px;
   }
 
-  /* Header layout: mantener el título a la izquierda y el botón a la
-     derecha como en el diseño (solo afecta al primer div dentro del
-     contenedor). No tocar las reglas de los botones del formulario. */
+
   .content-crear-partida > div:first-child {
     width: 100%;
     display: flex;

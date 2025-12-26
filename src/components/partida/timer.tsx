@@ -10,7 +10,7 @@ interface TimerProgressBarProps {
 const TimerProgressBar: React.FC<TimerProgressBarProps> = ({ 
   onTimeUp, 
   resetTimer = false, 
-  duration = 10, 
+  duration = 5, 
   onTimeUpdate 
 }) => {
   const [totalDuration, setTotalDuration] = useState<number>(duration);

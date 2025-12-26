@@ -349,7 +349,7 @@ const Partida: React.FC = () => {
   }
 
   return (
-    <div className="all-match">
+    <div >
       {loader && !endGame ? (
         <Loader onGameEnd={handleGameEnd} roomId={roomCode}></Loader>
       ) : endGame ? (

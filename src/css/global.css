@@ -178,3 +178,47 @@ a,
 }
 
 
+/* Media query para portátiles */
+@media (min-width: 768px) and (max-width: 1700px) {
+  .all-dashboard {
+    height: 100vh;
+    gap: 2%;
+     overflow: hidden;
+  }
+
+  h3 {
+  font-family: Montserrat;
+  font-size: 29px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 40px; 
+}
+  
+  .content-dashboard {
+    width: 82%;
+    height: 98%;
+    margin-top: 1%;
+  }
+  
+  /* Dashboard específico */
+  .div-banner-puntajes {
+    height: 35%; /* Reducir de 40% */
+    margin-top: 2%;
+  }
+  
+  .div-carrusel-stats {
+    height: 40%; /* Reducir de 42% */
+    margin-top: 1%;
+  }
+  
+  /* Ajustar banner */
+  .parrafos-div > h2 {
+    font-size: 28px;
+    line-height: 32px;
+  }
+  
+  .parrafos-div > p {
+    font-size: 14px;
+    line-height: 20px;
+  }
+}

@@ -379,7 +379,7 @@
 }
 /*END::HEADER-USUARIOS*/
 
-/* Modal footer: cancelar más pequeño a la izquierda y acción principal más amplia a la derecha */
+
 .modal-footer {
   display: flex;
   gap: 12px;
@@ -397,78 +397,6 @@
   max-width: none !important;
 }
 
-@media (max-width: 480px) {
-  .modal-footer {
-    flex-direction: column;
-    gap: 8px;
-  }
-  .modal-footer .button-close-modal,
-  .modal-footer .button-send-modal {
-    width: 100%;
-    max-width: none;
-  }
-}
-
-/* Small variant for category button (right side) */
-.btn-category-small {
-  padding: 6px 10px !important;
-  font-size: 14px !important;
-  border-radius: 8px !important;
-  width: auto !important;
-  min-width: 140px !important;
-  max-width: 220px !important;
-  height: auto !important;
-  line-height: 1 !important;
-}
-
-/*SUSCRIPCION*/
-.div-tusdatos {
-  width: 100%;
-  height: 40%;
-  display: flex;
-  flex-direction: column;
-  align-items: end;
-}
-
-.div-tusdatos > div {
-  width: 100%;
-  height: 60%;
-  display: flex;
-  align-items: center;
-  gap: 2%;
-}
-
-.imagen-perfil-tusdatos {
-  border-radius: 50px;
-  width: 79px;
-  height: 79px;
-}
-
-.div-tusdatos > div > div {
-  width: 28%;
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 5%;
-}
-
-.div-tusdatos > div > div > input {
-  color: var(--Color-textos, #f9f9f9);
-  /* Texto Mínimo */
-  font-family: Montserrat;
-  font-size: 9px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 13px; /* 100% */
-
-  outline: none;
-  padding-left: 6%;
-  width: 100%;
-  height: 30%;
-  border-radius: 10px;
-  background: var(--Color-Dashboard, #1f2336);
-}
 
 /* Modales - Responsive */
 @media (max-width: 767px) {
@@ -986,10 +914,79 @@
     font-size: 16px;
   }
 
-  .div-pagar-ahora {
+  .div-pagar-ahora{
     width: 100% !important;
-    height: 100px !important;
+    height: 100% !important;
+    border-radius: 10px;
+    background: var(--Naranja, #F26A2F ) !important;
+    padding: 1%;
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
   }
+
+  .div-pagar-ahora:hover {
+    background: var(--Azul-Principal, #3CEBFF) !important;
+    transition: all 0.5s ease-in;
+  }
+
+  .div-pagar-ahora:hover .no-hover {
+    display: none;
+  }
+
+  .div-pagar-ahora:hover .hover {
+    display: block;
+  } 
+
+  .hover {
+    display: none;
+  }
+
+  .div-pagar-ahora > div {
+    display: flex;
+    flex-direction: column;
+    width: 70%;
+    height: 100%;
+    justify-content: center;
+    align-items: start;
+    gap: 10%;
+  }
+
+  .div-pagar-ahora > div > span {
+    color: var(--Blanco, #FFF);
+
+    /* Texto Mínimo */
+    font-family: Montserrat;
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13px; /* 100% */
+  }
+
+  .div-pagar-ahora > div > p {
+    margin: 0%;
+    color: var(--Color-textos, #F9F9F9);
+
+    /* H4 Bold */
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 24px; /* 100% */
+  }
+
+  .div-pagar-ahora:hover > div > span {
+    color: var(--Blanco, #25293D);
+  }
+
+  .div-pagar-ahora:hover > div > p {
+    color: var(--Color-textos, #25293D);
+  }
+
+  .div-pagar-ahora > img {
+    width: 20%;
+  }
+
 
   .div-tusdatos > div > div {
     width: 45%;
