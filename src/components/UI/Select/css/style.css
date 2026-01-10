@@ -1,0 +1,298 @@
+.select-negro {
+  background-image: url("/svg/Select/select.svg") !important; /*aquí deberás escribir la ruta de la imagen que utilizarás como flecha del desplegable*/
+  background-repeat: no-repeat !important;
+  background-position: calc(100% - 10px) center !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  -o-appearance: none !important;
+  appearance: none !important;
+}
+
+.select-blanco {
+  background-image: url("/svg/Select/select-blanco.svg") !important; /*aquí deberás escribir la ruta de la imagen que utilizarás como flecha del desplegable*/
+  background-repeat: no-repeat !important;
+  background-position: calc(100% - 10px) center !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  -o-appearance: none !important;
+  appearance: none !important;
+}
+
+/* Styles for the LevelSelect component (pill-shaped select) */
+.level-select .ant-select-selector {
+  background-color: transparent !important;
+  border-radius: 9999px !important; /* pill */
+  border: 1px solid rgba(47, 108, 255, 0.95) !important; /* nice blue */
+  height: 36px !important;
+  padding: 0 12px !important;
+  display: flex !important;
+  align-items: center !important;
+  color: #ffffff !important;
+}
+
+.level-select .ant-select-selection-placeholder,
+.level-select .ant-select-selection-item {
+  color: #ffffff !important; /* placeholder and selected value */
+}
+
+.level-select .ant-select-arrow {
+  color: #ffffff !important; /* caret */
+  right: 8px !important;
+}
+
+.level-select .ant-select-clear {
+  color: #ffffff !important;
+}
+
+.level-filter-icon {
+  width: 36px;
+  height: 36px;
+  padding: 6px;
+  border-radius: 9999px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.level-select-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Fixed width for LevelSelect (moved from inline in LevelSelect.tsx) */
+.level-select {
+  width: 160px !important;
+}
+
+/* ================= SELECTS - RESPONSIVE ================= */
+
+/* Estilos base para selects personalizados */
+.select-negro {
+  background-image: url("/svg/Select/select.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: calc(100% - 10px) center !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  -o-appearance: none !important;
+  appearance: none !important;
+}
+
+.select-blanco {
+  background-image: url("/svg/Select/select-blanco.svg") !important;
+  background-repeat: no-repeat !important;
+  background-position: calc(100% - 10px) center !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  -o-appearance: none !important;
+  appearance: none !important;
+}
+
+/* Portátil (992px - 1200px) */
+@media (min-width: 992px) and (max-width: 1200px) {
+  .select-negro,
+  .select-blanco {
+    background-position: calc(100% - 8px) center !important;
+    padding-right: 28px !important; /* Más espacio para la flecha */
+  }
+  
+  .level-select .ant-select-selector {
+    height: 34px !important;
+    padding: 0 10px !important;
+  }
+  
+  .level-filter-icon {
+    width: 34px;
+    height: 34px;
+    padding: 5px;
+  }
+  
+  .level-select-wrapper {
+    gap: 6px;
+  }
+}
+
+/* Tablet (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .select-negro,
+  .select-blanco {
+    background-position: calc(100% - 6px) center !important;
+    padding-right: 25px !important;
+    font-size: 14px !important;
+  }
+  
+  .level-select .ant-select-selector {
+    height: 32px !important;
+    padding: 0 8px !important;
+    font-size: 14px !important;
+  }
+  
+  .level-select .ant-select-selection-placeholder,
+  .level-select .ant-select-selection-item {
+    font-size: 14px !important;
+  }
+  
+  .level-filter-icon {
+    width: 32px;
+    height: 32px;
+    padding: 4px;
+  }
+  
+  .level-select-wrapper {
+    gap: 5px;
+  }
+}
+
+/* Móvil (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .select-negro,
+  .select-blanco {
+    background-position: calc(100% - 5px) center !important;
+    padding-right: 22px !important;
+    font-size: 13px !important;
+  }
+  
+  .level-select .ant-select-selector {
+    height: 30px !important;
+    padding: 0 6px !important;
+    font-size: 13px !important;
+    border-radius: 18px !important; /* Redondeado más ajustado */
+  }
+  
+  .level-select .ant-select-selection-placeholder,
+  .level-select .ant-select-selection-item {
+    font-size: 13px !important;
+  }
+  
+  .level-select .ant-select-arrow {
+    right: 6px !important;
+    transform: scale(0.9);
+  }
+  
+  .level-filter-icon {
+    width: 30px;
+    height: 30px;
+    padding: 3px;
+  }
+  
+  .level-select-wrapper {
+    gap: 4px;
+  }
+}
+
+/* Móvil pequeño (≤575px) */
+@media (max-width: 575px) {
+  .select-negro,
+  .select-blanco {
+    background-position: calc(100% - 4px) center !important;
+    padding-right: 20px !important;
+    font-size: 12px !important;
+  }
+  
+  .level-select .ant-select-selector {
+    height: 28px !important;
+    padding: 0 5px !important;
+    font-size: 12px !important;
+    border-radius: 16px !important;
+    border: 1px solid rgba(47, 108, 255, 0.8) !important;
+  }
+  
+  .level-select .ant-select-selection-placeholder,
+  .level-select .ant-select-selection-item {
+    font-size: 12px !important;
+  }
+  
+  .level-select .ant-select-arrow {
+    right: 5px !important;
+    transform: scale(0.8);
+  }
+  
+  .level-filter-icon {
+    width: 28px;
+    height: 28px;
+    padding: 2px;
+  }
+  
+  .level-select-wrapper {
+    gap: 6px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: nowrap;
+  }
+
+  /* Icon spacing when inline */
+  .level-select-wrapper img {
+    margin-bottom: 0;
+    margin-right: 6px;
+    display: block;
+  }
+
+  /* Slightly narrower on very small screens to avoid overflow */
+  .level-select {
+    width: 140px !important;
+  }
+}
+
+/* Orientación landscape en móviles */
+@media (max-width: 991px) and (orientation: landscape) {
+  .select-negro,
+  .select-blanco {
+    font-size: 12px !important;
+  }
+  
+  .level-select .ant-select-selector {
+    height: 30px !important;
+    font-size: 12px !important;
+  }
+}
+
+/* Ajustes para pantallas muy pequeñas */
+@media (max-width: 320px) {
+  .select-negro,
+  .select-blanco {
+    font-size: 11px !important;
+    padding-right: 18px !important;
+  }
+  
+  .level-select .ant-select-selector {
+    height: 26px !important;
+    padding: 0 4px !important;
+    font-size: 11px !important;
+  }
+  
+  .level-filter-icon {
+    width: 26px;
+    height: 26px;
+  }
+}
+
+/* Ajustes para el nivel select en dropdowns */
+@media (max-width: 767px) {
+  .level-select .ant-select-dropdown {
+    font-size: 13px !important;
+  }
+  
+  .level-select .ant-select-item {
+    min-height: 32px !important;
+    padding: 6px 12px !important;
+  }
+}
+
+/* Mejora de accesibilidad en touch */
+@media (hover: none) and (pointer: coarse) {
+  .select-negro,
+  .select-blanco {
+    min-height: 40px !important; /* Tamaño de touch más grande */
+  }
+  
+  .level-select .ant-select-selector {
+    min-height: 36px !important;
+  }
+  
+  .level-select .ant-select-item {
+    min-height: 40px !important;
+    padding: 8px 12px !important;
+  }
+}

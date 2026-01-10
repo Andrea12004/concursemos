@@ -1,0 +1,570 @@
+
+.table-wrapper{
+  background-color: transparent;
+   border: none !important;
+  border-radius: 8px;
+  flex: 1 1 auto;  /* Ocupa todo el espacio disponible */
+    min-height: 0;  /* Importante para que funcione el flex */
+    overflow: visible; 
+}
+/* Override de estilos para MuiTable en salas */
+.table-wrapper .MuiDataGrid-root {
+  border: none !important;
+  background: #1F2336 !important;
+  color: white !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 0 !important;
+}
+
+/* Asegurar que el contenido de la tabla pueda crecer y dejar la paginación al final */
+
+
+/* Header de la tabla */
+.table-wrapper .MuiDataGrid-columnHeaders {
+  background: #1F2336 !important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  border-bottom: none !important;
+}
+
+.table-wrapper .MuiDataGrid-columnHeader {
+  padding: 0 8px !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+.table-wrapper .MuiDataGrid-columnHeaderTitle {
+  color: #A09F9F !important;
+  font-family: Montserrat !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 20px !important;
+  white-space: normal !important;
+  overflow: visible !important;
+}
+
+/* Container de las filas - Sin scroll */
+.table-wrapper .MuiDataGrid-virtualScroller {
+  background: transparent !important;
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  overflow: auto !important;
+}
+
+/* Filas de la tabla - Compacto */
+.table-wrapper .MuiDataGrid-row {
+  background: #25293D !important;
+  border-radius: 15px !important;
+  margin-top: 8px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  border: none !important;
+}
+
+.table-wrapper .MuiDataGrid-row:hover {
+  background: #2d3249 !important;
+}
+
+/* Celdas */
+.table-wrapper .MuiDataGrid-cell {
+  border-bottom: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  color: white !important;
+  font-family: Montserrat !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 20px !important;
+  padding: 8px 12px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Celda enfocada */
+.table-wrapper .MuiDataGrid-cell:focus,
+.table-wrapper .MuiDataGrid-cell:focus-within {
+  outline: none !important;
+}
+
+/* Quitar todos los bordes del contenedor de filas */
+.table-wrapper .MuiDataGrid-rowsContainer {
+  border: none !important;
+}
+
+/* Botón "Entrar a la partida" - compact */
+.table-wrapper .MuiDataGrid-cell button {
+  border: none !important;
+  border-radius: 6px !important;
+  background: #3CEBFF !important;
+  color: #25293D !important;
+  font-family: Montserrat !important;
+  font-size: 13px !important;
+  font-weight: 800 !important;
+  line-height: 18px !important;
+  padding: 6px 12px !important;
+  min-height: 36px !important;
+  cursor: pointer !important;
+  transition: opacity 0.2s !important;
+  white-space: nowrap !important;
+  text-transform: none !important;
+}
+
+.table-wrapper .MuiDataGrid-cell button:hover {
+  opacity: 0.9 !important;
+  background: #3CEBFF !important;
+}
+
+/* Icon buttons inside rows (trash/delete, etc.) */
+.table-wrapper .MuiDataGrid-cell .MuiIconButton-root {
+  width: 34px !important;
+  height: 34px !important;
+  padding: 6px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+}
+
+.table-wrapper .MuiDataGrid-cell .MuiIconButton-root img,
+.table-wrapper .MuiDataGrid-cell .MuiIconButton-root svg {
+  width: 18px !important;
+  height: 18px !important;
+} 
+
+/* Paginación - Siempre visible y compacta */
+.table-wrapper .MuiDataGrid-footerContainer {
+   background-color: transparent;
+  border-top: 1px solid rgba(160, 159, 159, 0.1);
+}
+
+.table-wrapper .MuiTablePagination-root {
+  color: white !important;
+}
+
+.table-wrapper .MuiTablePagination-selectIcon {
+  color: white !important;
+}
+
+.table-wrapper .MuiTablePagination-actions button {
+  color: white !important;
+}
+
+.table-wrapper .MuiTablePagination-select {
+  color: white !important;
+}
+
+.table-wrapper .MuiTablePagination-displayedRows {
+  color: white !important;
+}
+
+/* Cuando no hay datos */
+.table-wrapper .MuiDataGrid-overlay {
+  background: transparent !important;
+  color: white !important;
+  font-family: Montserrat !important;
+}
+
+/* Asegurar que no haya borders en ningún elemento */
+.table-wrapper .MuiDataGrid-root *,
+.table-wrapper .MuiDataGrid-root *::before,
+.table-wrapper .MuiDataGrid-root *::after {
+  border-color: transparent !important;
+}
+
+/* Eliminar líneas entre filas */
+.table-wrapper .MuiDataGrid-withBorderColor {
+  border-color: transparent !important;
+}
+
+/* Espaciado entre filas */
+.table-wrapper .MuiDataGrid-virtualScrollerContent {
+  background-color: transparent;
+}
+
+/* Ajustar imágenes de nivel */
+.table-wrapper .MuiDataGrid-cell img {
+  border: 1px solid #fff;
+
+  width: 20px;
+  height: 20px;
+  object-fit: cover;
+}
+
+/* Estilo para textos truncados */
+.table-wrapper .MuiDataGrid-cell .truncate {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+}
+
+/* Iconos y botones de acción */
+.table-wrapper .MuiDataGrid-cell .MuiIconButton-root {
+  color: white !important;
+}
+
+
+/* Asegurar que las filas tengan el ancho completo */
+.table-wrapper .MuiDataGrid-row {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Scrollbar personalizado */
+.table-wrapper .MuiDataGrid-virtualScroller::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.table-wrapper .MuiDataGrid-virtualScroller::-webkit-scrollbar-track {
+ background: rgba(37, 41, 61, 0.5);
+  border-radius: 4px;
+}
+
+.table-wrapper .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb {
+  background: #A09F9F;
+  border-radius: 4px;
+}
+
+.table-wrapper .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb:hover {
+  background: #2dd4e8;
+}
+
+
+
+/* ================= RESPONSIVE ================= */
+
+/* PC - Escritorio grande (≥1200px) */
+@media (min-width: 1200px) {
+  .table-wrapper .MuiDataGrid-root {
+    min-height: 600px;
+  }
+  
+  .table-wrapper .MuiDataGrid-columnHeaderTitle {
+    font-size: 16px !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell {
+    font-size: 15px !important;
+    padding: 8px 16px !important;
+  }
+  
+  /* Slightly more compact action buttons on large screens */
+  .table-wrapper .MuiDataGrid-cell button {
+    font-size: 14px !important;
+    padding: 8px 16px !important;
+  }
+} 
+
+/* Portátil - Tablet horizontal (992px - 1199px) */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .table-wrapper .MuiDataGrid-root {
+    min-height: 500px;
+  }
+  
+  .table-wrapper .MuiDataGrid-columnHeaderTitle {
+    font-size: 15px !important;
+    line-height: 18px !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell {
+    font-size: 14px !important;
+    padding: 8px 10px !important;
+  }
+  
+  /* Make action buttons a touch smaller on laptops */
+  .table-wrapper .MuiDataGrid-cell button {
+    font-size: 10px !important;
+    padding: 6px 10px !important;
+
+  }
+  
+  .table-wrapper .MuiDataGrid-cell img {
+    width: 35px;
+    height: 35px;
+  }
+
+    .header-salas-todas-las-partidas {
+    padding-right: 16px !important;
+  }
+  
+  .header-salas-todas-las-partidas .MuiSelect-select {
+    min-width: 140px !important;
+  }
+}
+
+/* Tablet vertical (768px - 991px) */
+@media (min-width: 768px) and (max-width: 1700px) {
+  .table-wrapper .MuiDataGrid-root {
+    min-height: 450px;
+  }
+  
+  .table-wrapper .MuiDataGrid-columnHeaderTitle {
+    font-size: 14px !important;
+    line-height: 16px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell {
+    font-size: 13px !important;
+    padding: 6px 8px !important;
+    min-height: 55px !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-row {
+    min-height: 55px !important;
+    max-height: 55px !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell button {
+    font-size: 11px !important;
+    padding: 5px 5px !important;
+    font-weight: 700 !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell img {
+    width: 23px;
+    height: 23px;
+  }
+  
+  /* Reducir paginación */
+  .table-wrapper .MuiTablePagination-root {
+    font-size: 13px !important;
+  }
+  
+  .table-wrapper .MuiTablePagination-select {
+    font-size: 13px !important;
+    padding: 4px 8px !important;
+  }
+}
+
+/* Móvil (576px - 767px) */
+@media (min-width: 576px) and (max-width: 767px) {
+  .table-wrapper .MuiDataGrid-root {
+    min-height: 400px;
+  }
+  
+  .table-wrapper .MuiDataGrid-columnHeaderTitle {
+    font-size: 12px !important;
+    line-height: 14px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell {
+    font-size: 12px !important;
+    padding: 5px 6px !important;
+    min-height: 50px !important;
+    line-height: 16px !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-row {
+    min-height: 50px !important;
+    max-height: 50px !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell button {
+    font-size: 10px !important;
+    padding: 4px 6px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell img {
+    width: 28px;
+    height: 28px;
+  }
+  
+  /* Ajustar paginación para móvil */
+  .table-wrapper .MuiDataGrid-footerContainer {
+    padding: 12px 0 !important;
+    min-height: 50px !important;
+  }
+  
+  .table-wrapper .MuiTablePagination-root {
+    font-size: 11px !important;
+  }
+  
+  .table-wrapper .MuiTablePagination-select {
+    font-size: 11px !important;
+    padding: 2px 4px !important;
+  }
+  
+  .table-wrapper .MuiTablePagination-actions {
+    margin-left: 4px !important;
+  }
+  
+  .table-wrapper .MuiTablePagination-displayedRows {
+    font-size: 11px !important;
+  }
+
+    .header-salas-todas-las-partidas {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    padding-right: 0 !important;
+  }
+  
+  .header-salas-todas-las-partidas > div {
+    width: 100% !important;
+    justify-content: flex-start !important;
+  }
+  
+  .header-salas-todas-las-partidas .MuiSelect-select {
+    min-width: 160px !important;
+  }
+}
+
+/* Móvil pequeño (≤575px) */
+@media (max-width: 575px) {
+  .table-wrapper .MuiDataGrid-root {
+    min-height: 350px;
+    overflow-x: auto !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-main {
+    min-width: 100% !important; /* Cambia de 600px a 100% */
+    width: 100% !important;
+    overflow: visible !important; /* Ancho mínimo para que no se rompa el layout */
+  }
+  
+  .table-wrapper .MuiDataGrid-columnHeaderTitle {
+    font-size: 11px !important;
+    line-height: 13px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell {
+    font-size: 11px !important;
+    padding: 4px 5px !important;
+    min-height: 45px !important;
+    line-height: 14px !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-row {
+    min-height: 45px !important;
+    max-height: 45px !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell button {
+    font-size: 9px !important;
+    padding: 3px 5px !important;
+    font-weight: 700 !important;
+    white-space: nowrap !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell img {
+    width: 24px;
+    height: 24px;
+  }
+  
+  /* Paginación compacta para móvil pequeño */
+  .table-wrapper .MuiDataGrid-footerContainer {
+    padding: 8px 0 !important;
+    min-height: 40px !important;
+  }
+  
+  .table-wrapper .MuiTablePagination-root {
+    font-size: 10px !important;
+    min-height: 40px !important;
+    
+  }
+  
+  .table-wrapper .MuiTablePagination-toolbar {
+    min-height: 40px !important;
+    padding: 0 !important;
+  }
+  
+  .table-wrapper .MuiTablePagination-select {
+    font-size: 10px !important;
+    padding: 2px 4px !important;
+    margin: 0 4px !important;
+  }
+  
+  .table-wrapper .MuiTablePagination-selectLabel {
+    display: none !important; /* Ocultar label para ahorrar espacio */
+  }
+  
+  .table-wrapper .MuiTablePagination-displayedRows {
+    font-size: 10px !important;
+    margin: 0 8px !important;
+  }
+  
+  .table-wrapper .MuiTablePagination-actions {
+    margin-left: 4px !important;
+  }
+  
+  .table-wrapper .MuiTablePagination-actions button {
+    padding: 4px !important;
+  }
+  
+  /* Mejorar scroll horizontal en móvil */
+  .table-wrapper .MuiDataGrid-virtualScroller {
+    overflow-x: auto !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-virtualScroller::-webkit-scrollbar {
+    height: 6px;
+  }
+}
+
+/* Para pantallas muy altas (PC grande) */
+@media (min-width: 1400px) and (min-height: 900px) {
+  .table-wrapper .MuiDataGrid-root {
+    min-height: 400px;
+    overflow: visible !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-row {
+    min-height: 65px !important;
+    max-height: 65px !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell {
+    min-height: 65px !important;
+    font-size: 16px !important;
+  }
+}
+
+/* Orientación landscape en móviles */
+@media (max-width: 991px) and (orientation: landscape) {
+  .table-wrapper .MuiDataGrid-root {
+    min-height: 300px;
+  }
+  
+  .table-wrapper .MuiDataGrid-row {
+    min-height: 45px !important;
+    max-height: 45px !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-cell {
+    min-height: 45px !important;
+  }
+}
+
+/* Ajustes para dark mode si es necesario */
+@media (prefers-color-scheme: dark) {
+  .table-wrapper .MuiDataGrid-root {
+    background: #1F2336 !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-row {
+    background: #25293D !important;
+  }
+  
+  .table-wrapper .MuiDataGrid-row:hover {
+    background: #2d3249 !important;
+  }
+}
+
+/* Habilitar scroll horizontal en tabla cuando haya más columnas que espacio */
+.table-wrapper {
+  overflow-x: auto !important;
+  -webkit-overflow-scrolling: touch;
+}
+

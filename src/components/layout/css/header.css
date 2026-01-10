@@ -1,0 +1,274 @@
+
+  /*HEADER*/
+.header {
+    height: 5%;
+    display: flex;
+    justify-content: start;
+    width: 100%;
+    gap: 2%;
+}
+
+.div-input-search-header {
+    width: 35%;
+    display: flex;
+    align-items: center;
+    border-radius: 10px;
+    border: 1px solid var(--Color-textos, #F9F9F9);
+    gap: 2%;
+    padding-left: 1%;
+}
+
+.input-search-header {
+    width: 85%;
+    background-color: transparent;
+    outline: none;
+    border: 0px;
+    color: #FFF;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 125% */
+}
+
+.input-search-header::placeholder {
+    color: var(--Color-textos, #F9F9F9);
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px; /* 125% */
+}
+
+.button-question {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+    width: 25%;
+    cursor: pointer;
+    border: 0px;
+    border-radius: 10px;
+    background: var(--Naranja, #F26A2F);
+    color: var(--Blanco, #FFF);
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 24px; /* 120% */
+}
+
+.button-question:hover {
+    background: var(--Azul-Principal, #3CEBFF);
+    color: var(--Azul---Gris, #25293D);
+    transition: all 0.3s;
+}
+
+.create-hover {
+    display: none;
+}
+
+.button-question:hover > img {
+    width: 20px;
+    height: 20px;
+}
+
+.button-question:hover > img {
+    display: none;
+}
+
+.button-question:hover .create-hover {
+    display: block;
+}
+
+/* Styles for Crear Usuario button (specific class used in Crearusuario component) */
+.button-question-usuarios {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border: 0px;
+    border-radius: 10px;
+    background: var(--Naranja, #F26A2F);
+    color: var(--Blanco, #FFF);
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 24px; /* 120% */
+    padding: 8px 12px;
+}
+
+.button-question-usuarios:hover {
+    background: var(--Azul-Principal, #3CEBFF);
+    color: var(--Azul---Gris, #25293D);
+    transition: all 0.3s;
+}
+
+/* Hover image swap for Crear Usuario */
+.create-hover-usuarios { display: none; }
+.button-question-usuarios:hover > img { display: none; }
+.button-question-usuarios:hover .create-hover-usuarios { display: block; }
+
+.button-match {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2%;
+    width: 20%;
+    cursor: pointer;
+    border: 0px;
+    border-radius: 10px;
+    background: var(--Naranja, #3CEBFF);
+    color: var(--Azul---Gris, #25293D);
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 24px; /* 120% */
+}
+
+.button-match:hover {
+    background: var(--Azul-Principal, #F26A2F);
+    color: var(--Blanco, #FFF);
+    transition: all 0.3s;
+}
+
+.button-match > img {
+    width: 20px;
+    height: 20px;
+}
+
+.button-match:hover > img {
+    display: none;
+}
+
+.button-match:hover .create-hover {
+    display: block;
+}
+
+.div-accesos-rapidos {
+    display: flex;
+    justify-content: end;
+    width: 8%;
+    gap: 1%;
+}
+
+.div-accesos-rapidos > button {
+    border: 0px solid;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.div-accesos-rapidos > button:hover > img {
+    display: none;
+}
+
+.svg-accesos-rapidos {
+    display: none;
+}
+
+.div-accesos-rapidos > button:hover > .svg-accesos-rapidos {
+    display: block;
+}
+
+/* RESPONSIVE DESIGN */
+
+/* TABLET (pantallas medianas: 768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    .header {
+        height: auto;
+        padding: 10px 0;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    
+    .div-input-search-header {
+        width: 50%;
+        order: 1;
+        min-height: 45px;
+    }
+    
+    .button-question {
+        width: 30%;
+        order: 2;
+        min-height: 45px;
+        font-size: 14px;
+        padding: 0 10px;
+    }
+
+    .button-question-usuarios {
+        width: 30%;
+        order: 2;
+        min-height: 45px;
+        font-size: 14px;
+        padding: 0 10px;
+    }
+    
+    .button-match {
+        width: 25%;
+        order: 3;
+        min-height: 45px;
+        font-size: 14px;
+        padding: 0 10px;
+    }
+    
+    .div-accesos-rapidos {
+        width: 20%;
+        order: 4;
+        justify-content: center;
+        margin-left: auto;
+    }
+    
+    .input-search-header {
+        font-size: 14px;
+    }
+    
+    .input-search-header::placeholder {
+        font-size: 14px;
+    }
+}
+
+
+/* MÓVIL (pantallas extra pequeñas: hasta 575px) */
+@media screen and (max-width: 575px) {
+    .header {
+        padding: 8px;
+        gap: 10px;
+    }
+    
+    .div-input-search-header {
+        min-height: 38px;
+    }
+    
+    .button-question, .button-match, .button-question-usuarios {
+        min-height: 38px;
+        font-size: 13px;
+        padding: 0 8px;
+    }
+    
+    .div-accesos-rapidos {
+        gap: 15px;
+    }
+    
+ 
+    
+    .input-search-header {
+        font-size: 13px;
+    }
+    
+    .input-search-header::placeholder {
+        font-size: 13px;
+    }
+    
+    /* Optimización para textos largos en botones */
+    .button-question, .button-match, .button-question-usuarios {
+        font-size: 12px;
+        padding: 0 5px;
+    }
+}
+/*END::HEADER*/

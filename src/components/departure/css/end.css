@@ -1,0 +1,537 @@
+.div-fin-partida {
+  display: flex;
+  align-items: end;
+  height: 100%;
+  width: 100%;
+  gap: 2%;
+}
+
+.tops-div{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  height: 96%;
+  width: 80%;
+  border-radius: 25px;
+  background-color: #25293d;
+}
+
+.top3-div{
+  display: flex;
+  height: 60%;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.top-1{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: start;
+  width: 33%;
+  height: 70%;
+}
+.top-2{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  width: 33%;
+  height: 70%;
+}
+.top-3{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: end;
+  width: 33%;
+  height: 70%;
+}
+
+.div-jugador-final {
+  border: 1px solid #F26A2F ;
+  border-radius: 25px;
+  margin-top: 10px;
+  width: 350px;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  padding: 6px;
+}
+
+.nickname-final {
+  width: 50%;
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 16px;
+  color: #fff;
+  text-align: left;
+}
+
+.img-jugador-final{
+  border-radius: 50px;
+  border: 1px solid #fff;
+  width: 39px;
+  height: 39px;
+  margin-left: 10px;
+}
+
+.puntos-final {
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 16px;
+  color: #F26A2F ;
+  text-align: right;
+}
+
+.aciertos-final {
+  font-family: Montserrat;
+  font-weight: 600;
+  font-size: 12px;
+  color: #FFF;
+  text-align: right;
+}
+
+.rest-tops-div {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 40%;
+  flex-wrap: wrap;
+}
+.div-jugadores-final-index{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.div-jugadores-final-index > p {
+  width: min-content;
+  margin: 0%;
+  font-size: 24px !important;
+}
+
+.div-pregunta > p {
+  color: var(--Blanco, #FFF);
+
+  /* Texto Mínimo */
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px; /* 100% */
+}
+
+.div-pregunta > button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8%;
+  color: var(--Gris-4, #A09F9F);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  border-radius: 8px;
+  border: 2px solid var(--Gris-4, #A09F9F);
+  width: 8%;
+  padding: 0.5%;
+  
+}
+
+.div-pregunta > button:hover {
+  border: 0px solid var(--Gris-4, #A09F9F);
+  background: var(--Blanco, #FFF);
+  color: var(--Azul---Gris, #25293D);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: normal;
+  transition: all 0.5s ease-in-out;
+}
+
+.hover-banco {display: none;}
+
+.div-pregunta > button:hover .nohover-banco{ display: none;}
+.div-pregunta > button:hover .hover-banco{ display: block;}
+
+.div-checkbox-category-banco {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+/* PORTÁTIL (768px - 1700px) */
+@media (min-width: 768px) and (max-width: 1700px) {
+  .div-fin-partida {
+    display: flex;
+    align-items: end;
+    height: 100vh; /* Cambia 100% por 100vh */
+    width: 100%;
+    gap: 2%;
+    justify-content: center; /* Para centrar horizontalmente */
+  }
+
+  .tops-div {
+    height: 96%;
+    width: 80%;
+    border-radius: 25px;
+    background-color: #25293d;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    color: white;
+  }
+
+  /* Agrega esto para el título */
+  .tops-div h1 {
+    text-align: center;
+    margin-bottom: 30px;
+    font-family: Montserrat;
+    font-size: 24px;
+    color: white;
+  }
+
+  .top3-div {
+    display: flex;
+    height: 60%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .top-1, .top-2, .top-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: end;
+    width: 33%;
+    height: 70%;
+  }
+
+  .div-jugador-final {
+    border: 1px solid #F26A2F;
+    border-radius: 25px;
+    margin-top: 10px;
+    width: 80%; /* Reducí el ancho para que quepa en 33% */
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 10px;
+  }
+
+  .nickname-final {
+    width: 50%;
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 12px;
+    color: #fff;
+    text-align: left;
+  }
+
+  .img-jugador-final {
+    border-radius: 50px;
+    border: 1px solid #fff;
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+  }
+
+  .puntos-final {
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 10px;
+    color: #F26A2F;
+    text-align: right;
+  }
+
+  .aciertos-final {
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 8px;
+    color: #FFF;
+    text-align: right;
+  }
+
+  .rest-tops-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 40%;
+    flex-wrap: wrap;
+  }
+  
+  .div-jugadores-final-index {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    width: 33%;
+  }
+
+  .div-jugadores-final-index > p {
+    width: min-content;
+    margin: 0%;
+    font-size: 14px !important;
+    color: white;
+  }
+}
+
+
+/* MÓVIL (max-width: 767px) */
+@media (max-width: 767px) {
+  /*fin*/
+  .div-fin-partida {
+    display: flex;
+    align-items: end;
+    height: 100%;
+    width: 100%;
+    gap: 2%;
+  }
+
+  .tops-div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 96%;
+    width: 96%;
+    border-radius: 25px;
+    background-color: #25293d;
+  }
+
+  .top3-div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 33%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .top-1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    height: 33%;
+  }
+  
+  .top-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    height: 33%;
+  }
+  
+  .top-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    height: 33%;
+  }
+
+  .div-jugador-final {
+    border: 1px solid #F26A2F ;
+    border-radius: 25px;
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 6px;
+  }
+
+  .nickname-final {
+    width: 50%;
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 12px;
+    color: #fff;
+    text-align: left;
+  }
+
+  .img-jugador-final {
+    border-radius: 50px;
+    border: 1px solid #fff;
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+  }
+
+  .puntos-final {
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 10px;
+    color: #F26A2F ;
+    text-align: right;
+  }
+
+  .aciertos-final {
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 8px;
+    color: #FFF;
+    text-align: right;
+  }
+
+  .rest-tops-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 40%;
+    flex-wrap: wrap;
+    display: none; /* Oculto en móvil */
+  }
+  
+  .div-jugadores-final-index {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  
+  }
+
+  .div-jugadores-final-index > p {
+    width: min-content;
+    margin: 0%;
+    font-size: 14px !important;
+    display: none; /* Oculto en móvil */
+  }
+}
+
+/* MÓVIL (max-width: 767px) */
+@media (max-width: 767px) {
+  /*fin*/
+  .div-fin-partida {
+    display: flex;
+    align-items: end;
+    height: 100%;
+    width: 100%;
+    gap: 2%;
+  }
+
+  .tops-div {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    height: 96%;
+    width: 96%;
+    border-radius: 25px;
+    background-color: #25293d;
+  }
+
+  .top3-div {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .top-1 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    height: 33%;
+  }
+  
+  .top-2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    height: 33%;
+  }
+  
+  .top-3 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    width: 100%;
+    height: 33%;
+  }
+
+  .div-jugador-final {
+    border: 1px solid #F26A2F ;
+    border-radius: 25px;
+    margin-top: 10px;
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    padding: 6px;
+  }
+
+  .nickname-final {
+    width: 50%;
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 12px;
+    color: #fff;
+    text-align: left;
+  }
+
+  .img-jugador-final {
+    border-radius: 50px;
+    border: 1px solid #fff;
+    width: 24px;
+    height: 24px;
+    margin-left: 10px;
+  }
+
+  .puntos-final {
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 10px;
+    color: #F26A2F ;
+    text-align: right;
+  }
+
+  .aciertos-final {
+    font-family: Montserrat;
+    font-weight: 600;
+    font-size: 8px;
+    color: #FFF;
+    text-align: right;
+  }
+
+  .rest-tops-div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 40%;
+    flex-wrap: wrap;
+    display: none; /* Oculto en móvil */
+  }
+  
+  .div-jugadores-final-index {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+
+  .div-jugadores-final-index > p {
+    width: min-content;
+    margin: 0%;
+    font-size: 14px !important;
+    display: none; /* Oculto en móvil */
+  }
+}

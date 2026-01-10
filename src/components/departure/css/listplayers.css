@@ -1,0 +1,360 @@
+.container-jugadores-partida {
+  width: 20%;
+  height: 100%;
+  margin-left: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.container-logo-juagadores-partidas {
+  height: 15%;
+  margin-top: 5%;
+}
+
+.container-logo-juagadores-partidas > img {
+  width: 100%;
+}
+
+.div-jugadores-lista-partida {
+  height: 75%;
+  width: 100%;
+  overflow-y: scroll;
+}
+
+.header-jugadores-lista-partida {
+  width: 100%;
+  height: 10%;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}
+
+.header-jugadores-lista-partida > h3 {
+  margin: 0%;
+  color: var(--Naranja, #F26A2F);
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 24px;
+}
+
+.div-lista-partida {
+  width: 100%;
+  height: 7.5%;
+  margin-bottom: 4%;
+  border-radius: 22.5px;
+  border: 1px solid var(--Naranja, #F26A2F);
+  background: var(--Color-Dashboard, #1F2336);
+  display: flex;
+  align-items: center;
+}
+
+.div-lista-partida > div {
+  padding-left: 5%;
+  height: 75%;
+}
+
+.div-lista-partida > div > img {
+  width: 39px;
+  height: 39px;
+  border-radius: 50px;
+  border: 1px solid #fff;
+}
+
+.div-lista-partida > p {
+  width: 40%;
+  padding-left: 5%;
+  margin: 0%;
+  color: var(--Color-textos, #F9F9F9);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.puntaje-lista-jugadores {
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  align-items: end !important;
+  justify-content: center;
+  padding-left: 2% !important;
+}
+
+.p-puntos-lista-partida-jugadores {
+  width: 100%;
+  margin: 0%;
+  color: var(--Naranja, #F26A2F);
+  text-align: right;
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 700;
+  line-height: 16px;
+}
+
+.p-aciertos-lista-partida-jugadores {
+  margin: 0%;
+  color: var(--Color-textos, #F9F9F9);
+  text-align: right;
+  font-family: Montserrat;
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px;
+}
+
+.all-match {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  gap: 4%;
+}
+
+@media (min-width: 768px) and (max-width: 1700px) {
+  .container-jugadores-partida {
+    width: 20%;
+    height: 100%;
+    margin-left: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container-logo-juagadores-partidas {
+    height: 15%;
+    margin-top: 5%;
+  }
+
+  .container-logo-juagadores-partidas > img {
+    width: 80%;
+  }
+
+  .div-jugadores-lista-partida {
+    height: 75%;
+    width: 100%;
+    overflow-y: scroll;
+  }
+
+  .header-jugadores-lista-partida {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+  }
+
+  .header-jugadores-lista-partida > h3 {
+    margin: 0%;
+    color: var(--Naranja, #F26A2F);
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 24px;
+  }
+
+  .div-lista-partida {
+    width: 100%;
+    height: 7.5%;
+    margin-bottom: 4%;
+    border-radius: 22.5px;
+    border: 1px solid var(--Naranja, #F26A2F);
+    background: var(--Color-Dashboard, #1F2336);
+    display: flex;
+    align-items: center;
+  }
+
+  .div-lista-partida > div {
+    padding-left: 5%;
+    height: 75%;
+    display: flex;
+    align-items: center;
+  }
+
+  .div-lista-partida > div > img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50px;
+    border: 1px solid #fff;
+  }
+
+  .div-lista-partida > p {
+    width: 45%;
+    padding-left: 5%;
+    margin: 0%;
+    color: var(--Color-textos, #F9F9F9);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  .puntaje-lista-jugadores {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: end !important;
+    justify-content: center;
+    padding-left: 2% !important;
+  }
+
+  .p-puntos-lista-partida-jugadores {
+    width: 100%;
+    margin: 0%;
+    color: var(--Naranja, #F26A2F);
+    text-align: right;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 16px;
+  }
+
+  .p-aciertos-lista-partida-jugadores {
+    margin: 0%;
+    color: var(--Color-textos, #F9F9F9);
+    text-align: right;
+    font-family: Montserrat;
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13px;
+  }
+
+  .all-match {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    gap: 4%;
+  }
+}
+
+@media (max-width: 767px) {
+  .container-jugadores-partida {
+    width: 100%;
+    height: 25%;
+    margin-left: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container-logo-juagadores-partidas {
+    height: 15%;
+    margin-top: 5%;
+    display: none;
+  }
+
+  .container-logo-juagadores-partidas > img {
+    width: 100%;
+  }
+
+  .div-jugadores-lista-partida {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+  }
+
+  .header-jugadores-lista-partida {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    margin-bottom: 2%;
+  }
+
+  .header-jugadores-lista-partida > h3 {
+    margin: 0%;
+    color: var(--Naranja, #F26A2F);
+    font-family: Montserrat;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 24px;
+  }
+
+  .div-lista-partida {
+    width: 350px;
+    height: 40px;
+    margin-bottom: 1%;
+    margin-top: 1%;
+    border-radius: 22.5px;
+    border: 1px solid var(--Naranja, #F26A2F);
+    background: var(--Color-Dashboard, #1F2336);
+    display: flex;
+    align-items: center;
+  }
+
+  .div-lista-partida > div {
+    padding-left: 5%;
+    height: 75%;
+    display: flex;
+    align-items: center;
+  }
+
+  .div-lista-partida > div > img {
+    width: 28px;
+    height: 28px;
+    border-radius: 50px;
+    border: 1px solid #fff;
+  }
+
+  .div-lista-partida > p {
+    width: 45%;
+    padding-left: 5%;
+    margin: 0%;
+    color: var(--Color-textos, #F9F9F9);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  .puntaje-lista-jugadores {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    align-items: end !important;
+    justify-content: center;
+    padding-left: 2% !important;
+  }
+
+  .p-puntos-lista-partida-jugadores {
+    width: 100%;
+    margin: 0%;
+    color: var(--Naranja, #F26A2F);
+    text-align: right;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 16px;
+  }
+
+  .p-aciertos-lista-partida-jugadores {
+    margin: 0%;
+    color: var(--Color-textos, #F9F9F9);
+    text-align: right;
+    font-family: Montserrat;
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13px;
+  }
+
+  .all-match {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-y: scroll;
+    gap: 4%;
+  }
+}

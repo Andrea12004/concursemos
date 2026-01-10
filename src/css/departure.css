@@ -1,0 +1,469 @@
+/* PARTIDA */
+.all-match{
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  gap: 4%;
+  overflow: hidden; /* evita scroll en la ventana principal */
+}
+
+.container-jugadores-partida {
+  width: 20%;
+  height: 100%;
+  margin-left: 2%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.button-salir-partida{
+  width: 100%;
+  padding: 2%;
+  display: flex;
+  align-items: center;
+  gap: 2%;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: Montserrat;
+  color: #fff;
+  transition: all 0.5s ease;
+}
+
+.button-salir-partida:hover {
+  background-color: #F26A2F;
+  border-radius: 25px;
+  display: flex;
+  justify-content: center;
+}
+
+.container-partida {
+  width: 60%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden; /* el contenido central gestionará su propio scroll */
+}
+
+.content-partida {
+  width: 98%;
+  height: 100%;
+}
+
+.header-contador-partida {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header-contador-partida > h2{
+  margin: 0%;
+  color: var(--Azul-Principal, #3CEBFF);
+  font-family: Montserrat;
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 40px;
+}
+
+.div-posicion-contador{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.div-posicion-contador > p{
+  color: var(--Blanco, #FFF);
+  font-family: Montserrat;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.category-partida{
+  width: 100%;
+  height: 15%;
+  display: flex;
+  align-items: center;
+  gap: 2%;
+}
+
+.category-partida > img {
+  width: 20%;
+  border-radius: 5px;
+}
+
+.category-partida > p {
+  margin: 0%;
+  color: var(--Blanco, #FFF);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 40px;
+}
+
+.pregunta-respuesta{
+  height: 60%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 2%;
+}
+
+.pregunta-respuesta > p {
+  color: var(--Blanco, #FFF);
+  font-family: Montserrat;
+  font-size: 20px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 24px;
+}
+
+.respuestas {
+  width: 100%;
+  height: 20%;
+  border-radius: 15px;
+  background: var(--Azul---Gris, #25293D);
+  display: flex;
+  align-items: center;
+  margin-bottom: 2%;
+  cursor: pointer;
+}
+
+.respuestas > p {
+  padding-left: 2%;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0%;
+  color: var(--Blanco, #FFF);
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.neutral {
+  color: black;
+}
+
+.correcto {
+  color: green;
+}
+
+.incorrecto {
+  color: red;
+}
+
+.seleccionada{
+  cursor: pointer;
+}
+
+.respuestas:has(.seleccionada) {
+  background-color: #F26A2F;
+  animation: change-color 1.5s;
+}
+
+@keyframes change-color {
+  from { background: #25293D; }
+  to { background: #F26A2F; }
+}
+
+.respuestas:has(.incorrecto){
+  background-color: #7e1f0f;
+}
+
+.respuestas:has(.correcto){
+  background-color: #087924;
+  animation: bounce 1.5s 1;
+  transform: scale(1.05);
+}
+
+@keyframes bounce {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+.button-report{
+  margin-top: 2%;
+  cursor: pointer;
+  background-color: transparent;
+  outline: none;
+  border: 0px solid;
+  display: flex;
+  align-items: center;
+  justify-content: end;
+  gap: 1%;
+  color: var(--Blanco, #FFF);
+  text-align: right;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 24px;
+}
+
+.button-report > img {
+  width: 4%;
+}
+
+/* Remove hover background for report button (override default .button-ingresar:hover) */
+.button-report.button-ingresar:hover,
+.button-report:hover {
+  background: transparent !important;
+  color: var(--Blanco, #FFF) !important;
+}
+
+.movil-chat{
+  display: none;
+}
+
+.container-chat {
+  width: 21%;
+  height: 100%;
+  background: url('/images/Fondos/Fondo-chat.png') lightgray 50% / cover no-repeat;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container-chat-hidden .container-chat,
+.container-chat-hidden > div{
+  display: none;
+}
+
+@media (min-width: 768px) and (max-width: 1700px) {
+  /* PARTIDA - PORTÁTIL */
+  .all-match{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    gap: 4%;
+  }
+
+  .container-jugadores-partida {
+    width: 20%;
+    height: 100%;
+    margin-left: 2%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .container-logo-juagadores-partidas > img {
+    width: 80%; /* Logo más pequeño */
+  }
+
+  .header-jugadores-lista-partida > h3 {
+    font-size: 20px; /* Título más pequeño */
+  }
+
+  .div-lista-partida > div > img {
+    width: 28px;
+    height: 28px; /* Imagen de perfil más pequeña */
+  }
+
+  .div-lista-partida > p{
+    font-size: 12px; /* Texto más pequeño */
+  }
+
+  .p-puntos-lista-partida-jugadores {
+    font-size: 12px; /* Puntos más pequeños */
+  }
+
+  .p-aciertos-lista-partida-jugadores {
+    font-size: 9px; /* Aciertos más pequeños */
+  }
+
+  .container-partida {
+    width: 49%; /* Ancho reducido */
+  }
+
+  .header-contador-partida > h2{
+    font-size: 24px; /* Título más pequeño */
+  }
+
+  .div-posicion-contador > p{
+    font-size: 12px; /* Texto más pequeño */
+  }
+
+  .category-partida > p {
+    font-size: 24px; /* Categoría más pequeña */
+  }
+
+  .pregunta-respuesta > p {
+    font-size: 20px; /* Pregunta más pequeña */
+  }
+
+  .respuestas > p {
+    font-size: 14px; /* Respuestas más pequeñas */
+  }
+
+  .button-report{
+    font-size: 16px; /* Botón reporte más pequeño */
+  }
+
+  .container-chat {
+    width: 21%;
+  }
+
+  .name-user-chat{
+    font-size: 12px; /* Nombre usuario más pequeño */
+  }
+
+  .message-text-user {
+    font-size: 12px; /* Mensaje más pequeño */
+  }
+}
+
+@media (max-width: 767px) {
+  /* PARTIDA - MÓVIL */
+  .all-match{
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column; /* Cambia a columna */
+    overflow-y: scroll; /* Permite scroll vertical */
+    gap: 4%;
+  }
+
+  .container-jugadores-partida {
+    width: 100%; /* Ocupa todo el ancho */
+    height: 25%; /* Altura reducida */
+    margin-left: 0;
+  }
+
+  .container-logo-juagadores-partidas{
+    display: none; /* Oculta logo en móvil */
+  }
+
+  .div-jugadores-lista-partida{
+    height: 100%;
+    width: 100%;
+    overflow-y: auto; /* Scroll dentro de la lista */
+  }
+
+  .header-jugadores-lista-partida{
+    margin-bottom: 2%;
+  }
+
+  .header-jugadores-lista-partida > h3 {
+    font-size: 20px;
+  }
+
+  .div-lista-partida{
+    width: 350px; /* Ancho fijo */
+    height: 40px; /* Altura reducida */
+    margin-bottom: 1%;
+    margin-top: 1%;
+  }
+
+  .div-lista-partida > div > img {
+    width: 28px;
+    height: 28px;
+  }
+
+  .div-lista-partida > p{
+    font-size: 12px;
+  }
+
+  .p-puntos-lista-partida-jugadores {
+    font-size: 12px;
+  }
+
+  .p-aciertos-lista-partida-jugadores {
+    font-size: 9px;
+  }
+
+  .container-partida {
+    width: 100%; /* Ocupa todo el ancho */
+    height: 100%;
+  }
+
+  .header-contador-partida {
+    height: 15%;
+  }
+
+  .header-contador-partida > h2{
+    font-size: 24px;
+  }
+
+  .div-posicion-contador > p{
+    font-size: 12px;
+  }
+
+  .category-partida > p {
+    font-size: 16px; /* Texto más pequeño */
+  }
+
+  .pregunta-respuesta > p {
+    font-size: 20px;
+  }
+
+  .respuestas {
+    height: 20%; /* Altura aumentada para móvil */
+  }
+
+  .respuestas > p {
+    font-size: 14px;
+  }
+
+  /* CHAT MÓVIL */
+  .movil-chat{
+    display: flex; /* Muestra botón de chat */
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 100px;
+    background-color: #F26A2F;
+    width: 70px;
+    height: 70px;
+    z-index: 8;
+  }
+
+  .movil-chat > img {
+    width: 40px;
+    height: 40px;
+  }
+
+  .container-chat {
+    position: absolute; /* Posición absoluta en móvil */
+    bottom: 10%;
+    left: 25%;
+    width: 80%; /* Más ancho en móvil */
+    height: 40%; /* Altura reducida */
+    z-index: 4;
+  }
+
+  .container-chat-hidden .container-chat,
+  .container-chat-hidden > div{
+    display: none; /* Oculta chat cuando está desactivado */
+  }
+
+  .name-user-chat{
+    font-size: 12px;
+  }
+
+  .message-text-user {
+    font-size: 12px;
+  }
+
+  /* Mobile: align report button to the left */
+  .button-report {
+    justify-content: flex-start;
+    text-align: left;
+    padding-left: 4%;
+  }
+}

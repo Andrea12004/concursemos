@@ -1,0 +1,265 @@
+/* Estilos específicos para Ranking con MuiTable */
+.table-usuarios{
+  width: 100%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+
+.ranking-table-wrapper {
+  width: 100%;
+  height: 100%;
+}
+
+/* Override general del DataGrid para ranking */
+.ranking-datagrid .MuiDataGrid-root {
+  border: none !important;
+  background: transparent !important;
+  color: white !important;
+  height: 100% !important;
+}
+
+/* Contenedor principal */
+.ranking-datagrid .MuiDataGrid-main {
+  border: none !important;
+}
+
+/* Headers de columnas */
+.ranking-datagrid .MuiDataGrid-columnHeaders {
+  background: var(--Azul---Gris, #25293d) !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+  border-bottom: 1px solid #535353 !important;
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 10 !important;
+}
+
+.ranking-datagrid .MuiDataGrid-columnHeader {
+  padding: 0 12px !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Títulos de columna */
+.ranking-datagrid .MuiDataGrid-columnHeaderTitle {
+  color: #A09F9F !important;
+  font-family: Montserrat !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 14px !important;
+}
+
+/* Container de filas */
+.ranking-datagrid .MuiDataGrid-virtualScroller {
+  background: transparent !important;
+  margin-top: 0 !important;
+}
+
+/* Filas */
+.ranking-datagrid .MuiDataGrid-row {
+  background: transparent !important;
+  border-radius: 0 !important;
+  margin-bottom: 0 !important;
+  min-height: 70px !important;
+  max-height: 70px !important;
+  border: none !important;
+  border-bottom: 1px solid #535353 !important;
+}
+
+.ranking-datagrid .MuiDataGrid-row:hover {
+ background: rgba(255, 255, 255, 0.03) !important;
+}
+
+
+/* Celdas */
+.ranking-datagrid .MuiDataGrid-cell {
+  border-bottom: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  color: white !important;
+  font-family: Montserrat !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 14px !important;
+  padding: 8px 12px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+/* Celda enfocada */
+.ranking-datagrid .MuiDataGrid-cell:focus,
+.ranking-datagrid .MuiDataGrid-cell:focus-within {
+  outline: none !important;
+}
+
+/* Imágenes de nivel */
+.ranking-datagrid .MuiDataGrid-cell img[alt*="Nivel"] {
+  object-fit: cover;
+  transition: transform 0.2s;
+}
+
+.ranking-datagrid .MuiDataGrid-cell img[alt*="Nivel"]:hover {
+  transform: scale(1.15);
+}
+
+/* Icono de verificación */
+.ranking-datagrid .MuiDataGrid-cell img[src*="verfied"] {
+  opacity: 0.9;
+  transition: opacity 0.2s;
+}
+
+.ranking-datagrid .MuiDataGrid-cell img[src*="verfied"]:hover {
+  opacity: 1;
+}
+
+/* Columna de puntos - destacada en azul */
+.ranking-datagrid .MuiDataGrid-cell:last-child {
+  font-weight: 600 !important;
+  font-size: 18px !important;
+}
+
+/* Texto truncado */
+.ranking-datagrid .MuiDataGrid-cell .truncate {
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 100%;
+  display: block;
+}
+
+/* Paginación */
+.ranking-datagrid .MuiDataGrid-footerContainer {
+  background: transparent !important;
+  border-top: 1px solid #535353 !important;
+  padding: 16px 0 !important;
+  justify-content: center !important;
+  min-height: 56px !important;
+}
+
+.ranking-datagrid .MuiTablePagination-root {
+  color: white !important;
+  font-family: Montserrat !important;
+}
+
+.ranking-datagrid .MuiTablePagination-selectIcon {
+  color: white !important;
+}
+
+.ranking-datagrid .MuiTablePagination-actions button {
+  color: white !important;
+}
+
+.ranking-datagrid .MuiTablePagination-actions button:disabled {
+  color: #666 !important;
+}
+
+.ranking-datagrid .MuiTablePagination-select {
+  color: white !important;
+  font-family: Montserrat !important;
+}
+
+.ranking-datagrid .MuiTablePagination-displayedRows {
+  color: white !important;
+  font-family: Montserrat !important;
+}
+
+/* Texto cuando no hay datos */
+.ranking-datagrid .MuiDataGrid-overlay {
+  background: transparent !important;
+  color: #A09F9F !important;
+  font-family: Montserrat !important;
+  font-size: 16px !important;
+}
+
+/* Eliminar bordes innecesarios */
+.ranking-datagrid .MuiDataGrid-withBorderColor {
+  border-color: transparent !important;
+}
+
+
+/* Separador de columnas */
+.ranking-datagrid .MuiDataGrid-columnSeparator {
+  visibility: visible !important;
+  color: #535353 !important;
+}
+
+.ranking-datagrid .MuiDataGrid-columnHeader:hover .MuiDataGrid-columnSeparator {
+  visibility: visible !important;
+}
+
+/* Ocultar iconos de menú de columna */
+.ranking-datagrid .MuiDataGrid-columnHeader .MuiDataGrid-iconButtonContainer {
+  display: none !important;
+}
+
+.ranking-datagrid .MuiDataGrid-menuIcon {
+  display: none !important;
+}
+
+/* Asegurar que el contenido no se desborde */
+.ranking-datagrid .MuiDataGrid-virtualScrollerContent {
+  min-height: fit-content !important;
+}
+
+.ranking-datagrid .MuiDataGrid-virtualScrollerRenderZone {
+  min-height: fit-content !important;
+}
+
+/* Ajuste de ancho para columnas */
+.ranking-datagrid .MuiDataGrid-columnHeader,
+.ranking-datagrid .MuiDataGrid-cell {
+  min-width: 0 !important;
+}
+
+/* Asegurar visibilidad de todas las columnas */
+.ranking-datagrid .MuiDataGrid-row {
+  max-width: 100% !important;
+  width: 100% !important;
+}
+
+/* Altura del contenedor de filas */
+.ranking-datagrid .MuiDataGrid-virtualScrollerContent {
+  height: auto !important;
+}
+
+
+
+/* Responsive adjustments */
+@media (max-width: 1400px) {
+  .ranking-datagrid .MuiDataGrid-columnHeaderTitle,
+  .ranking-datagrid .MuiDataGrid-cell {
+    font-size: 14px !important;
+  }
+  
+  .ranking-datagrid .MuiDataGrid-cell img[alt*="Nivel"] {
+    width: 40px !important;
+    height: 40px !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  .ranking-datagrid .MuiDataGrid-columnHeaderTitle,
+  .ranking-datagrid .MuiDataGrid-cell {
+    font-size: 12px !important;
+  }
+  
+  .ranking-datagrid .MuiDataGrid-columnHeader,
+  .ranking-datagrid .MuiDataGrid-cell {
+    min-width: 0 !important;
+  }
+  
+  .ranking-datagrid .MuiDataGrid-cell img[alt*="Nivel"] {
+    width: 35px !important;
+    height: 35px !important;
+  }
+  
+  .ranking-datagrid .MuiDataGrid-row {
+    max-width: 100% !important;
+  width: 100% !important;
+  }
+}
+

@@ -1,0 +1,397 @@
+/* ============================================
+   ESTILOS PARA MODAL CREAR CATEGORÍA
+   ============================================ */
+
+/* Overlay del Modal */
+.overlay.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.overlay.modal.hidden {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+}
+
+/* Contenedor del Modal */
+.modal-dialog {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 !important;
+  height: 100%;
+  width: 100%;
+}
+
+/* Contenido del Modal */
+.modal-content {
+  width: 100%;
+  max-height: 90vh;
+  height: auto;
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px;
+  overflow-y: auto;
+}
+
+/* Header del Modal */
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-bottom: 1px solid #374151;
+}
+
+.modal-title {
+  color: #000;
+  font-family: Montserrat, sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: normal;
+  margin: 0;
+}
+
+/* Body del Modal */
+.modal-body {
+  height: auto;
+  overflow-y: auto;
+  padding: 16px;
+  max-height: calc(90vh - 200px);
+}
+
+/* Títulos Azules */
+.titulos-azules {
+  display: flex;
+  align-items: center;
+  margin: 0 0 12px 0;
+  color: #3CEBFF;
+  font-family: Montserrat, sans-serif;
+  font-size: 24px;
+  font-weight: 800;
+  line-height: 24px;
+  width: 100%;
+}
+
+/* Inputs de Categoría */
+.inputs-categorias {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 60px;
+  padding: 0 16px;
+  margin-bottom: 20px;
+  border-radius: 5px;
+  background-color: transparent;
+  border: 1px solid #A09F9F;
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: 16px;
+}
+
+.inputs-categorias:focus {
+  outline: none;
+  border: 1px solid #3CEBFF;
+}
+
+.inputs-categorias::placeholder {
+  color: #A09F9F;
+}
+
+/* Label para input de archivo */
+.inputs-categorias.flex {
+  cursor: pointer;
+  transition: border-color 0.3s ease;
+}
+
+.inputs-categorias.flex:hover {
+  border-color: #3CEBFF;
+}
+
+.inputs-categorias > p {
+  width: 90%;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.inputs-categorias > img {
+  width: 24px;
+  height: 24px;
+  flex-shrink: 0;
+}
+
+.inputs-categorias.hidden {
+  display: none;
+}
+
+/* Footer del Modal */
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 24px;
+}
+
+/* Botones del Modal */
+.button-close-modal {
+  flex: 1;
+  padding: 14px;
+  color: #A09F9F;
+  font-family: Montserrat, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  border-radius: 5px;
+  border: 1px solid #A09F9F;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+.button-close-modal:hover {
+  background-color: rgba(160, 159, 159, 0.1);
+  border-color: #fff;
+  color: #fff;
+}
+
+.button-send-modal {
+  flex: 1;
+  padding: 14px;
+  color: #fff;
+  font-family: Montserrat, sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  border-radius: 5px;
+  background: #F26A2F;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 140px;
+}
+
+/* Laptop specific adjustments (apply only on laptops) */
+@media (min-width: 768px) and (max-width: 1366px) {
+  .modal-footer {
+    justify-content: flex-end;
+    margin-top: 32px;
+    padding-top: 6px;
+  }
+
+  .button-close-modal {
+    border: none;
+    background: rgba(255,255,255,0.03);
+  }
+
+  .button-close-modal:hover {
+    background-color: rgba(160, 159, 159, 0.08);
+    color: #fff;
+  }
+}
+
+/* Make sure buttons stay nicely aligned on small screens */
+@media (max-width: 767px) {
+  .modal-footer {
+    flex-direction: column-reverse;
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 20px;
+  }
+
+  .button-close-modal, .button-send-modal {
+    width: 100%;
+    min-width: 0;
+  }
+}
+
+.button-send-modal:hover {
+  background: #d45a25;
+  transform: translateY(-1px);
+}
+
+.button-send-modal:active {
+  transform: translateY(0);
+}
+
+/* Botón de Cerrar (X) */
+.btn.btn-text.btn-circle.btn-sm {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+  transition: transform 0.2s ease;
+}
+
+.btn.btn-text.btn-circle.btn-sm:hover {
+  transform: rotate(90deg);
+}
+
+.btn.btn-text.btn-circle.btn-sm img {
+  width: 24px;
+  height: 24px;
+}
+
+/* Clase de texto (para el botón principal) */
+.textos {
+  font-family: Montserrat, sans-serif;
+}
+
+
+/* ============================================
+   RESPONSIVE - MÓVIL (hasta 767px)
+   ============================================ */
+@media (max-width: 767px) {
+  .overlay.modal {
+    padding: 16px;
+  }
+
+  .modal-dialog {
+    height: auto;
+    max-width: 100%;
+  }
+
+  .modal-content {
+    height: auto;
+    min-height: 400px;
+    padding: 16px;
+  }
+
+  .modal-header {
+    padding: 12px;
+    flex-direction: row;
+  }
+
+  .modal-title {
+    font-size: 20px;
+    line-height: 1.2;
+  }
+
+  .modal-body {
+    height: auto;
+    min-height: 300px;
+    padding: 12px;
+    overflow-y: auto;
+  }
+
+  .titulos-azules {
+    font-size: 18px;
+    line-height: 22px;
+    margin-bottom: 10px;
+  }
+
+  .inputs-categorias {
+    height: 50px;
+    padding: 0 12px;
+    font-size: 14px;
+    margin-bottom: 16px;
+  }
+
+  .inputs-categorias > p {
+    font-size: 13px;
+    width: 85%;
+  }
+
+  .inputs-categorias > img {
+    width: 20px;
+    height: 20px;
+  }
+
+  .modal-footer {
+    flex-direction: column;
+    gap: 10px;
+    margin-top: 20px;
+  }
+
+  .button-close-modal,
+  .button-send-modal {
+    width: 100%;
+    padding: 12px;
+    font-size: 15px;
+    min-width: unset;
+  }
+
+  .btn.btn-text.btn-circle.btn-sm img {
+    width: 20px;
+    height: 20px;
+  }
+
+  /* Botón principal "Crear Categoría" */
+  .px-4.py-2 {
+    width: 100%;
+    padding: 12px !important;
+    font-size: 14px;
+  }
+}
+
+
+/* ============================================
+   RESPONSIVE - PORTÁTIL (768px a 1700px)
+   ============================================ */
+@media (min-width: 768px) and (max-width: 1700px) {
+  .overlay.modal {
+    padding: 20px;
+  }
+
+  .modal-dialog {
+    max-width: 700px;
+    height: auto;
+  }
+
+  .modal-content {
+    height: auto;
+    max-height: 85vh;
+    min-height: auto;
+    padding: 24px;
+  }
+
+  .modal-body {
+    max-height: calc(85vh - 220px);
+    min-height: auto;
+  }
+
+  .modal-title {
+    font-size: 32px;
+  }
+
+  .titulos-azules {
+    font-size: 22px;
+  }
+
+  .inputs-categorias {
+    height: 60spx;
+    margin: 2px;
+  }
+
+  .button-close-modal,
+  .button-send-modal {
+    font-size: 16px;
+    padding: 13px;
+  }
+}
+
+
+/* ============================================
+   RESPONSIVE - DESKTOP GRANDE (1701px+)
+   ============================================ */
+@media (min-width: 1701px) {
+  .modal-dialog {
+    max-width: 900px;
+  }
+
+  .modal-content {
+    padding: 32px;
+    max-height: 90vh;
+  }
+
+  .modal-body {
+    max-height: calc(90vh - 240px);
+  }
+}

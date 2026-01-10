@@ -1,0 +1,202 @@
+/* ============================================================
+   TUS DATOS / SUSCRIPCIÓN - ESTILOS BASE
+   ============================================================ */
+
+/* Contenedor principal */
+.div-tusdatos {
+  width: 100%;
+  height: 40%;
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+}
+
+.div-tusdatos > div {
+  width: 100%;
+  height: 60%;
+  display: flex;
+  align-items: center;
+  gap: 2%;
+}
+
+
+.div-tusdatos > div > div {
+  width: 28%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5%;
+}
+
+.div-tusdatos > div > div > input {
+  color: var(--Color-textos, #F9F9F9);
+  font-family: Montserrat;
+  font-size: clamp(11px, 1.5vw, 13px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.2;
+  outline: none;
+  padding-left: 6%;
+  width: 100%;
+  height: 30%;
+  border-radius: 10px;
+  background: var(--Color-Dashboard, #1F2336);
+  border: none;
+}
+
+/* Datos de operación */
+.div-datos-operacion {
+  height: 40% !important;
+  padding-left: 9%;
+  display: flex;
+  align-items: center;
+  gap: 2%;
+}
+
+.div-plan {
+  width: 20% !important;
+  border-radius: 10px;
+  background: var(--Color-Dashboard, #1F2336);
+  padding: 1%;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center;
+}
+
+.div-plan > div {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+  height: 100%;
+  justify-content: center;
+  align-items: start;
+  gap: 10%;
+}
+
+.div-plan > div > span {
+  color: var(--Gris-4, #A09F9F);
+  font-family: Montserrat;
+  font-size: clamp(9px, 1.5vw, 13px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+.div-plan > div > p {
+  margin: 0%;
+  color: var(--Color-textos, #F9F9F9);
+  font-family: Montserrat;
+  font-size: clamp(12px, 1.5vw, 16px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.div-plan > img {
+  width: 20%;
+}
+
+
+/* Cancelar suscripción */
+.div-cancelar-suscripcion {
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: end !important;
+  align-items: end !important;
+}
+
+.div-cancelar-suscripcion > button {
+  width: 50%;
+  display: flex !important;
+  flex-direction: row !important;
+  justify-content: end !important;
+  align-items: center !important;
+  gap: 2%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--Blanco, #FFF);
+  text-align: right;
+  font-family: Montserrat;
+  font-size: clamp(11px, 1.5vw, 13px);
+  font-style: normal;
+  font-weight: 500;
+  line-height: 1.2;
+}
+
+
+
+/* ============================================================
+   RESPONSIVE - TABLET (768px - 1024px)
+   ============================================================ */
+
+/* ============================================================
+   RESPONSIVE - PORTÁTIL (1025px - 1700px)
+   ============================================================ */
+@media (min-width: 1025px) and (max-width: 1700px) {
+  .h3-content-perfil {
+    font-size: 28px;
+  }
+
+  .imagen-perfil-tusdatos {
+    width: 85px;
+    height: 88px;
+  }
+
+  .div-jugador-final {
+    width: 300px;
+  }
+}
+
+/* ============================================================
+   RESPONSIVE - MÓVIL PEQUEÑO (< 480px)
+   ============================================================ */
+@media (max-width: 767px) {
+  .h3-content-perfil {
+    font-size: 18px;
+  }
+
+  .imagen-perfil-tusdatos {
+    width: 60px;
+    height: 60px;
+  }
+
+  .div-plan {
+    width: 100% !important;
+  }
+
+  .div-pagar-ahora {
+    height: 70px !important;
+  }
+
+  .circle {
+    width: 25px;
+    height: 25px;
+    font-size: 12px;
+  }
+
+  .line {
+    width: 20px;
+  }
+
+  .div-ultimos-pagos {
+    height: 50px;
+  }
+
+  .div-pregunta {
+    min-height: 100px;
+  }
+
+  .div-jugador-final {
+    padding: 4px;
+  }
+
+  .img-jugador-final {
+    width: 24px;
+    height: 24px;
+  }
+   .div-plan > img {
+    width: 12%;
+  }
+}
