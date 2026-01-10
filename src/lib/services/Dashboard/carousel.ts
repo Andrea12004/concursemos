@@ -1,30 +1,48 @@
-// hooks/useRooms.ts - VERSIÓN MEJORADA
+// lib/services/Dashboard/carousel.ts - VERSIÓN OPTIMIZADA CON SOCKET
 import { useEffect, useMemo, useState, useRef } from "react";
 import { getAllRoomsEndpoint } from "@/lib/api/rooms";
 import { handleAxiosError } from "@/lib/utils/parseErrors";
 import { useLogout } from "@/lib/hooks/useLogout";
-import { socketSingleton } from "@/settings/socket"; // Importar singleton
+import { useSocket } from "@/lib/hooks/useSocket";
 
+interface Room {
+  id: string;
+  room_name: string;
+  room_code: string;
+  max_user: number;
+  number_questions: number;
+  time_question: number;
+  start_date: string | null;
+  state: string;
+}
+
+/**
+ * Hook para cargar y actualizar salas en tiempo real con Socket.IO
+ * Mantiene sincronización del conteo de jugadores por sala
+ */
 export const useRooms = (searchQuery = "") => {
   const { logout } = useLogout();
-  const [rooms, setRooms] = useState<any[]>([]);
+  const { socket, isConnected, emit, on } = useSocket();
+  
+  const [rooms, setRooms] = useState<Room[]>([]);
   const [connectedCounts, setConnectedCounts] = useState<Record<string, number>>({});
   const [loading, setLoading] = useState(true);
   
-  const hasLoaded = useRef(false);
-  const socketListenersSet = useRef(false);
-  const cleanupRef = useRef<(() => void) | null>(null);
+  const hasLoadedRooms = useRef(false);
+  const listenersSetup = useRef(false);
+  const updateIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Filtrar salas por búsqueda
   const filteredRooms = useMemo(() => {
     return rooms.filter(room =>
       room.room_name.toLowerCase().includes(searchQuery.toLowerCase())
     );
   }, [rooms, searchQuery]);
 
-  // Cargar salas (UNA SOLA VEZ)
+  // 1. CARGAR SALAS DESDE API (una sola vez)
   useEffect(() => {
-    if (hasLoaded.current) return;
-    
+    if (hasLoadedRooms.current) return;
+
     const loadRooms = async () => {
       try {
         const auth = localStorage.getItem("authResponse");
@@ -39,9 +57,10 @@ export const useRooms = (searchQuery = "") => {
           return;
         }
 
-        console.log("📡 Cargando salas...");
+        console.log("📡 Cargando salas desde API...");
         const response = await getAllRoomsEndpoint(token);
 
+        // Filtrar solo salas disponibles
         const availableRooms = response.filter(
           (room: any) =>
             room.start_date == null &&
@@ -50,7 +69,7 @@ export const useRooms = (searchQuery = "") => {
         );
         
         setRooms(availableRooms);
-        hasLoaded.current = true;
+        hasLoadedRooms.current = true;
         console.log(`✅ ${availableRooms.length} salas cargadas`);
       } catch (error) {
         console.error("❌ Error cargando salas:", error);
@@ -63,95 +82,77 @@ export const useRooms = (searchQuery = "") => {
     loadRooms();
   }, [logout]);
 
-  // Configurar socket listeners (UNA VEZ)
+  // 2. CONFIGURAR LISTENERS SOCKET (una sola vez)
   useEffect(() => {
-    if (socketListenersSet.current) return;
-    
-    console.log("🔌 Configurando listeners de socket para salas...");
-    socketListenersSet.current = true;
+    if (!socket || !isConnected || listenersSetup.current) {
+      return;
+    }
 
-    let mounted = true;
-    let intervalId: NodeJS.Timeout;
+    console.log("🔌 Configurando listeners Socket.IO para salas...");
+    listenersSetup.current = true;
 
-    const setupSocket = async () => {
-      try {
-        // Obtener socket del singleton
-        const socket = await socketSingleton.getSocket();
-        if (!socket || !mounted) return;
-
-        console.log("✅ Socket disponible para salas");
-
-        // Listener para jugadores conectados
-        const handleConnectedProfiles = (data: any) => {
-          if (data.roomCode && mounted) {
-            setConnectedCounts(prev => ({
-              ...prev,
-              [data.roomCode]: data.profiles?.length || 0,
-            }));
-          }
-        };
-
-        socket.on("connectedProfiles", handleConnectedProfiles);
-
-        // Función para solicitar jugadores
-        const requestConnectedPlayers = () => {
-          if (!socket.connected || !mounted) return;
-          
-          rooms.forEach(room => {
-            if (room.room_code) {
-              socket.emit("listConnectedProfiles", {
-                roomCode: room.room_code,
-              });
-            }
-          });
-        };
-
-        // Solicitar inicialmente
-        requestConnectedPlayers();
-
-        // Configurar intervalo (solo si hay salas)
-        if (rooms.length > 0) {
-          intervalId = setInterval(requestConnectedPlayers, 30000);
-        }
-
-        // Guardar cleanup function
-        cleanupRef.current = () => {
-          socket.off("connectedProfiles", handleConnectedProfiles);
-          if (intervalId) clearInterval(intervalId);
-        };
-
-      } catch (error) {
-        console.error("❌ Error configurando socket listeners:", error);
+    // Handler para respuesta de perfiles conectados
+    const handleConnectedProfiles = (data: any) => {
+      if (data.roomCode) {
+        const count = data.profiles?.length || 0;
+        setConnectedCounts(prev => ({
+          ...prev,
+          [data.roomCode]: count,
+        }));
       }
     };
 
-    setupSocket();
+    // Registrar listener
+    const cleanup = on("connectedProfiles", handleConnectedProfiles);
+
+    // Función para solicitar jugadores de todas las salas
+    const requestAllRoomCounts = () => {
+      if (!socket.connected) return;
+
+      rooms.forEach(room => {
+        if (room.room_code) {
+          emit("listConnectedProfiles", { roomCode: room.room_code });
+        }
+      });
+    };
+
+    // Solicitar inmediatamente
+    if (rooms.length > 0) {
+      requestAllRoomCounts();
+    }
+
+    // Actualizar cada 15 segundos
+    updateIntervalRef.current = setInterval(() => {
+      if (socket.connected && rooms.length > 0) {
+        requestAllRoomCounts();
+      }
+    }, 15000);
 
     // Cleanup
     return () => {
-      mounted = false;
-      if (cleanupRef.current) {
-        cleanupRef.current();
+      console.log("🧹 Limpiando listeners de salas");
+      cleanup();
+      if (updateIntervalRef.current) {
+        clearInterval(updateIntervalRef.current);
       }
-      socketListenersSet.current = false;
+      listenersSetup.current = false;
     };
-  }, []); // Solo una vez
+  }, [socket, isConnected, rooms, emit, on]);
 
-  // Actualizar cuando cambian las salas
+  // 3. ACTUALIZAR CONTEOS cuando las salas cambian
   useEffect(() => {
-    const socket = socketSingleton.getCurrentSocket();
-    if (!socket || !socket.connected || rooms.length === 0) return;
+    if (!socket || !isConnected || rooms.length === 0) {
+      return;
+    }
 
     console.log(`📤 Solicitando jugadores para ${rooms.length} salas...`);
-    
+
     rooms.forEach(room => {
       if (room.room_code) {
-        socket.emit("listConnectedProfiles", {
-          roomCode: room.room_code,
-        });
+        emit("listConnectedProfiles", { roomCode: room.room_code });
       }
     });
-  }, [rooms]); // Solo cuando las salas cambian
+  }, [rooms, socket, isConnected, emit]);
 
   return {
     rooms: filteredRooms,
