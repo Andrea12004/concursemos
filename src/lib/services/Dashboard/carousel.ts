@@ -1,4 +1,4 @@
-// lib/services/Dashboard/carousel.ts - VERSIÓN CORREGIDA
+// src/lib/services/Dashboard/carousel.ts - CORREGIDO
 import { useEffect, useMemo, useState, useRef } from "react";
 import { getAllRoomsEndpoint } from "@/lib/api/rooms";
 import { handleAxiosError } from "@/lib/utils/parseErrors";
@@ -18,7 +18,7 @@ interface Room {
 
 export const useRooms = (searchQuery = "") => {
   const { logout } = useLogout();
-  const { isConnected, emit, on } = useSocket();
+  const { socket, isConnected, emit, on } = useSocket();
   
   const [rooms, setRooms] = useState<Room[]>([]);
   const [connectedCounts, setConnectedCounts] = useState<Record<string, number>>({});
@@ -75,9 +75,11 @@ export const useRooms = (searchQuery = "") => {
     loadRooms();
   }, [logout]);
 
-  // 2. Socket listeners
+  // 2. Socket listeners - SOLO si socket está disponible
   useEffect(() => {
-    if (!isConnected || rooms.length === 0) {
+    // Verificar que socket existe, está conectado, y hay salas
+    if (!socket || !isConnected || rooms.length === 0) {
+      console.log('⏳ Esperando socket/conexión/salas...');
       return;
     }
 
@@ -112,9 +114,10 @@ export const useRooms = (searchQuery = "") => {
       cleanup();
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
+        intervalRef.current = null;
       }
     };
-  }, [isConnected, rooms, emit, on]);
+  }, [socket, isConnected, rooms, emit, on]);
 
   return {
     rooms: filteredRooms,

@@ -1,4 +1,4 @@
-// src/lib/hooks/useLogout.tsx
+// src/lib/hooks/useLogout.tsx - COMPLETO
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { setLogout } from '@/lib/store/authSlice';
@@ -11,17 +11,27 @@ export const useLogout = () => {
   const logout = () => {
     console.log('👋 Cerrando sesión...');
     
-    // 1. Limpiar Redux
-    dispatch(setLogout());
-    
-    // 2. Limpiar localStorage
-    localStorage.clear(); // Limpia TODO
-    
-    // 3. Desconectar socket
-    socketManager.disconnect();
-    
-    // 4. Redirigir
-    navigate("/", { replace: true });
+    try {
+      // 1. Desconectar socket primero
+      socketManager.disconnect();
+      console.log('✅ Socket desconectado');
+      
+      // 2. Limpiar Redux
+      dispatch(setLogout());
+      console.log('✅ Redux limpiado');
+      
+      // 3. Limpiar localStorage
+      localStorage.clear();
+      console.log('✅ LocalStorage limpiado');
+      
+      // 4. Redirigir
+      navigate("/", { replace: true });
+      console.log('✅ Redirigido al login');
+    } catch (error) {
+      console.error('❌ Error durante logout:', error);
+      // Aún así intentar redirigir
+      navigate("/", { replace: true });
+    }
   };
 
   return { logout };

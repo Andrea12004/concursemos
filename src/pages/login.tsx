@@ -1,111 +1,168 @@
-// pages/login.tsx - CON INICIALIZACIÓN DE SOCKET DESPUÉS DEL LOGIN
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAppDispatch } from '@/lib/store/hooks';
-import { setLogin } from '@/lib/store/authSlice';
+import React, { useState, useEffect } from 'react';
+import type { ChangeEvent, FormEvent } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { Input } from '@/components/UI/Inputs/input';
+import EyeIcon from '@/components/UI/svg/EyeIcon';
+import CheckboxWithLabel from '@/components/UI/Checkbox/CheckboxWithLabel';
+import Button from '@/components/UI/Button/button';
 import { handleLogin } from '@/lib/services/authService';
-import { socketManager } from '@/settings/socket';
+import type { LoginFormData } from '@/lib/services/authService';
+import '@/css/login.css';
+import '@/css/Link.css';
 
-export const Login = () => {
+export const Login: React.FC = () => {
   const navigate = useNavigate();
-  const dispatch = useAppDispatch();
-  const [isLoading, setIsLoading] = useState(false);
-  
-  const [formData, setFormData] = useState({
+
+  const [formData, setFormData] = useState<LoginFormData>({
     email: '',
     password: '',
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [check, setCheck] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  useEffect(() => {
+    const savedUserData = localStorage.getItem('userData');
+    if (savedUserData) {
+      try {
+        const parsed = JSON.parse(savedUserData);
+        if (parsed.username && parsed.password) {
+          setFormData({
+            email: parsed.username,
+            password: parsed.password,
+          });
+          setCheck(true);
+        }
+      } catch (error) {
+        console.error('Error parsing userData:', error);
+      }
+    }
+  }, []);
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>): void => {
     const { name, value } = e.target;
-    setFormData(prev => ({
-      ...prev,
+    setFormData({
+      ...formData,
       [name]: value,
-    }));
+    });
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const changeCheck = (e: ChangeEvent<HTMLInputElement>): void => {
+    setCheck(e.target.checked);
+  };
+
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) =>  {
     e.preventDefault();
+
     setIsLoading(true);
 
     try {
-      // 1. Hacer login
       const response = await handleLogin(formData);
-      
       if (!response) {
-        setIsLoading(false);
         return;
       }
 
-      // 2. Guardar en localStorage
       localStorage.setItem('authResponse', JSON.stringify(response));
 
-      // 3. Guardar en Redux
-      dispatch(setLogin({
-        user: response.user,
-        profile: response.profile || response.user.profile,
-        token: response.accesToken,
-      }));
-
-      // 4. INICIALIZAR SOCKET después del login
-      console.log('🔌 Inicializando socket después del login...');
-      try {
-        await socketManager.initialize();
-        console.log('✅ Socket inicializado correctamente');
-      } catch (socketError) {
-        console.error('⚠️ Error inicializando socket:', socketError);
-        // No bloquear el login si falla el socket
+      if (check) {
+        localStorage.setItem(
+          'userData',
+          JSON.stringify({
+            username: formData.email,
+            password: formData.password,
+          })
+        );
+      } else {
+        localStorage.removeItem('userData');
       }
 
-      // 5. Redirigir al dashboard
-      navigate('/dashboard', { replace: true });
-      
-    } catch (error) {
-      console.error('Error en login:', error);
+      if (response.user.blockedbypay === true) {
+        navigate('/pagos');
+      } else {
+        navigate('/dashboard');
+      }
     } finally {
       setIsLoading(false);
     }
   };
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-900">
-      <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-96">
-        <h2 className="text-2xl font-bold text-white mb-6">Iniciar Sesión</h2>
-        
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-gray-300 mb-2">Email</label>
-            <input
+    return (
+    <div className="fondo-login">
+      <div className="div-form-login">
+        {/* Header */}
+        <div className="header-form-login">
+          <div className="logo-login">
+            <img
+              src="./images/Logos/Logo-Auth.png"
+              className="logo-img-login"
+              alt="Logo Concursemos"
+            />
+          </div>
+          <div className="div-header-text">
+            <h3 className="h3-class-login">Ingresa Ahora</h3>
+            <p className="descripcion-login">
+              Hola, ingresa tus datos para iniciar sesión en tu cuenta
+            </p>
+          </div>
+        </div>
+
+        {/* Form */}
+        <div className="div-contenido-login">
+          <form className="form-login" onSubmit={handleSubmit}>
+            <Input
               type="email"
+              placeholder="Ingresa tu correo"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full px-4 py-2 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
+              className="input"
+              disabled={isLoading}
             />
-          </div>
-          
-          <div>
-            <label className="block text-gray-300 mb-2">Contraseña</label>
-            <input
-              type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              className="w-full px-4 py-2 bg-gray-700 text-white rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-          </div>
-          
-          <button
-            type="submit"
-            disabled={isLoading}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded disabled:opacity-50"
-          >
-            {isLoading ? 'Iniciando sesión...' : 'Iniciar Sesión'}
-          </button>
-        </form>
+
+            <div className="div-input">
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                placeholder="Ingresa tu contraseña"
+                name="password"
+                value={formData.password}
+                onChange={handleChange}
+                className="input2"
+                noFocusRing
+                disabled={isLoading}
+              />
+              <EyeIcon onClick={() => setShowPassword((prev) => !prev)} className="svg-login" />
+            </div>
+
+            <div className="div-link-reset-login">
+              <CheckboxWithLabel
+                id="remember-me"
+                name="rememberMe"
+                label="Recordar datos de usuario"
+                checked={check}
+                onChange={changeCheck}
+              />
+
+              <Link to="/enviar-restablecimiento" className="link-register-login">
+                ¿Olvidó su contraseña?
+              </Link>
+            </div>
+
+            <Button type="submit" disabled={isLoading}>
+              {isLoading ? 'Ingresando...' : 'Ingresar Ahora'}
+            </Button>
+
+            <div className="div-register-link">
+              <p className="label-register-link">¿No tienes cuenta?</p>
+              <Link to="/registro" className="register-link">
+                Regístrate Ahora
+              </Link>
+            </div>
+          </form>
+        </div>
       </div>
+
+      <p className="copyraight">© Copyright concursemos 2025</p>
     </div>
   );
 };
