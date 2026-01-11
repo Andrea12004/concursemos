@@ -1,17 +1,18 @@
-// lib/hooks/useSocket.ts - HOOK PARA USAR SOCKET EN COMPONENTES
+// lib/hooks/useSocket.tsx - HOOK OPTIMIZADO
 import { useEffect, useState, useCallback, useRef } from 'react';
 import { Socket } from 'socket.io-client';
 import { socketManager } from '@/settings/socket';
 
 /**
- * Hook para usar Socket.IO en componentes React
- * Maneja la conexión automática y limpieza de listeners
+ * Hook principal para usar Socket.IO en componentes
+ * Mantiene una sola instancia y limpia correctamente los listeners
  */
 export const useSocket = () => {
   const [socket, setSocket] = useState<Socket | null>(null);
   const [isConnected, setIsConnected] = useState(false);
   const [error, setError] = useState<Error | null>(null);
   const mountedRef = useRef(true);
+  const cleanupFnsRef = useRef<Array<() => void>>([]);
 
   useEffect(() => {
     mountedRef.current = true;
@@ -26,7 +27,7 @@ export const useSocket = () => {
           setIsConnected(currentSocket.connected);
           setError(null);
 
-          // Actualizar estado cuando cambie la conexión
+          // Listeners para actualizar estado de conexión
           const handleConnect = () => {
             if (mountedRef.current) {
               setIsConnected(true);
@@ -39,14 +40,12 @@ export const useSocket = () => {
             }
           };
 
-          currentSocket.on('connect', handleConnect);
-          currentSocket.on('disconnect', handleDisconnect);
+          // Usar el método .on del socketManager que registra internamente
+          const cleanupConnect = socketManager.on('connect', handleConnect);
+          const cleanupDisconnect = socketManager.on('disconnect', handleDisconnect);
 
-          // Cleanup de estos listeners específicos
-          return () => {
-            currentSocket?.off('connect', handleConnect);
-            currentSocket?.off('disconnect', handleDisconnect);
-          };
+          // Guardar funciones de limpieza
+          cleanupFnsRef.current.push(cleanupConnect, cleanupDisconnect);
         }
       } catch (err) {
         if (mountedRef.current) {
@@ -60,38 +59,38 @@ export const useSocket = () => {
 
     return () => {
       mountedRef.current = false;
+      
+      // Ejecutar todas las funciones de limpieza
+      cleanupFnsRef.current.forEach(cleanup => cleanup());
+      cleanupFnsRef.current = [];
     };
   }, []);
 
   /**
-   * Función helper para emitir eventos
+   * Emite un evento
    */
   const emit = useCallback((event: string, data?: any) => {
-    if (socket && isConnected) {
-      socket.emit(event, data);
-    } else {
-      console.warn(`⚠️ No se puede emitir "${event}": socket no conectado`);
-    }
-  }, [socket, isConnected]);
+    socketManager.emit(event, data);
+  }, []);
 
   /**
-   * Función helper para escuchar eventos
-   * Retorna función de limpieza
+   * Escucha un evento (con limpieza automática)
    */
   const on = useCallback((event: string, handler: (...args: any[]) => void) => {
-    if (socket) {
-      socket.on(event, handler);
-      return () => socket.off(event, handler);
-    }
-    return () => {};
-  }, [socket]);
+    // Usar el método del socketManager que maneja la persistencia
+    const cleanup = socketManager.on(event, handler);
+    
+    return cleanup;
+  }, []);
 
   /**
-   * Función helper para escuchar evento una sola vez
+   * Escucha un evento una sola vez
    */
   const once = useCallback((event: string, handler: (...args: any[]) => void) => {
-    if (socket) {
+    if (socket?.connected) {
       socket.once(event, handler);
+    } else {
+      console.warn(`⚠️ Socket no disponible para once "${event}"`);
     }
   }, [socket]);
 
@@ -105,12 +104,16 @@ export const useSocket = () => {
   };
 };
 
-// Hook especializado para listar perfiles conectados en una sala
+/**
+ * Hook especializado para salas con conteo de jugadores
+ * Optimizado para no crear listeners duplicados
+ */
 export const useRoomProfiles = (roomCode: string | null) => {
   const { socket, isConnected, emit, on } = useSocket();
   const [connectedCount, setConnectedCount] = useState<number>(0);
   const [profiles, setProfiles] = useState<any[]>([]);
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
+  const handlerRegisteredRef = useRef(false);
 
   useEffect(() => {
     if (!socket || !isConnected || !roomCode) {
@@ -129,24 +132,31 @@ export const useRoomProfiles = (roomCode: string | null) => {
       }
     };
 
-    // Registrar listener
-    const cleanup = on('connectedProfiles', handleConnectedProfiles);
+    // Registrar listener SOLO UNA VEZ
+    if (!handlerRegisteredRef.current) {
+      const cleanup = on('connectedProfiles', handleConnectedProfiles);
+      handlerRegisteredRef.current = true;
 
-    // Solicitar perfiles inmediatamente
-    emit('listConnectedProfiles', { roomCode });
-
-    // Solicitar perfiles cada 10 segundos
-    intervalRef.current = setInterval(() => {
+      // Solicitar perfiles inmediatamente
       emit('listConnectedProfiles', { roomCode });
-    }, 10000);
 
-    // Cleanup
-    return () => {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
-      cleanup();
-    };
+      // Solicitar perfiles cada 10 segundos
+      intervalRef.current = setInterval(() => {
+        if (isConnected) {
+          emit('listConnectedProfiles', { roomCode });
+        }
+      }, 10000);
+
+      // Cleanup
+      return () => {
+        if (intervalRef.current) {
+          clearInterval(intervalRef.current);
+          intervalRef.current = null;
+        }
+        cleanup();
+        handlerRegisteredRef.current = false;
+      };
+    }
   }, [socket, isConnected, roomCode, emit, on]);
 
   return {

@@ -1,4 +1,4 @@
-// App.tsx - NO CONECTAR SOCKET HASTA DESPUÉS DE LOGIN
+// App.tsx - NO INICIALIZA SOCKET AQUÍ
 import { Routes, Route, Navigate } from "react-router-dom";
 import Login from "@/pages/login";
 import SendReset from "@/pages/sendreset";
@@ -33,10 +33,9 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
 };
 
 function App() {
-  // NO inicializar socket aquí
-  // El socket se conectará automáticamente cuando se use el hook useSocket()
-  // en componentes que lo necesiten (después del login)
-
+  // ❌ NO inicializar socket aquí
+  // El socket se inicializa SOLO después del login exitoso
+  
   return (
     <Routes>
       <Route path="/" element={<Login />} />

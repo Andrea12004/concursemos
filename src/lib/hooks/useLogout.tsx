@@ -1,4 +1,4 @@
-// lib/hooks/useLogout.tsx - CON DESCONEXIÓN DE SOCKET
+// src/lib/hooks/useLogout.tsx
 import { useNavigate } from 'react-router-dom';
 import { useAppDispatch } from '@/lib/store/hooks';
 import { setLogout } from '@/lib/store/authSlice';
@@ -15,14 +15,13 @@ export const useLogout = () => {
     dispatch(setLogout());
     
     // 2. Limpiar localStorage
-    localStorage.removeItem("authResponse");
+    localStorage.clear(); // Limpia TODO
     
     // 3. Desconectar socket
     socketManager.disconnect();
-    console.log('🔌 Socket desconectado');
     
-    // 4. Redirigir a login
-    navigate("/");
+    // 4. Redirigir
+    navigate("/", { replace: true });
   };
 
   return { logout };

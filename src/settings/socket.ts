@@ -1,25 +1,19 @@
-// settings/socket.ts - CONFIGURACIÓN PROFESIONAL SOCKET.IO
+// settings/socket.ts - VERSIÓN CORREGIDA FINAL
 import { io, Socket } from 'socket.io-client';
 import { baseUrl } from './baseUrl';
 
 /**
- * Singleton para gestionar una única instancia de Socket.IO en toda la aplicación
- * Garantiza conexión persistente entre recargas y cambios de ruta
+ * Singleton para gestionar Socket.IO
+ * CORRIGE: múltiples conexiones y loops infinitos
  */
 class SocketManager {
   private static instance: SocketManager;
   private socket: Socket | null = null;
   private isConnecting = false;
-  private connectionAttempts = 0;
-  private readonly MAX_ATTEMPTS = 3;
+  private isInitialized = false;
 
-  private constructor() {
-    // Constructor privado para patrón Singleton
-  }
+  private constructor() {}
 
-  /**
-   * Obtiene la instancia única del SocketManager
-   */
   public static getInstance(): SocketManager {
     if (!SocketManager.instance) {
       SocketManager.instance = new SocketManager();
@@ -28,7 +22,7 @@ class SocketManager {
   }
 
   /**
-   * Extrae el token de autenticación del localStorage
+   * Obtiene el token de autenticación
    */
   private getAuthToken(): string | null {
     try {
@@ -44,121 +38,81 @@ class SocketManager {
   }
 
   /**
-   * Crea y configura la conexión Socket.IO
+   * Crea la conexión Socket.IO UNA SOLA VEZ
    */
-  private createSocketConnection(): Socket {
+  private createSocket(): Socket {
     const token = this.getAuthToken();
     
     if (!token) {
-      throw new Error('No hay token de autenticación disponible');
+      throw new Error('No hay token de autenticación');
     }
 
-    console.log('🔌 Creando nueva conexión Socket.IO...');
+    console.log('🔌 Creando conexión Socket.IO...');
 
-    // Crear socket con configuración optimizada
     const newSocket = io(baseUrl, {
       auth: { token },
-      transports: ['websocket', 'polling'], // websocket primero, fallback a polling
+      transports: ['websocket', 'polling'],
       reconnection: true,
-      reconnectionDelay: 1000,
+      reconnectionDelay: 2000,
       reconnectionDelayMax: 5000,
-      reconnectionAttempts: 5,
+      reconnectionAttempts: 3, // SOLO 3 intentos
       timeout: 10000,
-      forceNew: false, // Reutilizar conexión existente si es posible
-      autoConnect: true,
+      autoConnect: false, // NO conectar automáticamente
     });
 
-    // Configurar event listeners
     this.setupSocketListeners(newSocket);
-
     return newSocket;
   }
 
   /**
-   * Configura los listeners de eventos del socket
+   * Configura los listeners del socket
    */
   private setupSocketListeners(socket: Socket): void {
     socket.on('connect', () => {
-      console.log('✅ Socket conectado exitosamente:', socket.id);
-      this.connectionAttempts = 0;
+      console.log('✅ Socket conectado:', socket.id);
       this.isConnecting = false;
     });
 
     socket.on('disconnect', (reason) => {
       console.log('🔌 Socket desconectado:', reason);
-      
-      // Si fue desconexión del servidor, intentar reconectar
-      if (reason === 'io server disconnect') {
-        console.log('🔄 Reconectando manualmente...');
-        socket.connect();
-      }
     });
 
     socket.on('connect_error', (error) => {
-      console.error('❌ Error de conexión Socket.IO:', error.message);
-      this.connectionAttempts++;
-      
-      if (this.connectionAttempts >= this.MAX_ATTEMPTS) {
-        console.error('❌ Máximo de intentos de conexión alcanzado');
-      }
-    });
-
-    socket.on('reconnect', (attemptNumber) => {
-      console.log(`🔄 Reconectado después de ${attemptNumber} intentos`);
-    });
-
-    socket.on('reconnect_attempt', (attemptNumber) => {
-      console.log(`🔄 Intento de reconexión #${attemptNumber}`);
-    });
-
-    socket.on('reconnect_error', (error) => {
-      console.error('❌ Error en reconexión:', error.message);
+      console.error('❌ Error de conexión:', error.message);
+      this.isConnecting = false;
     });
 
     socket.on('reconnect_failed', () => {
-      console.error('❌ Reconexión fallida después de todos los intentos');
+      console.error('❌ Reconexión fallida - Deteniendo intentos');
+      this.isConnecting = false;
+      socket.removeAllListeners();
     });
   }
 
   /**
-   * Obtiene el socket activo o crea uno nuevo si no existe
-   * Esta es la función principal que debes usar en tu aplicación
+   * Inicializa el socket SOLO UNA VEZ
    */
-  public async getSocket(): Promise<Socket> {
-    // Si ya existe un socket conectado, devolverlo
-    if (this.socket && this.socket.connected) {
+  public async initialize(): Promise<Socket> {
+    // Si ya está inicializado, retornar
+    if (this.isInitialized && this.socket) {
+      if (this.socket.connected) {
+        return this.socket;
+      }
+      
+      // Si existe pero no está conectado, intentar reconectar
+      if (!this.socket.connected && !this.isConnecting) {
+        console.log('🔄 Reconectando socket existente...');
+        this.socket.connect();
+      }
+      
       return this.socket;
     }
 
-    // Si existe pero está desconectado, intentar reconectar
-    if (this.socket && !this.socket.connected) {
-      console.log('🔄 Socket existe pero está desconectado, reconectando...');
-      this.socket.connect();
-      
-      // Esperar hasta que se conecte (con timeout)
-      return new Promise((resolve, reject) => {
-        const timeout = setTimeout(() => {
-          reject(new Error('Timeout esperando conexión'));
-        }, 5000);
-
-        this.socket!.once('connect', () => {
-          clearTimeout(timeout);
-          resolve(this.socket!);
-        });
-
-        this.socket!.once('connect_error', () => {
-          clearTimeout(timeout);
-          reject(new Error('Error en conexión'));
-        });
-      });
-    }
-
-    // Si no hay socket, crear uno nuevo
+    // Si ya está conectando, esperar
     if (this.isConnecting) {
-      // Si ya está en proceso de conexión, esperar
       return new Promise((resolve, reject) => {
         const checkInterval = setInterval(() => {
-          if (this.socket && this.socket.connected) {
+          if (this.socket?.connected) {
             clearInterval(checkInterval);
             resolve(this.socket);
           }
@@ -166,17 +120,19 @@ class SocketManager {
 
         setTimeout(() => {
           clearInterval(checkInterval);
-          reject(new Error('Timeout esperando socket'));
+          reject(new Error('Timeout esperando conexión'));
         }, 10000);
       });
     }
 
+    // Crear nuevo socket
     this.isConnecting = true;
 
     try {
-      this.socket = this.createSocketConnection();
+      this.socket = this.createSocket();
+      this.socket.connect(); // Conectar manualmente
+      this.isInitialized = true;
       
-      // Esperar a que se conecte
       return new Promise((resolve, reject) => {
         const timeout = setTimeout(() => {
           this.isConnecting = false;
@@ -202,51 +158,59 @@ class SocketManager {
   }
 
   /**
-   * Devuelve el socket actual sin intentar conectar
-   * Útil para verificaciones rápidas
+   * Obtiene el socket (SIN inicializar si no existe)
    */
-  public getCurrentSocket(): Socket | null {
-    return this.socket?.connected ? this.socket : null;
+  public getSocket(): Socket | null {
+    return this.socket;
   }
 
   /**
-   * Verifica si el socket está conectado
+   * Verifica si está conectado
    */
   public isConnected(): boolean {
     return this.socket?.connected ?? false;
   }
 
   /**
-   * Desconecta el socket completamente
-   * Solo usar en logout o cierre de aplicación
+   * Emite un evento
    */
-  public disconnect(): void {
-    if (this.socket) {
-      console.log('🔌 Desconectando socket manualmente...');
-      this.socket.disconnect();
-      this.socket.removeAllListeners();
-      this.socket = null;
-      this.isConnecting = false;
-      this.connectionAttempts = 0;
+  public emit(event: string, data?: any): void {
+    if (this.socket?.connected) {
+      this.socket.emit(event, data);
+    } else {
+      console.warn(`⚠️ Socket no conectado, no se puede emitir "${event}"`);
     }
   }
 
   /**
-   * Reconecta el socket con nuevo token (útil después de login)
+   * Escucha un evento
    */
-  public async reconnectWithNewToken(): Promise<Socket> {
-    console.log('🔄 Reconectando con nuevo token...');
-    this.disconnect();
-    return this.getSocket();
+  public on(event: string, handler: Function): () => void {
+    if (this.socket) {
+      this.socket.on(event, handler as any);
+      
+      return () => {
+        this.socket?.off(event, handler as any);
+      };
+    }
+    
+    return () => {};
+  }
+
+  /**
+   * Desconecta el socket completamente
+   */
+  public disconnect(): void {
+    if (this.socket) {
+      console.log('🔌 Desconectando socket...');
+      this.socket.removeAllListeners();
+      this.socket.disconnect();
+      this.socket = null;
+      this.isConnecting = false;
+      this.isInitialized = false;
+    }
   }
 }
 
 // Exportar instancia única
 export const socketManager = SocketManager.getInstance();
-
-// Exportar funciones de conveniencia para mantener compatibilidad
-export const getSocket = () => socketManager.getSocket();
-export const getCurrentSocket = () => socketManager.getCurrentSocket();
-export const isSocketConnected = () => socketManager.isConnected();
-export const disconnectSocket = () => socketManager.disconnect();
-export const connectSocket = () => socketManager.getSocket();
