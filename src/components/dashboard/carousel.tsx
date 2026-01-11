@@ -1,4 +1,4 @@
-// components/RoomsSlider.tsx
+// src/components/dashboard/carousel.tsx
 import { useNavigate } from 'react-router-dom';
 import Slider from "react-slick";
 import { useRooms } from '@/lib/services/Dashboard/carousel';
@@ -9,6 +9,14 @@ interface RoomsSliderProps {
   searchQuery?: string;
 }
 
+/**
+ * RoomsSlider - Carousel de Salas con Conteo en Tiempo Real
+ * 
+ * Usa:
+ * - useRooms: Carga salas y escucha conteo con Socket.IO
+ * - useSliderSettings: Configuración responsive del carousel
+ * - useRandomGradients: Gradientes aleatorios para cada sala
+ */
 export default function RoomsSlider({ searchQuery = '' }: RoomsSliderProps) {
   const navigate = useNavigate();
   
@@ -21,14 +29,27 @@ export default function RoomsSlider({ searchQuery = '' }: RoomsSliderProps) {
   // 3. Gradientes aleatorios para cada sala
   const randomGradients = useRandomGradients(rooms);
 
+  /**
+   * Navegar a una sala
+   */
   const goMatch = (roomCode: string) => {
     navigate(`/sala/${roomCode}`);
   };
 
+  /**
+   * Loading state
+   */
   if (loading) {
-    return <div>Cargando salas...</div>;
+    return (
+      <div className="loading-rooms">
+        <p>Cargando salas...</p>
+      </div>
+    );
   }
 
+  /**
+   * Renderizado del carousel
+   */
   return (
     <Slider {...settings}>
       {rooms.length > 0 ? (
@@ -59,7 +80,9 @@ export default function RoomsSlider({ searchQuery = '' }: RoomsSliderProps) {
           );
         })
       ) : (
-        <div className="no-rooms">No hay salas disponibles</div>
+        <div className="no-rooms">
+          <p>No hay salas disponibles</p>
+        </div>
       )}
     </Slider>
   );
