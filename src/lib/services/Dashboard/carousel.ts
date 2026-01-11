@@ -1,4 +1,4 @@
-// src/lib/services/Dashboard/carousel.ts - PATRÓN SIMPLE CON SOCKET DIRECTO
+// src/lib/services/Dashboard/carousel.ts - CORREGIDO PARA FUNCIONAR COMO EL ORIGINAL
 import { useEffect, useMemo, useState, useRef } from "react";
 import { getAllRoomsEndpoint } from "@/lib/api/rooms";
 import { handleAxiosError } from "@/lib/utils/parseErrors";
@@ -20,10 +20,9 @@ interface Room {
 }
 
 /**
- * Hook useRooms - Gestiona las salas y jugadores conectados
+ * Hook useRooms - IGUAL QUE EN EL PROYECTO ORIGINAL
  * 
- * Usa el patrón simple: socket importado directamente
- * Mantiene la estructura organizada con hooks personalizados
+ * Gestiona las salas y jugadores conectados usando Socket.IO
  */
 export const useRooms = (searchQuery = "") => {
   const { logout } = useLogout();
@@ -52,16 +51,13 @@ export const useRooms = (searchQuery = "") => {
    * 1. CARGAR SALAS - Solo una vez al montar
    */
   useEffect(() => {
-    if (hasLoadedRooms.current) {
-      console.log('♻️ [useRooms] Salas ya cargadas');
-      return;
-    }
+    if (hasLoadedRooms.current) return;
 
     const loadRooms = async () => {
       try {
         const auth = localStorage.getItem("authResponse");
         if (!auth) {
-          console.warn('⚠️ [useRooms] No hay authResponse');
+          console.warn('⚠️ No hay authResponse');
           setLoading(false);
           return;
         }
@@ -70,15 +66,15 @@ export const useRooms = (searchQuery = "") => {
         const token = parsed.accesToken || parsed.accessToken || parsed.token;
         
         if (!token) {
-          console.warn('⚠️ [useRooms] No hay token');
+          console.warn('⚠️ No hay token');
           setLoading(false);
           return;
         }
 
-        console.log("📡 [useRooms] Cargando salas...");
+        console.log("📡 Cargando salas...");
         const response = await getAllRoomsEndpoint(token);
 
-        // Filtrar solo salas disponibles
+        // Filtrar solo salas disponibles (IGUAL QUE EL ORIGINAL)
         const availableRooms = response.filter(
           (room: Room) =>
             room.start_date == null &&
@@ -88,9 +84,9 @@ export const useRooms = (searchQuery = "") => {
         
         setRooms(availableRooms);
         hasLoadedRooms.current = true;
-        console.log(`✅ [useRooms] ${availableRooms.length} salas cargadas`);
+        console.log(`✅ ${availableRooms.length} salas cargadas`);
       } catch (error) {
-        console.error("❌ [useRooms] Error cargando salas:", error);
+        console.error("❌ Error cargando salas:", error);
         handleAxiosError(error, logout);
       } finally {
         setLoading(false);
@@ -101,63 +97,54 @@ export const useRooms = (searchQuery = "") => {
   }, [logout]);
 
   /**
-   * 2. SOCKET.IO - Escuchar conteo de jugadores
-   * 
-   * ⭐ Usa socket directamente, como en el patrón original
+   * 2. SOCKET.IO - EXACTAMENTE COMO EN EL PROYECTO ORIGINAL
    */
   useEffect(() => {
-    // Solo actuar si hay salas cargadas
-    if (rooms.length === 0) {
-      console.log('⏳ [useRooms] Esperando salas...');
-      return;
-    }
+    if (rooms.length === 0) return;
 
-    console.log(`🔌 [useRooms] Configurando listeners para ${rooms.length} salas`);
+    console.log(`🔌 Configurando socket para ${rooms.length} salas`);
 
     /**
      * Handler para recibir perfiles conectados
+     * IGUAL QUE EN carousel.jsx del proyecto original
      */
-    const handleConnectedProfiles = (data: any) => {
-      if (data?.roomCode && Array.isArray(data.profiles)) {
-        const count = data.profiles.length;
+    const handleConnectedProfiles = (profiles: any) => {
+      console.log('📥 Datos recibidos:', profiles);
+      
+      // El original espera: { profiles: { profiles: [...], roomCode: '...' } }
+      if (profiles && profiles.profiles && Array.isArray(profiles.profiles)) {
+        const count = profiles.profiles.length;
+        const roomCode = profiles.roomCode;
         
         setConnectedCounts(prev => ({
           ...prev,
-          [data.roomCode]: count,
+          [roomCode]: count,
         }));
         
-        console.log(`👥 [useRooms] ${count} jugadores en ${data.roomCode}`);
+        console.log(`👥 ${count} jugadores en ${roomCode}`);
       }
     };
 
-    // ⭐ Registrar listener usando socket directamente
+    // Registrar listener (IGUAL QUE EL ORIGINAL)
     socket.on("connectedProfiles", handleConnectedProfiles);
 
-    /**
-     * Solicitar conteo inicial para todas las salas
-     */
-    console.log(`📡 [useRooms] Solicitando conteo de ${rooms.length} salas...`);
+    // Solicitar conteo inicial para todas las salas (IGUAL QUE EL ORIGINAL)
+    console.log(`📡 Solicitando conteo de ${rooms.length} salas...`);
     rooms.forEach(room => {
       socket.emit("listConnectedProfiles", { roomCode: room.room_code });
     });
 
-    /**
-     * Actualizar conteo periódicamente (cada 15 segundos)
-     */
+    // Actualizar conteo cada 15 segundos (IGUAL QUE EL ORIGINAL)
     intervalRef.current = setInterval(() => {
       if (socket.connected) {
-        console.log(`🔄 [useRooms] Actualizando conteo...`);
+        console.log(`🔄 Actualizando conteo...`);
         rooms.forEach(room => {
           socket.emit("listConnectedProfiles", { roomCode: room.room_code });
         });
-      } else {
-        console.warn('⚠️ [useRooms] Socket desconectado, saltando actualización');
       }
-    }, 15000); // 15 segundos
+    }, 15000);
 
-    /**
-     * Cleanup - Limpiar listeners y timers
-     */
+    // Cleanup
     return () => {
       socket.off("connectedProfiles", handleConnectedProfiles);
       
@@ -166,82 +153,14 @@ export const useRooms = (searchQuery = "") => {
         intervalRef.current = null;
       }
       
-      console.log('🧹 [useRooms] Listeners y timers limpiados');
+      console.log('🧹 Listeners limpiados');
     };
-  }, [rooms]); // Dependencia: rooms
+  }, [rooms]);
 
-  /**
-   * Retornar datos
-   */
   return {
     rooms: filteredRooms,
     connectedCounts,
     loading,
     totalRooms: rooms.length,
-  };
-};
-
-/**
- * Hook useRoomDetails - Detalles de una sala específica
- * 
- * Opcional: Para obtener detalles y conteo de una sala en particular
- */
-export const useRoomDetails = (roomCode: string | null) => {
-  const [room, setRoom] = useState<Room | null>(null);
-  const [connectedCount, setConnectedCount] = useState(0);
-  const [loading, setLoading] = useState(true);
-
-  // Cargar detalles de la sala
-  useEffect(() => {
-    if (!roomCode) {
-      setLoading(false);
-      return;
-    }
-
-    const loadRoom = async () => {
-      try {
-        const auth = localStorage.getItem("authResponse");
-        if (!auth) return;
-
-        const parsed = JSON.parse(auth);
-        const token = parsed.accesToken || parsed.accessToken || parsed.token;
-        if (!token) return;
-
-        const rooms = await getAllRoomsEndpoint(token);
-        const foundRoom = rooms.find((r: Room) => r.room_code === roomCode);
-        
-        setRoom(foundRoom || null);
-      } catch (error) {
-        console.error("❌ Error cargando sala:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadRoom();
-  }, [roomCode]);
-
-  // Escuchar conteo de jugadores
-  useEffect(() => {
-    if (!roomCode) return;
-
-    const handleConnectedProfiles = (data: any) => {
-      if (data.roomCode === roomCode) {
-        setConnectedCount(data.profiles?.length || 0);
-      }
-    };
-
-    socket.on("connectedProfiles", handleConnectedProfiles);
-    socket.emit("listConnectedProfiles", { roomCode });
-
-    return () => {
-      socket.off("connectedProfiles", handleConnectedProfiles);
-    };
-  }, [roomCode]);
-
-  return {
-    room,
-    connectedCount,
-    loading,
   };
 };

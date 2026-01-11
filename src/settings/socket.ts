@@ -1,141 +1,71 @@
-// src/plugins/SocketContext.ts - Socket Global Simple
-import { io, Socket } from 'socket.io-client';
-import { baseUrl } from './baseUrl';
+// src/settings/socket.ts - CONFIGURACIÓN FINAL CORREGIDA
+import { io } from 'socket.io-client';
 
 /**
- * Socket.IO Client Global
+ * Socket.IO Client - Configuración Correcta
  * 
- * Instancia única del socket que se conecta automáticamente al servidor.
- * Sigue el patrón simple del proyecto original pero con TypeScript.
+ * El backend responde correctamente en:
+ * https://api.backconcursemos.com/socket.io/
  * 
- * CARACTERÍSTICAS:
- * - Conexión automática al importar
- * - Reconexión automática configurada
- * - Logging para debugging
- * - Type-safe con TypeScript
- * 
- * USO:
- * ```typescript
- * import socket from '@/plugins/SocketContext';
- * 
- * // Emitir evento
- * socket.emit('listConnectedProfiles', { roomCode: 'ABC123' });
- * 
- * // Escuchar evento
- * socket.on('connectedProfiles', (data) => {
- *   console.log('Jugadores:', data.profiles.length);
- * });
- * 
- * // Limpiar listener
- * socket.off('connectedProfiles', handler);
- * ```
+ * Verificado con respuesta:
+ * {"sid":"jQlfQD92ITOCzBfMAAGv","upgrades":["websocket"],...}
  */
 
-// Crear instancia del socket
-const socket: Socket = io(baseUrl, {
-  // Transportes: WebSocket primero, polling como fallback
-  transports: ['websocket', 'polling'],
-  
-  // Reconexión automática
+const socket = io('https://api.backconcursemos.com', {
+  transports: ['polling', 'websocket'], // ⭐ ORDEN IMPORTANTE: polling primero
   reconnection: true,
   reconnectionDelay: 1000,
   reconnectionDelayMax: 5000,
-  reconnectionAttempts: 5,
-  
-  // Timeout de conexión
+  reconnectionAttempts: Infinity,
   timeout: 20000,
-  
-  // Auto-conectar al crear instancia
   autoConnect: true,
+  withCredentials: true, // ⭐ AGREGAR ESTO para CORS
 });
 
-/**
- * Listeners de eventos del socket para debugging
- * (Opcional - puedes comentarlos en producción)
- */
-
-// Conexión exitosa
+// Logs de debugging
 socket.on('connect', () => {
-  console.log('🟢 Socket conectado');
-  console.log('   Socket ID:', socket.id);
-  console.log('   Transport:', socket.io.engine.transport.name);
+  console.log('✅ Socket conectado:', socket.id);
 });
 
-// Desconexión
 socket.on('disconnect', (reason) => {
-  console.log('🔴 Socket desconectado');
-  console.log('   Razón:', reason);
-  
-  // Si el servidor cerró la conexión, intentar reconectar
-  if (reason === 'io server disconnect') {
-    console.log('🔄 Reconectando...');
-    socket.connect();
-  }
+  console.log('🔴 Socket desconectado:', reason);
 });
 
-// Error de conexión
 socket.on('connect_error', (error) => {
-  console.error('❌ Error de conexión');
-  console.error('   Mensaje:', error.message);
+  console.error('❌ Error de conexión:', error.message);
 });
 
-// Intento de reconexión
-socket.io.on('reconnect_attempt', (attempt) => {
-  console.log(`🔄 Intento de reconexión ${attempt}...`);
+socket.on('reconnect', (attemptNumber) => {
+  console.log('🔄 Reconectado después de', attemptNumber, 'intentos');
 });
 
-// Reconexión exitosa
-socket.io.on('reconnect', (attempt) => {
-  console.log(`✅ Reconectado después de ${attempt} intentos`);
+socket.on('reconnect_attempt', (attemptNumber) => {
+  console.log('🔄 Intento de reconexión #', attemptNumber);
 });
 
-// Reconexión fallida
-socket.io.on('reconnect_failed', () => {
+socket.on('reconnect_error', (error) => {
+  console.error('❌ Error de reconexión:', error.message);
+});
+
+socket.on('reconnect_failed', () => {
   console.error('❌ Reconexión fallida después de todos los intentos');
 });
 
-// Upgrade de transport (de polling a websocket)
-socket.io.engine.on('upgrade', (transport) => {
-  console.log('🔄 Transport actualizado a:', transport.name);
-});
-
-/**
- * Exportar la instancia del socket
- * Esta es la única instancia que existirá en toda la aplicación
- */
+// Exportar el socket
 export default socket;
 
-/**
- * Helper: Verificar si el socket está conectado
- */
-export const isSocketConnected = (): boolean => {
-  return socket.connected;
-};
-
-/**
- * Helper: Obtener el ID del socket
- */
-export const getSocketId = (): string | undefined => {
-  return socket.id;
-};
-
-/**
- * Helper: Desconectar manualmente el socket
- * Útil para logout
- */
+// Helpers
+export const isSocketConnected = (): boolean => socket.connected;
+export const getSocketId = (): string | undefined => socket.id;
 export const disconnectSocket = (): void => {
   if (socket.connected) {
-    console.log('🔌 Desconectando socket manualmente...');
+    console.log('🔌 Desconectando socket...');
     socket.disconnect();
   }
 };
-
-/**
- * Helper: Reconectar manualmente el socket
- */
 export const reconnectSocket = (): void => {
   if (!socket.connected) {
-    console.log('🔌 Reconectando socket manualmente...');
+    console.log('🔌 Reconectando socket...');
     socket.connect();
   }
 };
