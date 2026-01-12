@@ -35,3 +35,12 @@ export const sendSyncDataEndpoint = async (token: string, data: {
   });
   return response.data;
 };
+
+export const deleteRoomEndpoint = async (token: string, roomId: string) => {
+  const response = await api.delete(`/rooms/${roomId}`, {
+    headers: {
+      'cnrsms_token': token,
+    }
+  });
+  return response.data;
+};

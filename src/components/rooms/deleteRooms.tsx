@@ -1,94 +1,62 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
-import './css/styles.css'
-// import axios from 'axios';
 
-interface EliminarUsuarioProps {
-  id: string | number;
+import './css/styles.css'
+import React from 'react';
+import { deleteRoomEndpoint } from '@/lib/api/rooms';
+import { showAlert, showConfirm } from '@/lib/utils/showAlert';
+import { handleAxiosError } from '@/lib/utils/parseErrors';
+import { useLogout } from '@/lib/hooks/useLogout';
+
+interface DeleteRoomProps {
+  id: string;
   token: string;
 }
 
-export const EliminarUsuario: React.FC<EliminarUsuarioProps> = ({ id }) => {
-  const navigate = useNavigate();
+export const DeleteRoom: React.FC<DeleteRoomProps> = ({ id, token }) => {
+  const { logout } = useLogout();
 
-  const logout = () => {
-    localStorage.removeItem("authResponse");
-    navigate("/");
-  };
-
+  /**
+   * Confirmar antes de eliminar
+   */
   const confirmDelete = () => {
-    Swal.fire({
-      title: "¿Estás Seguro?",
-      text: "¿Deseas eliminar una sala?",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: "Eliminar",
-      cancelButtonText: "Cancelar"
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteUser();
-      }
-    });
+    showConfirm(
+      '¿Estás Seguro?',
+      '¿Deseas eliminar esta sala?',
+      'Eliminar',
+      deleteRoom
+    );
   };
 
-  const deleteUser = async () => {
-    // const headers = {
-    //   'cnrsms_token': token,
-    // };
-
+  /**
+   * Eliminar sala
+   */
+  const deleteRoom = async () => {
     try {
-      // const response = await axios.delete(`/rooms/${id}`, { headers });
+      await deleteRoomEndpoint(token, id);
 
-      // Simulación de eliminación exitosa
-      Swal.fire({
-        title: 'Operación Exitosa',
-        text: 'Se ha eliminado la sala (simulación)',
-        icon: 'success',
-        showCancelButton: false,
-        confirmButtonColor: "#25293d",
-        confirmButtonText: 'Ok'
-      }).then((result) => {
+      showAlert(
+        'Operación Exitosa',
+        'Se ha eliminado la sala',
+        'success'
+      ).then((result) => {
         if (result.isConfirmed) {
-          window.location.reload();
+          location.reload();
         }
       });
-    } catch (error: any) {
-      console.error('Error al eliminar:', error);
 
-      if (error.response?.data?.message === 'Token expirado') {
-        Swal.fire({
-          title: 'Inicio de sesion expirado',
-          text: 'Vuelve a ingresar a la plataforma',
-          icon: 'error',
-          confirmButtonText: 'Ok'
-        });
-        logout();
-        return;
-      }
-
-      Swal.fire({
-        title: 'Error',
-        text: 'Estamos teniendo fallas tecnicas',
-        icon: 'error',
-        confirmButtonText: 'Ok'
-      });
+    } catch (error) {
+      handleAxiosError(error, logout);
     }
   };
 
- return (
-  <>
-  <div className="btn-eliminar-sala" onClick={confirmDelete}>
-  <img 
-    src="/svg/iconos/eliminar-blanco.svg" 
-    alt="Eliminar" 
-  />
-</div>
-
-  </>
-);
+  return (
+    <img
+      src="/svg/eliminar-blanco.svg"
+      alt="Eliminar"
+      className="!border-0 w-[16px] h-[19px] ml-4"
+      style={{ cursor: 'pointer' }}
+      onClick={confirmDelete}
+    />
+  );
 };
 
-export default EliminarUsuario;
+export default DeleteRoom;

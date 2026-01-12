@@ -5,6 +5,7 @@ import Registro from "@/pages/Register";
 import Reset from "@/pages/reset";
 import Dashboard from "@/pages/dashboard";
 import Partida from '@/pages/Departure';
+import { Salas } from '@/pages/Room';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -55,6 +56,15 @@ function App() {
           element={
             <ProtectedRoute>
               <Partida />
+            </ProtectedRoute>
+          }
+        />
+
+         <Route
+          path="/salas"
+          element={
+            <ProtectedRoute>
+              <Salas />
             </ProtectedRoute>
           }
         />
