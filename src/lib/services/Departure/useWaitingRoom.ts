@@ -1,9 +1,10 @@
 // 📁 src/lib/services/Departure/useWaitingRoom.ts
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import socket from '@/settings/socket';
-import axios from 'axios';
-import Swal from 'sweetalert2';
+import { getRoomByCodeEndpoint } from '@/lib/api/rooms';
+import { handleAxiosError } from '@/lib/utils/parseErrors';
+import { useLogout } from '@/lib/hooks/useLogout';
 
 export interface Player {
   id: string;
@@ -14,78 +15,94 @@ export interface Player {
 
 export const useWaitingRoom = (roomCode: string) => {
   const navigate = useNavigate();
+  const { logout } = useLogout();
+  
+  // Estados
   const [token, setToken] = useState('');
   const [profile, setProfile] = useState<any>(null);
+  const [user, setUser] = useState<any>(null);
   const [roomId, setRoomId] = useState('');
   const [host, setHost] = useState('');
   const [privada, setPrivada] = useState(false);
   const [programmed, setProgrammed] = useState(false);
   const [players, setPlayers] = useState<Player[]>([]);
 
+  // Refs para evitar dependencias circulares
+  const profileRef = useRef<any>(null);
+  const hasJoinedRef = useRef(false);
+
   /**
-   * Cargar autenticación
+   * ============================================
+   * 1️⃣ CARGAR AUTENTICACIÓN - SOLO UNA VEZ
+   * ============================================
    */
   useEffect(() => {
     const authResponse = JSON.parse(localStorage.getItem('authResponse') || '{}');
     if (authResponse) {
       setToken(authResponse.accesToken);
       setProfile(authResponse.user?.profile);
+      setUser(authResponse.user);
+      profileRef.current = authResponse.user?.profile;
     }
-  }, []);
+  }, []); // ✅ Solo al montar
 
   /**
-   * Obtener datos de la sala
+   * ============================================
+   * 2️⃣ OBTENER DATOS DE LA SALA
+   * ============================================
    */
   useEffect(() => {
-    if (!token) return;
+    if (!token || !roomCode) return;
 
     const getRoom = async () => {
-      const headers = { cnrsms_token: token };
       try {
-        const response = await axios.get(`/rooms/by-code/${roomCode}`, { headers });
-        setRoomId(response.data.id);
-        setHost(response.data.profile.id);
-        setPrivada(response.data.is_private);
+        const response = await getRoomByCodeEndpoint(token, roomCode);
+        
+        setRoomId(response.id);
+        setHost(response.profile.id);
+        setPrivada(response.is_private);
 
-        if (response.data.start_time) {
+        if (response.start_time) {
           setProgrammed(true);
         }
+
+        console.log('✅ Sala cargada:', response);
       } catch (error: any) {
-        if (error.response?.data?.message === 'Token expirado') {
-          Swal.fire({
-            title: 'Token Expirado',
-            text: 'Vuelve a ingresar a la plataforma',
-            icon: 'error',
-          });
-          navigate('/');
-        }
+        handleAxiosError(error, logout);
       }
     };
 
     getRoom();
-  }, [token, roomCode, navigate]);
+  }, [token, roomCode, logout]); // ✅ Solo cuando cambia token o roomCode
 
   /**
-   * Unirse a la sala de espera
+   * ============================================
+   * 3️⃣ UNIRSE A LA SALA - SOLO UNA VEZ
+   * ============================================
    */
   useEffect(() => {
-    if (!roomCode || !profile) return;
+    if (!roomCode || !profile?.id || hasJoinedRef.current) return;
 
+    console.log(`⏳ Uniéndose a sala: ${roomCode}`);
+    
     socket.emit('joinSala', {
       profileId: profile.id,
       room_code: roomCode,
     });
 
     socket.emit('listConnectedProfiles', { roomCode });
+    
+    hasJoinedRef.current = true; // Marcar como unido
 
-    console.log(`⏳ Esperando en sala: ${roomCode}`);
-  }, [roomCode, profile]);
+  }, [roomCode, profile?.id]); // ✅ Solo cuando profile esté listo
 
   /**
-   * Invitar jugadores (si eres el host)
+   * ============================================
+   * 4️⃣ INVITAR JUGADORES
+   * ============================================
    */
   useEffect(() => {
-    if (!roomId || !host || !profile) return;
+    if (!roomId || !host || !profile?.id) return;
 
     socket.emit('invitePlayer', {
       roomId: roomId,
@@ -93,78 +110,124 @@ export const useWaitingRoom = (roomCode: string) => {
       invitedIds: [profile.id],
     });
 
-    socket.on('playerInvited', () => {
+    const handlePlayerInvited = (newPlayer: any) => {
+      console.log('✅ Jugador invitado:', newPlayer);
       socket.emit('joinSala', {
         profileId: profile.id,
         room_code: roomCode,
       });
-    });
+    };
+
+    socket.on('playerInvited', handlePlayerInvited);
 
     return () => {
-      socket.off('playerInvited');
+      socket.off('playerInvited', handlePlayerInvited);
     };
-  }, [roomCode, profile, roomId, host]);
+  }, [roomId, host, profile?.id, roomCode]); // ✅ Dependencias necesarias
 
   /**
-   * Escuchar jugadores conectados
+   * ============================================
+   * 5️⃣ ESCUCHAR EVENTOS DE SOCKET - SIN players EN DEPS
+   * ============================================
    */
   useEffect(() => {
+    if (!roomCode) return;
+
+    /**
+     * Perfiles conectados
+     */
     const handleConnectedProfiles = (data: any) => {
-      if (data?.profiles) {
+      console.log('👥 Perfiles conectados:', data);
+      
+      if (data?.profiles && Array.isArray(data.profiles)) {
         setPlayers(data.profiles);
       }
     };
 
-    const handlePlayerJoined = () => {
+    /**
+     * Jugador se unió
+     */
+    const handlePlayerJoined = (newPlayer: any) => {
+      console.log('➕ Jugador se unió:', newPlayer);
       socket.emit('listConnectedProfiles', { roomCode });
     };
 
-    const handlePlayerLeft = () => {
+    /**
+     * Jugador salió
+     */
+    const handlePlayerLeft = (leftPlayer: any) => {
+      console.log('➖ Jugador salió:', leftPlayer);
       socket.emit('listConnectedProfiles', { roomCode });
     };
 
+    /**
+     * Errores
+     */
     const handleError = (error: any) => {
-      console.error('❌ Error:', error);
+      console.error('❌ Error en sala:', error);
     };
 
+    // Registrar listeners
     socket.on('connectedProfiles', handleConnectedProfiles);
     socket.on('playerJoined', handlePlayerJoined);
     socket.on('playerLeft', handlePlayerLeft);
     socket.on('error', handleError);
 
+    // Cleanup
     return () => {
       socket.off('connectedProfiles', handleConnectedProfiles);
       socket.off('playerJoined', handlePlayerJoined);
       socket.off('playerLeft', handlePlayerLeft);
       socket.off('error', handleError);
     };
-  }, [roomCode]);
+  }, [roomCode]); // ✅ SOLO roomCode - NO players para evitar loops
+
+  /**
+   * ============================================
+   * FUNCIONES PÚBLICAS
+   * ============================================
+   */
 
   /**
    * Salir de la sala
    */
   const leaveSala = () => {
-    socket.emit('leaveSala', {
-      profileId: profile?.id,
-      room_code: roomCode,
-    });
+    console.log('👋 Saliendo de la sala...');
+    
+    if (profile?.id && roomCode) {
+      socket.emit('leaveSala', {
+        profileId: profile.id,
+        room_code: roomCode,
+      });
+    }
+    
+    hasJoinedRef.current = false; // Reset flag
     navigate('/dashboard');
   };
 
-  /**
-   * Iniciar partida (solo host)
-   */
-  const startGame = () => {
-    socket.emit('startGame', { roomId });
-  };
 
+  /**
+   * ============================================
+   * RETORNO DEL HOOK
+   * ============================================
+   */
   return {
+    // Estados
     players,
     host,
     profile,
+    user,
     programmed,
+    privada,
+    roomId,
+    token,
+    
+    // Funciones
     leaveSala,
-    startGame,
+    
+    // Valores computados
     canStart: programmed && host === profile?.id,
+    isHost: host === profile?.id,
+    playerCount: players.length,
   };
 };

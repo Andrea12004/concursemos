@@ -4,6 +4,7 @@ import SendReset from "@/pages/sendreset";
 import Registro from "@/pages/Register";
 import Reset from "@/pages/reset";
 import Dashboard from "@/pages/dashboard";
+import Partida from '@/pages/Departure';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -48,6 +49,15 @@ function App() {
           </ProtectedRoute>
         }
       />
+
+       <Route
+          path="/sala/:id"
+          element={
+            <ProtectedRoute>
+              <Partida />
+            </ProtectedRoute>
+          }
+        />
       
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

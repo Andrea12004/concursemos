@@ -26,3 +26,12 @@ export const getAllProfilesEndpoint = async (token: string) => {
   });
   return response.data;
 };
+
+export const getProfileByIdEndpoint = async (token: string, playerId: string) => {
+  const response = await api.get(`/profiles/${playerId}`, {
+    headers: {
+      'cnrsms_token': token,
+    }
+  });
+  return response.data;
+};

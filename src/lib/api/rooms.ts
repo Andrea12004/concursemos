@@ -19,3 +19,19 @@ export const getRoomByCodeEndpoint = async (token: string, roomCode: string) => 
   });
   return response.data;
 };
+
+//post send_data
+
+export const sendSyncDataEndpoint = async (token: string, data: {
+  numberQuestion: number;
+  time: number;
+  includeQuestions: boolean;
+  roomId: string;
+}) => {
+  const response = await api.post('/rooms/send-data', data, {
+    headers: {
+      'cnrsms_token': token,
+    }
+  });
+  return response.data;
+};
