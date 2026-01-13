@@ -84,7 +84,7 @@ export const getColumnsUsuarios = (
         return (
           <div className="w-full flex items-center justify-center">
             <img
-              src={`/images/Niveles/${params.row.profile.level}.png`}
+              src={`/images/niveles/${params.row.profile.level}.png`}
               alt={`Nivel ${params.row.profile.level}`}
               className="w-[40px] h-[40px] rounded-full border-2 object-cover"
               style={{ borderColor: isAdmin ? "#FF914C" : "#fff" }}
@@ -123,7 +123,7 @@ export const getColumnsUsuarios = (
         <div className="w-full flex items-center justify-center">
           <select
             className="select-blanco w-[90%] outline-none px-2 py-1 rounded-[3px] bg-[#134E9D] text-white font-montserrat text-base font-medium cursor-pointer"
-            name={params.row.id}
+            name={String(params.row.id)}
             value={params.row.lastPaymentDate ? "Pagado" : "No pagado"}
             onChange={handleChangeEstadoPago}
           >
@@ -157,7 +157,7 @@ export const getColumnsUsuarios = (
       headerClassName: "text-[#A09F9F] font-montserrat text-base",
       renderCell: (params) => (
         <div className="w-full flex items-center justify-center">
-          <DeleteUser id={params.row.id} token={token} />
+          <DeleteUser id={String(params.row.id)} token={token} />
         </div>
       ),
     },
@@ -201,7 +201,7 @@ export const getColumnsUsuarios = (
             }
             className="w-[18px] h-[18px] cursor-pointer hover:opacity-70 transition-opacity"
             alt={params.row.verified ? "Verificado" : "No verificado"}
-            onClick={() => verifyPerson(params.row.verified, params.row.id)}
+            onClick={() => verifyPerson(params.row.verified, String(params.row.id))}
           />
         </div>
       ),

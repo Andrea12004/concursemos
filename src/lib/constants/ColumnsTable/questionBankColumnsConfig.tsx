@@ -1,8 +1,8 @@
 import type { GridColDef } from "@mui/x-data-grid";
-import Unreport from "@/components/questionBank/report";
-import Delete from "@/components/questionBank/Delete";
-import Aprobar from "@/components/questionBank/Aproved";
-import Desaprobar from "@/components/questionBank/Unaproved";
+import { Report } from "@/components/questionBank/report";
+import { Delete } from "@/components/questionBank/Delete";
+import { Aproved } from "@/components/questionBank/Aproved";
+import { Unaproved } from "@/components/questionBank/Unaproved";
 import Editar from "@/components/modals/editQuestion";
 import { SortArrowIcon } from "@/components/UI/svg/SortArrowIcon";
 import type { Question } from "@/lib/types/questionBank";
@@ -17,7 +17,6 @@ export interface QuestionRow {
   author?: {
     id: string | number;
   };
-  // Datos completos para los componentes
   fullQuestion: Question;
 }
 
@@ -32,8 +31,14 @@ export const getColumnsBanco = (
   filterReport?: boolean,
   enableFiltering: boolean = false
 ): GridColDef<QuestionRow>[] => {
+  
+  const handleFilterClick = (estado: string) => {
+    if (onFilterChange) {
+      onFilterChange(estado);
+    }
+  };
+
   const columns: GridColDef<QuestionRow>[] = [
-    // Categoría
     {
       field: "category",
       headerName: "Categoría",
@@ -44,7 +49,6 @@ export const getColumnsBanco = (
       cellClassName: "font-montserrat font-medium text-base text-white",
       renderCell: (params) => <span className="truncate">{params.value}</span>,
     },
-    // Pregunta
     {
       field: "text",
       headerName: "Pregunta",
@@ -55,7 +59,6 @@ export const getColumnsBanco = (
       cellClassName: "font-montserrat font-medium text-base text-white",
       renderCell: (params) => <span className="truncate">{params.value}</span>,
     },
-    // Respuestas
     {
       field: "answers",
       headerName: "Respuestas",
@@ -66,7 +69,6 @@ export const getColumnsBanco = (
       cellClassName: "font-montserrat font-medium text-base text-white",
       renderCell: (params) => <span className="truncate">{params.value}</span>,
     },
-    // Aprobar/Desaprobar
     {
       field: "approve",
       headerName: userRole === "ADMIN" ? "Aprobar/Desaprobar" : "Aprobar",
@@ -82,7 +84,7 @@ export const getColumnsBanco = (
             className={`w-min ${
               filterAprove === true ? "text-[#fff]" : "text-[#A09F9F]"
             } hover:text-white cursor-pointer lg:text-[16px] sm:text-[12px] flex items-center gap-2 text-aprobar arrow`}
-            onClick={() => onFilterChange && onFilterChange("aprobado")}
+            onClick={() => handleFilterClick("aprobado")}
           >
             {userRole === "ADMIN" ? "Aprobar" : "Aprobar"}
           </p>
@@ -90,10 +92,9 @@ export const getColumnsBanco = (
             className={`w-min ${
               filterAprove === false ? "text-[#fff]" : "text-[#A09F9F]"
             } hover:text-white cursor-pointer lg:text-[16px] sm:text-[12px] flex items-center gap-2 text-aprobar arrow`}
-            onClick={() => onFilterChange && onFilterChange("rechazado")}
+            onClick={() => handleFilterClick("rechazado")}
           >
             {userRole === "ADMIN" ? "/Desaprobar" : "/Desaprobadas"}
-
             <SortArrowIcon active={filterAprove} />
           </p>
         </div>
@@ -106,11 +107,12 @@ export const getColumnsBanco = (
                 params.row.IsAproved === true ? "aprobado.svg" : "denegado.svg"
               }`}
               alt={params.row.IsAproved ? "Aprobado" : "Denegado"}
+              className="h-6 w-6"
             />
           );
         } else if (params.row.IsAproved === true) {
           return (
-            <Desaprobar
+            <Unaproved
               setUpdate={setUpdate}
               question={params.row.fullQuestion}
               token={token}
@@ -118,7 +120,7 @@ export const getColumnsBanco = (
           );
         } else {
           return (
-            <Aprobar
+            <Aproved
               setUpdate={setUpdate}
               question={params.row.fullQuestion}
               token={token}
@@ -127,7 +129,6 @@ export const getColumnsBanco = (
         }
       },
     },
-    // Ignorar/Eliminar
     {
       field: "delete",
       headerName: userRole === "ADMIN" ? "Ignorar / Eliminar" : "Eliminar",
@@ -142,30 +143,31 @@ export const getColumnsBanco = (
           className={`reportada ${
             filterReport === true ? "!text-[#fff]" : "text-[#A09F9F]"
           } hover:text-white cursor-pointer flex items-center gap-2 arrow`}
-          onClick={() => onFilterChange && onFilterChange("reportado")}
+          onClick={() => handleFilterClick("reportado")}
         >
           {userRole === "ADMIN" ? "Ignorar / Eliminar" : "Eliminar"}
           <SortArrowIcon active={!filterReport} />
         </p>
       ),
       renderCell: (params) => (
-  <div className="flex gap-2">
-    {params.row.isReported && userRole === "ADMIN" && (
-      <Unreport 
-        question={params.row.fullQuestion}  // ← Directo
-        token={token} 
-      />
-    )}
-    {(params.row.author?.id === userId || userRole === "ADMIN") && (
-      <Delete 
-        question={params.row.fullQuestion}  // ← Directo
-        token={token} 
-      />
-    )}
-  </div>
-),
+        <div className="flex gap-2 items-center justify-center">
+          {params.row.isReported === true && userRole === "ADMIN" ? (
+            <Report 
+              question={params.row.fullQuestion} 
+              token={token}
+              onIgnoreSuccess={setUpdate}
+            />
+          ) : null}
+          {params.row.author?.id === userId || userRole === "ADMIN" ? (
+            <Delete 
+              question={params.row.fullQuestion} 
+              token={token}
+              onDeleteSuccess={setUpdate}
+            />
+          ) : null}
+        </div>
+      ),
     },
-    // Editar
     {
       field: "edit",
       headerName: "",
@@ -176,9 +178,7 @@ export const getColumnsBanco = (
       headerClassName: "font-montserrat font-medium text-base",
       cellClassName: "text-center",
       renderCell: (params) => {
-        // Renderizar botón de editar solo si el usuario es autor o admin
         if (params.row.author?.id === userId || userRole === "ADMIN") {
-          // `Editar` espera la prop `pregunta` con la forma { pregunta: ... }
           return (
             <Editar
               pregunta={{ pregunta: params.row.fullQuestion }}

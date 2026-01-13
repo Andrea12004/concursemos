@@ -1,20 +1,23 @@
 export interface UserProfile {
+  id: string | number;
   nickname: string;
+  level: number;
   City: string;
-  // Nivel representa el identificador de imagen de nivel (ej. 'BALLENA', 'DELFIN')
-  level: string;
   Total_points: number;
+  correct_answers: number;
+  Rooms_win: number;
+  [key: string]: any;
 }
 
 export interface User {
-  id: string;
-  profile: UserProfile;
+  id: string | number;
+  firstName: string;
   lastName: string;
-  role: string;
-  lastPaymentDate: string | null;
+  email: string;
+  role: 'ADMIN' | 'BASIC';
+  blocked: boolean;
   verified: boolean;
-  firstName?: string;
-  name?: string; // agrega nombre completo si está disponible
-  email?: string;
-  blocked?: boolean;
+  lastPaymentDate: string | null;
+  profile: UserProfile;
+  [key: string]: any;
 }

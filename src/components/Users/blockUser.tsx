@@ -1,124 +1,24 @@
-import React, { useState } from 'react';
-import Swal from 'sweetalert2';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import React from 'react';
+import { useBlockUser } from '@/lib/hooks/useBlockUser';
 import type { User } from '@/lib/types/user';
 
 interface BlockProps {
   user: User;
   token: string;
+  onBlockSuccess?: () => void;
 }
 
-export const Block: React.FC<BlockProps> = ({ user, token }) => {
-  const navigate = useNavigate();
-  
-  const logout = (): void => {
-    localStorage.removeItem("authResponse");
-    navigate("/");
-  }
+export const Block: React.FC<BlockProps> = ({ user, token, onBlockSuccess }) => {
+  const { 
+    color, 
+    confirmBlock 
+  } = useBlockUser({
+    user,
+    token,
+    onSuccess: onBlockSuccess
+  });
 
-  const [color, setColor] = useState<string>(user.blocked ? '#70ceab' : '#d33');
-  const [block, setBlock] = useState<boolean>(!!user.blocked);
-
-  const confirmBlock = (): void => {
-    Swal.fire({
-      title: "¿Estás Seguro?",
-      text: `¿Deseas ${block ? 'desbloquear' : 'bloquear'} un usuario?`,
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#d33",
-      cancelButtonColor: "#3085d6",
-      confirmButtonText: `${block ? 'Desbloquear' : 'Bloquear'}`
-    }).then((result) => {
-      if (result.isConfirmed) {
-        // Alternar el estado de bloqueo
-        const newBlockStatus = !block;
-        setBlock(newBlockStatus);
-        blockUser(newBlockStatus);
-      }
-    });
-  }
-
-  const blockUser = async (newBlockStatus: boolean): Promise<void> => {
-    const headers = {
-      'cnrsms_token': token,
-    };
-
-    try {
-      // Simulación de la solicitud sin backend
-      console.log(`Simulando ${newBlockStatus ? 'bloquear' : 'desbloquear'} usuario ${user.id}`);
-      
-      // Para pruebas con datos simulados
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simular delay de red
-      
-      // Mostrar el mensaje de éxito
-      Swal.fire({
-        title: 'Operación Exitosa',
-        text: `Se ha ${newBlockStatus ? 'bloqueado' : 'desbloqueado'} el usuario ${user.name || user.email || user.id}`,
-        icon: 'success',
-        showCancelButton: false,
-        confirmButtonColor: "#25293d",
-        confirmButtonText: 'Ok'
-      }).then((result) => {
-        if (result.isConfirmed) {
-          // Solo recargar si estás en producción con backend
-          // location.reload();
-          
-          // Para desarrollo sin backend, actualizamos el estado visual
-          setBlock(newBlockStatus);
-          setColor(newBlockStatus ? '#70ceab' : '#d33');
-        }
-      });
-
-      // Código real con axios (comentado para desarrollo sin backend)
-      /*
-      const response = await axios.put(`users/edit/${user.id}`,
-        {
-          blocked: newBlockStatus
-        },
-        { headers }
-      );
-      
-      console.log('Respuesta del servidor:', response.data);
-      
-      if (result.isConfirmed) {
-        location.reload();
-      }
-      */
-    }
-    catch (error) {
-      // Manejo de errores con axios
-      if (axios.isAxiosError(error)) {
-        if (error.response?.data?.message === 'Token expirado') {
-          Swal.fire({
-            title: 'Inicio de sesion expirado',
-            text: 'Vuelve a ingresar a la plataforma',
-            icon: 'error',
-            confirmButtonText: 'Ok'
-          });
-          logout();
-          return;
-        }
-        
-        console.error('Error en la solicitud:', error.response?.data || error.message);
-      } else {
-        console.error('Error inesperado:', error);
-      }
-      
-      Swal.fire({
-        title: 'Error',
-        text: 'Estamos teniendo fallas técnicas. Usando modo simulación.',
-        icon: 'error',
-        confirmButtonText: 'Ok'
-      }).then(() => {
-        // En caso de error, usamos modo simulación
-        setBlock(newBlockStatus);
-        setColor(newBlockStatus ? '#70ceab' : '#d33');
-      });
-    }
-  }
-
-  return (
+   return (
     <>
         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" style={{cursor: "pointer"}} onClick={confirmBlock}>
             <g clipPath="url(#clip0_148_3538)">
@@ -135,6 +35,5 @@ export const Block: React.FC<BlockProps> = ({ user, token }) => {
         </svg>
     </>
   )
-}
-
+};
 export default Block;

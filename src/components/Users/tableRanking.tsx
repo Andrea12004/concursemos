@@ -1,9 +1,26 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Table from "@/components/UI/Table/Table/index";
 import { getColumnsRanking } from "@/lib/constants/ColumnsTable/RankingColumnsConfig";
-import { MOCK_USERS_RANKING } from "@/lib/mocks/ranking";
-import type { User } from "@/lib/types/user";
+import { getAllProfilesEndpoint } from "@/lib/api/profile";
+import { showAlert } from "@/lib/utils/showAlert";
+import { useLogout } from "@/lib/hooks/useLogout";
 import "./css/ranking.css";
+
+interface UserProfile {
+  id: string;
+  nickname: string;
+  level: string;
+  correct_answers: number;
+  Rooms_win: number;
+  Total_points: number;
+}
+
+interface RankingUser {
+  id: string;
+  profile: UserProfile;
+  verified: boolean;
+}
 
 interface TableRankingProps {
   searchQuery?: string;
@@ -12,16 +29,100 @@ interface TableRankingProps {
 const TableRanking: React.FC<TableRankingProps> = ({ searchQuery = "" }) => {
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(10);
+  const [users, setUsers] = useState<RankingUser[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [token, setToken] = useState<string>("");
+  
+  const navigate = useNavigate();
+  const { logout } = useLogout();
 
-  const rows = useMemo(() => {
-    if (!searchQuery) return MOCK_USERS_RANKING;
-    const q = searchQuery.toLowerCase();
-    return MOCK_USERS_RANKING.filter((u) =>
-      (u.profile.nickname || "").toLowerCase().includes(q)
+  // Cargar token del localStorage
+  useEffect(() => {
+    try {
+      const authResponseStr = localStorage.getItem("authResponse");
+      if (authResponseStr) {
+        const authResponse = JSON.parse(authResponseStr);
+        setToken(authResponse.accesToken);
+      } else {
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Error al cargar token:", error);
+      navigate("/");
+    }
+  }, [navigate]);
+
+  // Función para obtener usuarios desde la API
+  const getUsers = async () => {
+    if (!token) return;
+
+    setLoading(true);
+    try {
+      const response = await getAllProfilesEndpoint(token);
+      
+      // Ordenar por puntos totales (descendente)
+      const sortedProfiles = response.sort(
+        (a: RankingUser, b: RankingUser) => 
+          (b.profile?.Total_points || 0) - (a.profile?.Total_points || 0)
+      );
+      
+      setUsers(sortedProfiles);
+    } catch (error: any) {
+      console.error("Error al obtener usuarios:", error);
+
+      // Manejar token expirado
+      if (error.response?.data?.message === "Token expirado") {
+        await showAlert(
+          "Inicio de sesión expirado",
+          "Vuelve a ingresar a la plataforma",
+          "error"
+        );
+        logout();
+        return;
+      }
+
+      // Error genérico
+      showAlert(
+        "Error",
+        "Estamos teniendo fallas técnicas al cargar el ranking",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Cargar usuarios cuando el token esté disponible
+  useEffect(() => {
+    if (token) {
+      getUsers();
+    }
+  }, [token]);
+
+  // Filtrar usuarios por búsqueda
+  const filteredUsers = searchQuery 
+    ? users.filter(user => 
+        user.profile?.nickname?.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : users;
+
+  // Obtener columnas
+  const columns = getColumnsRanking();
+
+  // Mostrar loader mientras carga
+
+  // Mostrar mensaje si no hay usuarios
+  if (users.length === 0 && !loading) {
+    return (
+      <div className="table-usuarios">
+        <div className="ranking-table-wrapper">
+          <div className="flex justify-center items-center py-10">
+            <p className="text-white text-lg">No hay usuarios en el ranking</p>
+          </div>
+        </div>
+      </div>
     );
-  }, [searchQuery]);
-
-  const columns = useMemo(() => getColumnsRanking(), []);
+  }
 
   return (
     <div className="table-usuarios">
@@ -29,10 +130,10 @@ const TableRanking: React.FC<TableRankingProps> = ({ searchQuery = "" }) => {
         <Table
           className="ranking-datagrid"
           columns={columns}
-          rows={rows as unknown as any[]}
+          rows={filteredUsers as unknown as any[]}
           pageSize={limit}
           limit={limit}
-          totalItems={rows.length}
+          totalItems={filteredUsers.length}
           setPage={setPage}
           page={page}
           showExport={false}

@@ -50,7 +50,7 @@ export const DeleteRoom: React.FC<DeleteRoomProps> = ({ id, token }) => {
 
   return (
     <img
-      src="/svg/eliminar-blanco.svg"
+      src="/svg/iconos/eliminar-blanco.svg"
       alt="Eliminar"
       className="!border-0 w-[16px] h-[19px] ml-4"
       style={{ cursor: 'pointer' }}

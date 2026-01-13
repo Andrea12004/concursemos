@@ -1,218 +1,191 @@
 import React, { useState, useEffect} from 'react';
-import type {FC} from 'react';
 import Crearusuario from '@/components/modals/createUser';
 import { Link, useNavigate } from 'react-router-dom';
 import CrearPregunta from '@/components/modals/createQuestion';
 import { Button, Popover } from 'antd';
-import Swal from 'sweetalert2';
 import './css/user_header.css';
 import { Input } from '@/components/UI/Inputs/input';
-import ImageButton from '@/components/UI/Button/ImageButton';
-// Definición de tipos
-interface AuthResponse {
-  accesToken: string;
-  user: {
-    profile: any;
-    role: string;
-    [key: string]: any;
-  };
-}
-
-interface Notification {
-  id: number;
-  message: string;
-  text: string;
-  author?: string;
-  type: 'question' | 'reminder' | 'system';
-  timestamp: string;
-}
-
+import socket from '@/settings/socket';
+import { showAlert } from '@/lib/utils/showAlert';
+/* Interfaces */
 interface HeaderUsersProps {
   setSearchQuery: (query: string) => void;
 }
 
-interface UserData {
-  role: string;
-  name?: string;
-  email?: string;
-  [key: string]: any;
+interface User {
+  id: string | number;
+  firstName: string;
+  lastName: string;
+  email: string;
+  role: 'ADMIN' | 'BASIC';
+  profile?: any;
 }
 
-export const HeaderUsers: FC<HeaderUsersProps> = ({ setSearchQuery }) => {
+interface AuthResponse {
+  accesToken: string;
+  user: User;
+}
+
+interface Notification {
+  message: string;
+  text: string;
+  author?: string;
+  timestamp?: string;
+}
+
+interface SocketQuestionMessage {
+  message: string;
+  text: string;
+  author: string;
+}
+
+interface SocketReminderMessage {
+  message: string;
+}
+
+const HeaderUsers: React.FC<HeaderUsersProps> = ({ setSearchQuery }) => {
   const [open, setOpen] = useState<boolean>(false);
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [token, setToken] = useState<string>('');
   const [profile, setProfile] = useState<any>(null);
-  const [user, setUser] = useState<UserData | null>(null);
+  const [user, setUser] = useState<User | null>(null);
   
   const navigate = useNavigate();
 
-  const hide = (): void => {
+  // Handlers
+  const hide = () => {
     setOpen(false);
   };
 
-  const handleOpenChange = (newOpen: boolean): void => {
+  const handleOpenChange = (newOpen: boolean) => {
     setOpen(newOpen);
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  const goPerfil = (): void => {
+  const goPerfil = () => {
     navigate('/perfil');
   };
 
-  // Cargar los datos del localStorage (simulación)
+  // Cargar los datos del localStorage
   useEffect(() => {
-    // Simular datos de usuario para la maqueta
-    const mockAuthResponse: AuthResponse = {
-      accesToken: "mock-token-12345",
-      user: {
-        profile: { nickname: "AdminUser", city: "Bogotá" },
-        role: "ADMIN",
-        name: "Administrador",
-        email: "admin@ejemplo.com"
-      }
-    };
-
-    // Para desarrollo, cargamos datos de ejemplo
-    const savedAuthResponse = localStorage.getItem('authResponse');
-    if (savedAuthResponse) {
-      try {
-        const authResponse: AuthResponse = JSON.parse(savedAuthResponse);
+    try {
+      const authResponseStr = localStorage.getItem('authResponse');
+      if (authResponseStr) {
+        const authResponse: AuthResponse = JSON.parse(authResponseStr);
         setToken(authResponse.accesToken);
         setProfile(authResponse.user.profile);
         setUser(authResponse.user);
-      } catch (error) {
-        console.error('Error parsing authResponse from localStorage:', error);
-        // Usar datos de ejemplo
-        setToken(mockAuthResponse.accesToken);
-        setProfile(mockAuthResponse.user.profile);
-        setUser(mockAuthResponse.user);
       }
-    } else {
-      // Si no hay datos guardados, usar los de ejemplo
-      setToken(mockAuthResponse.accesToken);
-      setProfile(mockAuthResponse.user.profile);
-      setUser(mockAuthResponse.user);
-      // Guardarlos para futuras sesiones
-      localStorage.setItem('authResponse', JSON.stringify(mockAuthResponse));
-    }
-
-    // Cargar notificaciones del localStorage
-    const savedNotificationsStr = localStorage.getItem('notifications');
-    if (savedNotificationsStr) {
-      try {
-        const savedNotifications: Notification[] = JSON.parse(savedNotificationsStr);
-        setNotifications(savedNotifications);
-      } catch (error) {
-        console.error('Error parsing notifications from localStorage:', error);
-      }
+    } catch (error) {
+      console.error('Error al cargar datos de autenticación:', error);
     }
   }, []);
 
-  // Simular nueva notificación (para probar funcionalidad sin backend)
-  const simulateQuestionNotification = (): void => {
-    const authors = ["Usuario123", "Player456", "Admin789", "TestUser999"];
-    const questions = [
-      "¿Cuál es la capital de Francia?",
-      "¿Qué año llegó Colón a América?",
-      "¿Quién pintó la Mona Lisa?",
-      "¿Cuál es el planeta más grande del sistema solar?",
-      "¿En qué año terminó la Segunda Guerra Mundial?"
-    ];
-    
-    const newNotification: Notification = {
-      id: Date.now(),
-      message: "Pregunta reportada",
-      text: questions[Math.floor(Math.random() * questions.length)],
-      author: authors[Math.floor(Math.random() * authors.length)],
-      type: "question",
-      timestamp: new Date().toLocaleTimeString()
-    };
-
-    const updatedNotifications = [newNotification, ...notifications];
-    setNotifications(updatedNotifications);
-    localStorage.setItem('notifications', JSON.stringify(updatedNotifications));
-    
-    // Mostrar alerta
-    Swal.fire({
-      title: 'Nueva notificación',
-      text: `Pregunta "${newNotification.text}" reportada por ${newNotification.author}`,
-      icon: 'warning',
-      timer: 3000,
-      showConfirmButton: false
-    });
-  };
-
-  // Simular recordatorio
-  const simulateReminderNotification = (): void => {
-    const reminders = [
-      "Revisa las preguntas pendientes de aprobación",
-      "Tienes 5 usuarios nuevos por verificar",
-      "Recordatorio: Revisar reportes de hoy",
-      "Sistema: Actualización programada para mañana"
-    ];
-    
-    const newNotification: Notification = {
-      id: Date.now(),
-      message: "Recordatorio",
-      text: reminders[Math.floor(Math.random() * reminders.length)],
-      type: "reminder",
-      timestamp: new Date().toLocaleTimeString()
-    };
-
-    const updatedNotifications = [newNotification, ...notifications];
-    setNotifications(updatedNotifications);
-    localStorage.setItem('notifications', JSON.stringify(updatedNotifications));
-  };
-
-  // Limpiar notificaciones
-  const clearNotifications = (): void => {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Se eliminarán todas las notificaciones',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonText: 'Sí, limpiar',
-      cancelButtonText: 'Cancelar'
-    }).then((result) => {
-      if (result.isConfirmed) {
-        localStorage.removeItem('notifications');
-        setNotifications([]);
-        setOpen(false);
-        
-        Swal.fire({
-          title: 'Notificaciones limpiadas',
-          text: 'Todas las notificaciones han sido eliminadas',
-          icon: 'success',
-          timer: 1500,
-          showConfirmButton: false
-        });
-      }
-    });
-  };
-
-  // Marcar notificación como leída
-  const markAsRead = (id: number): void => {
-    const updatedNotifications = notifications.filter(notification => notification.id !== id);
-    setNotifications(updatedNotifications);
-    localStorage.setItem('notifications', JSON.stringify(updatedNotifications));
-  };
-
-  // Para desarrollo: simular notificaciones automáticamente cada cierto tiempo
+  // Unirse a la sala de admin cuando el usuario sea ADMIN
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development') {
-      const interval = setInterval(() => {
-        if (Math.random() > 0.7) { // 30% de probabilidad cada 30 segundos
-          simulateQuestionNotification();
-        }
-      }, 30000); // Cada 30 segundos
-
-      return () => clearInterval(interval);
+    if (user && user.role === 'ADMIN') {
+      console.log('👤 Usuario ADMIN detectado, uniéndose a sala admin...');
+      socket.emit('joinAdminRoom', {});
     }
-  }, [notifications]);
+  }, [user]);
+
+  // Escuchar eventos de socket para ADMIN
+  useEffect(() => {
+    if (!user || user.role !== 'ADMIN') return;
+
+    // Evento: Usuario unido a sala admin
+    const handleJoinedAdminRoom = (message: any) => {
+      console.log('✅ Unido a sala admin:', message);
+    };
+
+    // Evento: Pregunta necesita aprobación
+    const handleQuestionNeedsApproval = (message: SocketQuestionMessage) => {
+      console.log('⚠️ Pregunta necesita aprobación:', message);
+      
+      showAlert(
+        message.message,
+        `${message.text} del autor ${message.author}`,
+        'warning'
+      );
+
+      // Guardar notificación en localStorage
+      const notifications = JSON.parse(localStorage.getItem('notifications') || '[]') as Notification[];
+      notifications.push({
+        message: message.message,
+        text: message.text,
+        author: message.author,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem('notifications', JSON.stringify(notifications));
+      
+      // Actualizar estado
+      setNotifications(notifications);
+    };
+
+    // Registrar listeners
+    socket.on('joinedAdminRoom', handleJoinedAdminRoom);
+    socket.on('questionNeedsApproval', handleQuestionNeedsApproval);
+
+    // Cleanup: remover listeners al desmontar
+    return () => {
+      socket.off('joinedAdminRoom', handleJoinedAdminRoom);
+      socket.off('questionNeedsApproval', handleQuestionNeedsApproval);
+    };
+  }, [user]);
+
+  // Escuchar recordatorios (para todos los usuarios)
+  useEffect(() => {
+    const handleReminder = (message: SocketReminderMessage) => {
+      console.log('🔔 Recordatorio recibido:', message);
+      
+      showAlert(
+        'Recordatorio',
+        message.message,
+        'warning'
+      );
+
+      // Guardar notificación en localStorage
+      const notifications = JSON.parse(localStorage.getItem('notifications') || '[]') as Notification[];
+      notifications.push({
+        message: 'Recordatorio',
+        text: message.message,
+        timestamp: new Date().toISOString()
+      });
+      localStorage.setItem('notifications', JSON.stringify(notifications));
+      
+      // Actualizar estado
+      setNotifications(notifications);
+    };
+
+    socket.on('reminder', handleReminder);
+
+    // Cleanup
+    return () => {
+      socket.off('reminder', handleReminder);
+    };
+  }, []);
+
+  // Cargar las notificaciones del localStorage al montar
+  useEffect(() => {
+    try {
+      const savedNotifications = JSON.parse(localStorage.getItem('notifications') || '[]') as Notification[];
+      setNotifications(savedNotifications);
+    } catch (error) {
+      console.error('Error al cargar notificaciones:', error);
+      setNotifications([]);
+    }
+  }, []);
+
+  // Limpiar notificaciones (función helper - opcional)
+  const clearNotifications = () => {
+    setNotifications([]);
+    localStorage.removeItem('notifications');
+    hide();
+  };
+
 
   return (
      <div className='header'>

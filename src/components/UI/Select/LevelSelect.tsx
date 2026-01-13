@@ -28,7 +28,7 @@ export const LevelSelect: React.FC<LevelSelectProps> = ({
           label: (
             <span className="text-black textos-peques">
               <img
-                src={`/images/Niveles/${level.label}.png`}
+                src={`/images/niveles/${level.label}.png`}
                 alt={level.label}
                 className="inline w-4 h-4 mr-2"
               />

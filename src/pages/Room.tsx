@@ -6,15 +6,6 @@ import Layout from "@/components/layout/layout";
 import { useProgrammedRooms } from '@/lib/services/rooms/useProgrammedRooms';
 import '@/components/rooms/css/styles.css';
 
-/**
- * ============================================
- * PÁGINA: SALAS
- * 
- * Muestra:
- * - Carrusel con salas programadas
- * - Lista completa de salas
- * ============================================
- */
 export const Salas = () => {
   // Estado de búsqueda (compartido entre componentes)
   const [searchQuery] = useState('');
@@ -22,14 +13,8 @@ export const Salas = () => {
   // Hook con lógica de salas programadas (para el carrusel)
   const { rooms: programmedRooms } = useProgrammedRooms();
 
-  /**
-   * ============================================
-   * RENDER PRINCIPAL
-   * ============================================
-   */
   return (
     <Layout>
-      {/* Carrusel de salas programadas - Solo si hay salas */}
       <div className={`div-carrusel-salas ${programmedRooms.length == 0 ? 'hidden' : ''}`}>
           <div className="div-header-carrusel-salas">
             <h3>Partidas Programadas</h3>

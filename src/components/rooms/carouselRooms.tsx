@@ -1,8 +1,4 @@
-// ============================================
-// 📁 src/components/dashboard/ScheduledRoomsSlider.tsx
-// ============================================
 
-import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Slider from 'react-slick';
 import './css/styles.css';
@@ -33,14 +29,6 @@ export default function ScheduledRoomsSlider({
   const goMatch = (roomCode: string) => {
     navigate(`/sala/${roomCode}`);
   };
-
-  if (loading) {
-    return (
-      <div className="loading-rooms">
-        <p>Cargando salas programadas...</p>
-      </div>
-    );
-  }
 
   return (
     <Slider 

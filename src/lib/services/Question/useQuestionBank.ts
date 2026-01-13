@@ -1,61 +1,27 @@
-// src/lib/hooks/useQuestionBank.ts
-import { useState, useEffect, useMemo, useCallback, useRef } from 'react';
+import { useState, useEffect, useMemo, useCallback } from 'react';
 import { getAllQuestionsEndpoint } from '@/lib/api/Questions';
-import { handleAxiosError } from '@/lib/utils/parseErrors';
+import { showAlert } from '@/lib/utils/showAlert';
 import { useLogout } from '@/lib/hooks/useLogout';
+import type { Question } from '@/lib/types/questionBank';
 
-interface Answer {
-  text: string;
-  isCorrect: boolean;
-}
-
-interface Category {
-  id: string | number;
-  category: string;
-}
-
-interface Author {
-  id: string | number;
-}
-
-interface Question {
-  id: string | number;
-  text: string;
-  author: Author;
-  answers: Answer[];
-  IsAproved?: boolean;
-  isReported?: boolean;
-  category: Category;
-}
-
-interface UseQuestionBankProps {
-  searchQuery: string;
-}
-
-/**
- * Hook: useQuestionBank
- * Maneja el banco de preguntas con la misma lógica del original
- */
-export const useQuestionBank = ({ searchQuery }: UseQuestionBankProps) => {
+export const useQuestionBank = ({ searchQuery = '' }: { searchQuery?: string } = {}) => {
   const { logout } = useLogout();
   
-  // Estados
+  // Estados del usuario
   const [token, setToken] = useState<string>('');
   const [userID, setUserID] = useState<string | number>('');
   const [user, setUser] = useState<any>(null);
-  const [questions, setQuestions] = useState<Question[]>([]);
+  
+  // Estados de las preguntas
+  const [allQuestions, setAllQuestions] = useState<Question[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [update, setUpdate] = useState<boolean>(false);
   
-  // Filtros (igual que el original)
+  // Estados de filtros
   const [filterAprove, setFilterAprove] = useState<boolean | null>(true);
   const [filterReport, setFilterReport] = useState<boolean>(false);
   
-  const hasLoadedQuestions = useRef(false);
-
-  /**
-   * 1️⃣ Cargar token y user
-   */
+  // 1️⃣ Cargar token y usuario del localStorage
   useEffect(() => {
     try {
       const authResponse = JSON.parse(localStorage.getItem('authResponse') || '{}');
@@ -69,157 +35,136 @@ export const useQuestionBank = ({ searchQuery }: UseQuestionBankProps) => {
     }
   }, []);
 
-  /**
-   * 2️⃣ Ordenar por defecto (primera carga) - IGUAL QUE EL ORIGINAL
-   */
-  const ordenarPorDefecto = (estado: string, response: Question[]) => {
-    const preguntasOrdenadas = [...response].sort((a, b) => {
-      if (estado === 'aprobado') {
+  // 2️⃣ Función para ordenar preguntas por defecto
+  const ordenarPorDefecto = useCallback((estado: string, questions: Question[]) => {
+    const preguntasOrdenadas = [...questions];
+    
+    if (estado === "aprobado") {
+      // Ordenar por "Aprobado": Solo las preguntas aprobadas
+      preguntasOrdenadas.sort((a, b) => {
         if (a.IsAproved && !b.IsAproved) return -1;
         if (!a.IsAproved && b.IsAproved) return 1;
-      } else if (estado === 'reportado') {
-        if (a.isReported && !b.isReported) return -1;
-        if (!a.isReported && b.isReported) return 1;
-      } else if (estado === 'rechazado') {
-        if (!a.IsAproved && b.IsAproved) return -1;
-        if (a.IsAproved && !b.IsAproved) return 1;
-      }
-      return 0;
-    });
-    
-    // Actualizar filtros según estado (igual que el original)
-    if (estado === 'aprobado') {
+        return 0;
+      });
       setFilterAprove(true);
       setFilterReport(false);
-    } else if (estado === 'reportado') {
+    } else if (estado === "reportado") {
+      // Ordenar por "Reportado": Solo las preguntas reportadas
+      preguntasOrdenadas.sort((a, b) => {
+        if (a.isReported && !b.isReported) return -1;
+        if (!a.isReported && b.isReported) return 1;
+        return 0;
+      });
       setFilterReport(true);
       setFilterAprove(null);
-    } else if (estado === 'rechazado') {
+    } else if (estado === "rechazado") {
+      // Ordenar por "Rechazado": Solo las preguntas no aprobadas
+      preguntasOrdenadas.sort((a, b) => {
+        if (!a.IsAproved && b.IsAproved) return -1;
+        if (a.IsAproved && !b.IsAproved) return 1;
+        return 0;
+      });
       setFilterAprove(false);
       setFilterReport(false);
     }
     
-    setQuestions(preguntasOrdenadas);
-  };
+    return preguntasOrdenadas;
+  }, []);
 
-  /**
-   * 3️⃣ Obtener preguntas - LÓGICA EXACTA DEL ORIGINAL
-   */
+  // 3️⃣ Obtener preguntas desde la API
   const getQuestions = useCallback(async () => {
-    if (!token || hasLoadedQuestions.current) return;
+    if (!token) return;
     
     setLoading(true);
     
     try {
-      // ✅ Llamada a la API (reemplaza axios.get)
-      const response = await getAllQuestionsEndpoint(token);
+      const data = await getAllQuestionsEndpoint(token);
       
-      // ✅ LÓGICA EXACTA DEL ORIGINAL:
+      // Aplicar lógica según rol del usuario
       if (user?.role === 'ADMIN') {
-        // ADMIN: Ordenar según filtro activo
-        if (filterAprove === true) {
-          ordenarPorDefecto('aprobado', response);
-        } else if (filterAprove === false) {
-          ordenarPorDefecto('rechazado', response);
-        } else {
-          ordenarPorDefecto('reportado', response);
-        }
-      } else {
-        // BASIC: Filtrar solo sus preguntas + aprobadas
-        let filteredQuestions = response;
+        let sortedQuestions = data;
         
-        filteredQuestions = filteredQuestions.filter(
-          (question: Question) =>
-            question.author.id === userID || // Hechas por ti
-            question.IsAproved === true // O preguntas aprobadas
+        if (filterAprove === true) {
+          sortedQuestions = ordenarPorDefecto('aprobado', data);
+        } else if (filterAprove === false) {
+          sortedQuestions = ordenarPorDefecto('rechazado', data);
+        } else {
+          sortedQuestions = ordenarPorDefecto('reportado', data);
+        }
+        
+        setAllQuestions(sortedQuestions);
+      } else {
+        // BASIC: Filtrar solo sus preguntas o preguntas aprobadas
+        let filteredQuestions = data.filter((question: Question) => 
+          question.author.id === userID || question.IsAproved === true
         );
         
-        setQuestions(filteredQuestions);
+        setAllQuestions(filteredQuestions);
       }
       
-      hasLoadedQuestions.current = true;
     } catch (error: any) {
-      // ✅ Usa tu manejador de errores (reemplaza los Swal.fire)
-      handleAxiosError(error, logout);
+      console.error('Error fetching questions:', error);
+      
+      if (error?.response?.data?.message === "Token expirado") {
+        showAlert(
+          "Token Expirado",
+          "Vuelve a ingresar a la plataforma",
+          "error"
+        ).then(() => {
+          logout();
+        });
+      } else {
+        showAlert(
+          "Error",
+          "Estamos teniendo fallas técnicas",
+          "error"
+        );
+      }
     } finally {
       setLoading(false);
     }
-  }, [token, user, userID, filterAprove, logout]);
+  }, [token, user?.role, userID, filterAprove, ordenarPorDefecto, logout]);
 
-  /**
-   * 4️⃣ Ordenar por estado (cuando usuario cambia filtro) - IGUAL QUE EL ORIGINAL
-   */
-  const ordenarPorEstado = useCallback((estado: string) => {
-    const preguntasOrdenadas = [...questions].sort((a, b) => {
-      if (estado === 'aprobado') {
-        if (a.IsAproved && !b.IsAproved) return -1;
-        if (!a.IsAproved && b.IsAproved) return 1;
-      } else if (estado === 'reportado') {
-        if (a.isReported && !b.isReported) return -1;
-        if (!a.isReported && b.isReported) return 1;
-      } else if (estado === 'rechazado') {
-        if (!a.IsAproved && b.IsAproved) return -1;
-        if (a.IsAproved && !b.IsAproved) return 1;
-      }
-      return 0;
-    });
-    
-    // Actualizar filtros
-    if (estado === 'aprobado') {
-      setFilterAprove(true);
-      setFilterReport(false);
-    } else if (estado === 'reportado') {
-      setFilterReport(true);
-      setFilterAprove(null);
-    } else if (estado === 'rechazado') {
-      setFilterAprove(false);
-      setFilterReport(false);
+  // 4️⃣ Cargar preguntas cuando cambia el token o update
+  useEffect(() => {
+    if (token) {
+      getQuestions();
     }
-    
-    setQuestions(preguntasOrdenadas);
-  }, [questions]);
+  }, [token, update, getQuestions]);
 
-  /**
-   * 5️⃣ Filtrar por búsqueda - IGUAL QUE EL ORIGINAL
-   */
+  // 5️⃣ Función para ordenar por estado
+  const ordenarPorEstado = useCallback((estado: string) => {
+    const preguntasOrdenadas = ordenarPorDefecto(estado, allQuestions);
+    setAllQuestions(preguntasOrdenadas);
+  }, [allQuestions, ordenarPorDefecto]);
+
+  // 6️⃣ Filtrar preguntas por búsqueda
   const filteredQuestions = useMemo(() => {
-    return questions.filter((question) =>
-      question.text?.toLowerCase().includes(searchQuery.toLowerCase())
+    if (!searchQuery) return allQuestions;
+    
+    return allQuestions.filter(question =>
+      question.text?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      question.category?.category?.toLowerCase().includes(searchQuery.toLowerCase())
     );
-  }, [questions, searchQuery]);
+  }, [allQuestions, searchQuery]);
 
-  /**
-   * 6️⃣ Preparar datos para la tabla
-   */
+  // 7️⃣ Preparar filas para la tabla
   const tableRows = useMemo(() => {
     return filteredQuestions.map((question) => ({
       id: question.id,
       category: question.category?.category || 'Sin categoría',
       text: question.text || '',
       answers: question.answers?.map((res) => res.text).join(', ') || '',
-      IsAproved: question.IsAproved,
-      isReported: question.isReported,
+      IsAproved: question.IsAproved || false,
+      isReported: question.isReported || false,
       author: question.author,
       fullQuestion: question,
     }));
   }, [filteredQuestions]);
 
-  /**
-   * 7️⃣ Cargar preguntas cuando hay token o update cambia
-   */
-  useEffect(() => {
-    if (token) {
-      hasLoadedQuestions.current = false; // Permitir recarga
-      getQuestions();
-    }
-  }, [token, update, getQuestions]);
-
-  /**
-   * 8️⃣ Función para actualizar (después de aprobar/eliminar/etc)
-   */
+  // 8️⃣ Función para actualizar la lista
   const triggerUpdate = useCallback(() => {
-    setUpdate((prev) => !prev);
-    hasLoadedQuestions.current = false;
+    setUpdate(prev => !prev);
   }, []);
 
   return {
@@ -236,5 +181,10 @@ export const useQuestionBank = ({ searchQuery }: UseQuestionBankProps) => {
     // Funciones
     ordenarPorEstado,
     triggerUpdate,
+    getQuestions, // Exportar también getQuestions si es necesario
+    
+    // Datos adicionales
+    totalQuestions: allQuestions.length,
+    filteredCount: filteredQuestions.length,
   };
 };

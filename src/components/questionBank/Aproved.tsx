@@ -25,7 +25,7 @@ export const Aproved: React.FC<AprovedProps> = ({ question, setUpdate, token }) 
       'Aprobar',
       async () => {
         try {
-          await approveQuestionEndpoint(question.id.toString());
+         await approveQuestionEndpoint(question.id.toString(), token);
           
           showAlert(
             'Operación Exitosa',

@@ -11,17 +11,9 @@ interface SalasListaProps {
   searchQuery: string;
 }
 
-/**
- * ============================================
- * COMPONENTE SALASLIST
- * Versión refactorizada con MuiTable
- * Mantiene la misma lógica del original
- * ============================================
- */
 export function SalasLista({ searchQuery }: SalasListaProps) {
   // Usar el hook personalizado con toda la lógica
   const {
-    loading,
     tableRows,
     selectedLevel,
     page,
@@ -40,27 +32,6 @@ export function SalasLista({ searchQuery }: SalasListaProps) {
     [handleEnterRoom, role, token]
   );
 
-  /**
-   * ============================================
-   * LOADING STATE
-   * ============================================
-   */
-  if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
-          <p className="mt-4 text-gray-600">Cargando salas...</p>
-        </div>
-      </div>
-    );
-  }
-
-  /**
-   * ============================================
-   * RENDER PRINCIPAL
-   * ============================================
-   */
   return (
     <div className="div-salas-todas-las-partidas">
       {/* Header con título y filtro de nivel */}

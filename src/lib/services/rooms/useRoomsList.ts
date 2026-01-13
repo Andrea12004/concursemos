@@ -168,7 +168,7 @@ export const useRoomsList = ({ searchQuery }: UseRoomsListProps) => {
       room_name: room.room_name,
       room_type: room.is_private ? 'PRIVADA' : 'PUBLICA',
       player_level: room.profile.level,
-      level_image: `/images/Niveles/${room.profile.level}.png`,
+      level_image: `/images/niveles/${room.profile.level}.png`,
       start_date: room.start_date || 'No programada',
       categories: room.categories
         ? room.categories.map((cat) => cat.category).join(', ')

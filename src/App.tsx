@@ -7,6 +7,8 @@ import Dashboard from "@/pages/dashboard";
 import Partida from '@/pages/Departure';
 import { Salas } from '@/pages/Room';
 import Banco from '@/pages/questionBank';
+import Usuarios from '@/pages/user';
+import Categorias from '@/pages/Category';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -78,6 +80,25 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+           <Route
+          path="/usuarios"
+          element={
+            <ProtectedRoute>
+              <Usuarios />
+            </ProtectedRoute>
+          }
+        />
+
+          <Route
+          path="/categorias"
+          element={
+            <ProtectedRoute>
+              <Categorias />
+            </ProtectedRoute>
+          }
+        />
+        
       
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>

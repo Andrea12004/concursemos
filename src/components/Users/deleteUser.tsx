@@ -1,63 +1,76 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import Swal from 'sweetalert2';
+import { deleteUserEndpoint } from '@/lib/api/users';
+import { showConfirm, showAlert } from '@/lib/utils/showAlert';
 
-/* Props tipadas */
-interface EliminarUsuarioProps {
+interface DeleteUserProps {
   id: string | number;
-  token?: string; // opcional por ahora (maqueta)
+  token: string;
 }
 
-const Eliminarusuario: React.FC<EliminarUsuarioProps> = ({ id }) => {
+const DeleteUser: React.FC<DeleteUserProps> = ({ id, token }) => {
   const navigate = useNavigate();
 
-  const logout = () => {
-    localStorage.removeItem('authResponse');
-    navigate('/');
+  const logout = (): void => {
+    localStorage.removeItem("authResponse");
+    navigate("/");
   };
 
-  const confirmDelete = () => {
-    Swal.fire({
-      title: '¿Estás seguro?',
-      text: 'Deseas eliminar un usuario',
-      icon: 'warning',
-      showCancelButton: true,
-      confirmButtonColor: '#d33',
-      cancelButtonColor: '#3085d6',
-      confirmButtonText: 'Eliminar',
-    }).then((result) => {
-      if (result.isConfirmed) {
-        deleteUser();
+  // Función para mostrar confirmación
+  const confirmDelete = (): void => {
+    showConfirm(
+      '¿Estás Seguro?',
+      '¿Deseas eliminar un usuario?',
+      'Eliminar',
+      () => deleteUser()
+    );
+  };
+
+  // Función principal para eliminar
+  const deleteUser = async (): Promise<void> => {
+    try {
+      await deleteUserEndpoint(id, token);
+      showAlert(
+        'Operación Exitosa',
+        'Se ha eliminado el usuario',
+        'success'
+      ).then(() => {
+        location.reload();
+      });
+
+    } catch (error: any) {
+      // Manejo de errores específicos
+      if (error?.response?.data?.message === 'Token expirado') {
+        showAlert(
+          'Inicio de sesión expirado',
+          'Vuelve a ingresar a la plataforma',
+          'error'
+        ).then(() => {
+          logout();
+        });
+        return;
       }
-    });
+      
+      // Error genérico
+      showAlert(
+        'Error',
+        'Estamos teniendo fallas técnicas',
+        'error'
+      );
+    }
   };
 
-  /* MAQUETA: simulación de eliminación */
-  const deleteUser = () => {
-    console.log('Usuario eliminado (maqueta):', id);
-
-    Swal.fire({
-      title: 'Operación Exitosa',
-      text: 'Se ha eliminado el usuario (maqueta)',
-      icon: 'success',
-      confirmButtonColor: '#25293d',
-      confirmButtonText: 'Ok',
-    }).then(() => {
-      // Simulación de refresco
-      window.location.reload();
-    });
-  };
 
   return (
     <>
-      <img
-        src="/svg/usuarios/eliminar.svg"
-        alt="Eliminar"
-        style={{ cursor: 'pointer' }}
+      <img 
+        src="/svg/usuarios/eliminar.svg" 
+        alt="Eliminar" 
+        style={{ cursor: "pointer" }} 
         onClick={confirmDelete}
       />
     </>
   );
 };
 
-export default Eliminarusuario;
+export default DeleteUser;

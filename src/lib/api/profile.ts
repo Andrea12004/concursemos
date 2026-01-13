@@ -1,4 +1,4 @@
-import api  from '@/settings/axios';
+import axios from "axios";
 
 //post
 export const ProfileEndpoint = async (payload: {
@@ -6,20 +6,20 @@ export const ProfileEndpoint = async (payload: {
   nickname: string;
   City: string;
 }) => {
-  const response = await api.post('/profiles', payload);
+  const response = await axios.post('/profiles', payload);
   return response.data;
 };
 
 //get - Obtener perfil por userId
 export const getProfileEndpoint = async (userId: string) => {
-  const response = await api.get(`/profiles/${userId}`);
+  const response = await axios.get(`/profiles/${userId}`);
   return response.data;
 };
 
 
 // GET - Obtener todos los perfiles (para ranking)
 export const getAllProfilesEndpoint = async (token: string) => {
-  const response = await api.get('/profiles/all', {
+  const response = await axios.get('/profiles/all', {
     headers: {
       'cnrsms_token': token,
     }
@@ -28,7 +28,7 @@ export const getAllProfilesEndpoint = async (token: string) => {
 };
 
 export const getProfileByIdEndpoint = async (token: string, playerId: string) => {
-  const response = await api.get(`/profiles/${playerId}`, {
+  const response = await axios.get(`/profiles/${playerId}`, {
     headers: {
       'cnrsms_token': token,
     }

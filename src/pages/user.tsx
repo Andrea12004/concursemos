@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { useAuth } from "@/lib/context/auth";
-
+import { useNavigate } from "react-router-dom";
+import socket from "@/settings/socket";
+import { getAllProfilesEndpoint } from "@/lib/api/profile";
+import { showAlert } from "@/lib/utils/showAlert";
+import { useLogout } from "@/lib/hooks/useLogout";
 import type { User } from "@/lib/types/user";
-import { fetchMockUsers } from "@/lib/mocks/users";
-import Swal from "sweetalert2";
 import Sidebar from "@/components/layout/sidebar";
 import Header from "@/components/layout/header";
 import HeaderUsers from "@/components/Users/headerUsers";
@@ -11,58 +12,144 @@ import TableUsers from "@/components/Users/tableUsers";
 import TableRanking from "@/components/Users/tableRanking";
 import "@/components/Users/css/user.css";
 
+interface AuthResponse {
+  accesToken: string;
+  user: {
+    id: string | number;
+    role: 'ADMIN' | 'BASIC';
+    profile: {
+      id: string | number;
+    };
+  };
+}
+
+interface SocketMessage {
+  total: number;
+}
+
 export const Usuarios = () => {
-  const auth = useAuth();
-  const [searchQuery, setSearchQuery] = useState("");
-
-  // derive admin from auth provider
-  const isAdmin = auth.state?.role === "ADMIN";
-
-  /*Funcion traer usuarios - ahora en modo mock*/
+  const [searchQuery, setSearchQuery] = useState<string>("");
+  const [admin, setAdmin] = useState<boolean>(false);
+  const [token, setToken] = useState<string>("");
+  const [userID, setUserID] = useState<string | number>("");
+  const [user, setUser] = useState<any>(null);
   const [users, setUsers] = useState<User[]>([]);
+  const [connectedUsers, setConnectedUsers] = useState<number>(0);
+  const [loading, setLoading] = useState<boolean>(true);
 
-  const getUsers = async () => {
+  const navigate = useNavigate();
+  const { logout } = useLogout();
+
+  // Cargar datos de autenticación del localStorage
+  useEffect(() => {
     try {
-      const data = await fetchMockUsers();
-      setUsers(data);
+      const authResponseStr = localStorage.getItem("authResponse");
+      if (authResponseStr) {
+        const parsedAuthResponse: AuthResponse = JSON.parse(authResponseStr);
+        setToken(parsedAuthResponse.accesToken);
+        setUserID(parsedAuthResponse.user.profile.id);
+        setUser(parsedAuthResponse.user);
+        
+        if (parsedAuthResponse.user && parsedAuthResponse.user.role === "ADMIN") {
+          setAdmin(true);
+        } else {
+          setAdmin(false);
+        }
+      } else {
+        // Si no hay datos de autenticación, redirigir al login
+        navigate("/");
+      }
     } catch (error) {
-      console.error(error);
-      Swal.fire({
-        title: "Error",
-        text: "No se pudieron cargar los datos de prueba",
-        icon: "error",
-        confirmButtonText: "Ok",
-      });
+      console.error("Error al cargar datos de autenticación:", error);
+      navigate("/");
+    }
+  }, [navigate]);
+
+  // Función para traer usuarios desde la API
+  const getUsers = async () => {
+    if (!token) return;
+
+    setLoading(true);
+    try {
+      const response = await getAllProfilesEndpoint(token);
+      setUsers(response);
+    } catch (error: any) {
+      console.error("Error al obtener usuarios:", error);
+
+      // Manejar token expirado
+      if (error.response?.data?.message === "Token expirado") {
+        await showAlert(
+          "Inicio de sesión expirado",
+          "Vuelve a ingresar a la plataforma",
+          "error"
+        );
+        logout();
+        return;
+      }
+
+      showAlert(
+        "Error",
+        "Estamos teniendo fallas técnicas al cargar usuarios",
+        "error"
+      );
+    } finally {
+      setLoading(false);
     }
   };
 
+  // Cargar usuarios cuando el token esté disponible
   useEffect(() => {
-    getUsers();
-  }, []);
+    if (token) {
+      getUsers();
+    }
+  }, [token]);
 
-  const [conectedUsers, setConectedUsers] = useState(0);
+  // Socket.IO: Obtener usuarios conectados (solo para ADMIN)
+  useEffect(() => {
+    if (!token || !admin) return;
 
-  /* useEffect(() => {
-      if (token) {
-        const fetchUsers = () => {
-          socket.emit("totalConnectedUsers", {}); 
-        };
-        socket.on('totalUsersOnline', (message) => {
-          //console.log(message);
-          setConectedUsers(message.total)
-        });
+    console.log("🔌 Configurando listeners de usuarios conectados...");
 
-        const interval = setInterval(fetchUsers, 5000);
-    
-        // Emitir inmediatamente la primera vez sin esperar el intervalo
-        fetchUsers();
+    const fetchConnectedUsers = () => {
+      console.log("📡 Solicitando total de usuarios conectados...");
+      socket.emit("totalConnectedUsers", {});
+    };
 
-        return () => {
-          clearInterval(interval);
-          socket.off("totalUsersOnline"); 
-        };
-      }
-    }, [token]); */
+    const handleTotalUsersOnline = (message: SocketMessage) => {
+      console.log("👥 Usuarios conectados recibidos:", message);
+      setConnectedUsers(message.total);
+    };
+
+    // Registrar listener
+    socket.on("totalUsersOnline", handleTotalUsersOnline);
+
+    // Emitir inmediatamente la primera vez
+    fetchConnectedUsers();
+
+    // Configurar intervalo para actualizar cada 5 segundos
+    const interval = setInterval(fetchConnectedUsers, 5000);
+
+    // Cleanup: remover listener y limpiar intervalo
+    return () => {
+      console.log("🧹 Limpiando listeners de usuarios conectados...");
+      clearInterval(interval);
+      socket.off("totalUsersOnline", handleTotalUsersOnline);
+    };
+  }, [token, admin]);
+
+  // Mostrar loader mientras carga
+  if (loading) {
+    return (
+      <div className="all-dashboard">
+        <Sidebar />
+        <div className="content-dashboard">
+          <div className="flex justify-center items-center h-screen">
+            <p className="text-white text-xl">Cargando...</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="all-dashboard">
@@ -70,7 +157,7 @@ export const Usuarios = () => {
 
       <div className="content-dashboard">
         {/*HEADER*/}
-        {isAdmin ? (
+        {admin ? (
           <HeaderUsers setSearchQuery={setSearchQuery} />
         ) : (
           <Header setSearchQuery={setSearchQuery} />
@@ -80,20 +167,19 @@ export const Usuarios = () => {
         {/*CONTENT*/}
         <div className="flex justify-between h3-content-perfil !w-[97%]">
           <h3 className="h3-content-perfil gap-2">
-            {isAdmin ? "Usuarios" : "Ranking de Jugadores"}{" "}
+            {admin ? "Usuarios" : "Ranking de Jugadores"}{" "}
             <span className="textos-peques gris pt-3">({users.length})</span>
           </h3>
-          {isAdmin ? (
+          {admin && (
             <h3 className="h3-content-perfil_2 gap-2">
-              {isAdmin ? "Usuarios Conectados" : "Ranking de Jugadores"}{" "}
-              <span className="textos-peques gris pt-3">({conectedUsers})</span>
+              Usuarios Conectados{" "}
+              <span className="textos-peques gris pt-3">({connectedUsers})</span>
             </h3>
-          ) : (
-            ""
           )}
         </div>
+
         <div className="content-usuarios">
-          {isAdmin ? (
+          {admin ? (
             <TableUsers searchQuery={searchQuery} />
           ) : (
             <TableRanking searchQuery={searchQuery} />

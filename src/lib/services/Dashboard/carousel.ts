@@ -3,7 +3,7 @@ import { useEffect, useMemo, useState, useRef } from "react";
 import { getAllRoomsEndpoint } from "@/lib/api/rooms";
 import { handleAxiosError } from "@/lib/utils/parseErrors";
 import { useLogout } from "@/lib/hooks/useLogout";
-import socket from "@/settings/socket"; // ⭐ Import directo del socket
+import socket from "@/settings/socket"; 
 
 /**
  * Interfaz para una sala

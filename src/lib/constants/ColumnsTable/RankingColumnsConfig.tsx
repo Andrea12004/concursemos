@@ -51,7 +51,7 @@ export const getColumnsRanking = (): GridColDef<RankingUser>[] => {
       renderCell: (params) => (
         <div className="w-full flex items-center justify-center">
           <img
-            src={`/images/Niveles/${params.row.profile.level}.png`}
+            src={`/images/niveles/${params.row.profile.level}.png`}
             alt={`Nivel ${params.row.profile.level}`}
             className="w-[50px] h-[50px] rounded-full border-2 border-white object-cover"
           />

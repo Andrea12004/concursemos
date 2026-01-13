@@ -1,17 +1,19 @@
 import React, { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
 import type { ChangeEvent, FormEvent } from "react";
-import Swal from "sweetalert2";
 import type { User } from "@/lib/types/user";
+import { updateUserEndpoint } from "@/lib/api/users";
+import { showAlert } from "@/lib/utils/showAlert";
 import "./css/edit.css";
 import "@/components/UI/Button/styles.css";
 import Button from '@/components/UI/Button/button';
 import ImageButton from '@/components/UI/Button/ImageButton';
 import { Input } from "@/components/UI/Inputs/input";
-/* Props del componente (usando tipo compartido) */
+
+/* Props del componente */
 interface CrearUsuarioProps {
   item: User;
-  token?: string; // por ahora opcional (maqueta)
+  token: string;
 }
 
 /* Tipado del formulario */
@@ -25,7 +27,7 @@ interface FormData {
   password2: string;
 }
 
-const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
+const Crearusuario: React.FC<CrearUsuarioProps> = ({ item, token }) => {
   const [formData, setFormData] = useState<FormData>({
     nombre: "",
     email: "",
@@ -36,8 +38,8 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
     password2: "",
   });
 
-  // Controlar la visibilidad del modal con estado (en lugar de manipular el DOM)
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
 
   // Bloquear scroll del body cuando el modal está abierto
   useEffect(() => {
@@ -52,6 +54,7 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
     };
   }, [isOpen]);
 
+  // Cargar datos del usuario al abrir el modal
   useEffect(() => {
     if (item) {
       setFormData({
@@ -77,37 +80,60 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
     }));
   };
 
-  /* Envío del formulario (mock) */
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  /* Envío del formulario */
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    // Validación de campos requeridos
     if (
       !formData.nombre ||
       !formData.telefono ||
       !formData.email ||
       !formData.rol
     ) {
-      Swal.fire({
-        title: "Error",
-        text: "Por favor llena todos los campos",
-        icon: "warning",
-        confirmButtonText: "Ok",
-      });
+      showAlert(
+        "Error",
+        "Por favor llena todos los campos",
+        "warning"
+      );
       return;
     }
 
-    // 👉 MAQUETA: aquí luego conectas el backend
-    console.log("Datos enviados:", formData);
+    setIsLoading(true);
 
-    Swal.fire({
-      title: "Éxito",
-      text: "Usuario editado (maqueta)",
-      icon: "success",
-      confirmButtonText: "Ok",
-    });
+    try {
+      // Llamada al servicio de API
+      await updateUserEndpoint(
+        item.id,
+        {
+          firstName: formData.nombre,
+          lastName: formData.telefono,
+          email: formData.email,
+          role: formData.rol,
+        },
+        token
+      );
 
-    // Cerrar modal (usando estado)
-    setIsOpen(false);
+      // Mostrar mensaje de éxito
+      await showAlert(
+        "Éxito",
+        "Usuario editado correctamente",
+        "success"
+      );
+
+      // Cerrar modal y recargar página
+      setIsOpen(false);
+      location.reload();
+    } catch (error) {
+      console.error("Error al editar usuario:", error);
+      showAlert(
+        "Error",
+        "Estamos teniendo fallas técnicas. Por favor intenta de nuevo.",
+        "error"
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -123,12 +149,12 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
         <img src="/svg/usuarios/editar.svg" alt="Editar Usuario" />
       </ImageButton>
 
-      {/* Modal — renderizado con Portal para salir del árbol de la tabla */}
+      {/* Modal — renderizado con Portal */}
       {isOpen &&
         typeof document !== "undefined" &&
         createPortal(
           <div
-            id={item.id}
+            id={`edit-modal-${item.id}`}
             className="overlay modal fixed inset-0 bg-black bg-opacity-50 z-[9999] flex justify-center items-start pt-16"
             role="dialog"
             tabIndex={-1}
@@ -143,7 +169,11 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
               <div className="bg-white rounded-md overflow-hidden">
                 <div className="modal-header flex justify-between items-center p-4 ">
                   <h3 className="modal-title text-white">Editar Usuario</h3>
-                  <ImageButton type="button" onClick={() => setIsOpen(false)} className="icon-sm">
+                  <ImageButton 
+                    type="button" 
+                    onClick={() => setIsOpen(false)} 
+                    className="icon-sm"
+                  >
                     <img src="/svg/modals/close.svg" alt="Close" />
                   </ImageButton>
                 </div>
@@ -151,10 +181,7 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
                 <div className="modal-body p-4">
                   <form
                     className="w-full flex flex-row gap-2 flex-wrap justify-center"
-                    onSubmit={(e) => {
-                      handleSubmit(e);
-                      setIsOpen(false);
-                    }}
+                    onSubmit={handleSubmit}
                   >
                     <div className="div-inputs-form">
                       <img src="/svg/modals/nombre.svg" alt="" />
@@ -164,6 +191,7 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
                         name="nombre"
                         value={formData.nombre}
                         onChange={handleChange}
+                        disabled={isLoading}
                       />
                     </div>
 
@@ -175,6 +203,7 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
                         name="telefono"
                         value={formData.telefono}
                         onChange={handleChange}
+                        disabled={isLoading}
                       />
                     </div>
 
@@ -184,8 +213,10 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
                         className="inputs-form-crear-usuario"
                         placeholder="Correo electrónico"
                         name="email"
+                        type="email"
                         value={formData.email}
                         onChange={handleChange}
+                        disabled={isLoading}
                       />
                     </div>
 
@@ -196,6 +227,7 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
                         className="inputs-form-crear-usuario"
                         value={formData.rol}
                         onChange={handleChange}
+                        disabled={isLoading}
                       >
                         <option value="" disabled>
                           Rol
@@ -205,9 +237,8 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item }) => {
                       </select>
                     </div>
 
-                                     <div className="w-full modal-footer flex ">
-
-                      <Button
+                    <div className="w-full modal-footer flex ">
+                       <Button
                         type="button"
                         className="button-close-modal"
                         onClick={() => setIsOpen(false)}
