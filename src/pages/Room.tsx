@@ -38,14 +38,12 @@ export const Salas = () => {
             className="flex w-full div-carrusel-salas-global"
             style={{ height: "90%" }}
           >
-            {/* ✅ PASAR rooms y searchQuery al carrusel */}
+
             <CarruselSalas 
               searchQuery={searchQuery} 
             />
           </div>
         </div>
-
-      {/* Lista completa de salas (activas + programadas) */}
       <SalasLista searchQuery={searchQuery} />
     </Layout>
   );

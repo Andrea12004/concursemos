@@ -149,15 +149,21 @@ export const getColumnsBanco = (
         </p>
       ),
       renderCell: (params) => (
-        <div className="flex gap-2 items-center justify-center">
-          {params.row.isReported === true && userRole === "ADMIN" ? (
-            <Unreport question={params.row.fullQuestion} token={token} />
-          ) : null}
-          {params.row.author?.id === userId || userRole === "ADMIN" ? (
-            <Delete question={params.row.fullQuestion} token={token} />
-          ) : null}
-        </div>
-      ),
+  <div className="flex gap-2">
+    {params.row.isReported && userRole === "ADMIN" && (
+      <Unreport 
+        question={params.row.fullQuestion}  // ← Directo
+        token={token} 
+      />
+    )}
+    {(params.row.author?.id === userId || userRole === "ADMIN") && (
+      <Delete 
+        question={params.row.fullQuestion}  // ← Directo
+        token={token} 
+      />
+    )}
+  </div>
+),
     },
     // Editar
     {

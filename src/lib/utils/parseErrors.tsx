@@ -21,16 +21,6 @@ export const handleAxiosError = (error: unknown, logout?: () => void): void => {
     return;
   }
 
-
-  // Archivo grande
-  if (
-    typeof data === "string" &&
-    data.toLowerCase().includes("maximum upload size exceeded")
-  ) {
-    showAlert('Archivo muy grande', 'El archivo supera el tamaño máximo permitido', 'error');
-    return;
-  }
-
   //  Otros errores con mensajes específicos
   let errorMessage = "Estamos teniendo fallas técnicas";
   
