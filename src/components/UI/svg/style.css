@@ -1,0 +1,11 @@
+.svg-login {
+  cursor: pointer;
+}
+
+.svg-accesos-rapidos{
+  display: none;
+}
+
+.div-accesos-rapidos > button:hover > .svg-accesos-rapidos {
+  display: block;
+}

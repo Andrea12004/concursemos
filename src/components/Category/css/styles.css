@@ -1,0 +1,327 @@
+/* Estilos específicos para Categorías con MuiTable */
+.header-banco{
+  padding-left: 2%;
+  width: 100%;
+  height: 5%;
+  display: flex;
+  gap: 2%;
+}
+
+.header-banco > p {
+  margin: 0%;
+  color: var(--Gris-4, #A09F9F);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.div-pregunta {
+  width: 100%;
+  height: 14%;
+  border-radius: 15px;
+  background: var(--Color-Dashboard, #1F2336);
+  padding: 1%;
+  padding-left: 2%;
+  display: flex;
+  align-items: center;
+  gap: 2%;
+}
+
+.reported {
+  background-color: #F26A2F !important;
+}
+
+.categorias-table-container {
+  width: 98%;
+  height: 83%;
+  border-radius: 25px;
+  background: var(--Azul---Gris, #25293D);
+  box-shadow: 135px 118px 50px 0px rgba(197, 166, 166, 0), 86px 75px 46px 0px rgba(0, 0, 0, 0.01), 49px 42px 39px 0px rgba(0, 0, 0, 0.05), 22px 19px 29px 0px rgba(0, 0, 0, 0.09), 5px 5px 16px 0px rgba(0, 0, 0, 0.10);
+  padding: 2%;
+  overflow: hidden;
+}
+
+/* Contenedor principal del DataGrid */
+.categorias-datagrid .MuiDataGrid-root {
+  border: none !important;
+  background: #25293D !important;
+  color: white !important;
+  font-family: Montserrat !important;
+}
+
+/* Contenedor de virtualización */
+.categorias-datagrid .MuiDataGrid-virtualScroller {
+  background: #25293D !important;
+}
+
+/* ===== HEADERS DE COLUMNAS ===== */
+.categorias-datagrid .MuiDataGrid-columnHeaders {
+  background: #25293D !important;
+  border-bottom: 1px solid #535353 !important;
+  min-height: 56px !important;
+  max-height: 56px !important;
+  height: 56px !important;
+  line-height: 56px !important;
+}
+
+.categorias-datagrid .MuiDataGrid-columnHeader {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  padding: 0 16px !important;
+}
+
+.categorias-datagrid .MuiDataGrid-columnHeader:focus,
+.categorias-datagrid .MuiDataGrid-columnHeader:focus-within {
+  outline: none !important;
+}
+
+.categorias-datagrid .MuiDataGrid-columnHeaderTitle {
+  color: #A09F9F !important;
+  font-family: Montserrat !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 20px !important;
+  overflow: visible !important;
+  white-space: normal !important;
+}
+
+.categorias-datagrid .MuiDataGrid-iconButtonContainer {
+  visibility: hidden !important;
+}
+
+.categorias-datagrid .MuiDataGrid-columnSeparator {
+  display: none !important;
+}
+
+/* ===== FILAS ===== */
+.categorias-datagrid .MuiDataGrid-row {
+  background: #1F2336 !important;
+  border-radius: 12px !important;
+  margin-bottom: 16px !important;
+  min-height: 120px !important;
+  max-height: 120px !important;
+  border: none !important;
+  cursor: default !important;
+}
+
+.categorias-datagrid .MuiDataGrid-row:hover {
+  background: #2d3249 !important;
+}
+
+.categorias-datagrid .MuiDataGrid-row.Mui-selected {
+  background: #1F2336 !important;
+}
+
+.categorias-datagrid .MuiDataGrid-row.Mui-selected:hover {
+  background: #2d3249 !important;
+}
+
+/* ===== CELDAS ===== */
+.categorias-datagrid .MuiDataGrid-cell {
+  border: none !important;
+  color: white !important;
+  font-family: Montserrat !important;
+  font-size: 16px !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 12px 16px !important;
+  outline: none !important;
+}
+
+.categorias-datagrid .MuiDataGrid-cell:focus,
+.categorias-datagrid .MuiDataGrid-cell:focus-within {
+  outline: none !important;
+}
+
+/* ===== COLUMNA DE IMÁGENES ===== */
+.categorias-datagrid .MuiDataGrid-cell--withRenderer {
+  overflow: visible !important;
+}
+
+.categoria-img-container {
+  width: 100%;
+  height: 100%;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding: 10px 0 !important;
+}
+
+
+
+/* ===== BOTÓN DE ELIMINAR ===== */
+.categoria-delete-icon {
+  width: 24px !important;
+  height: 24px !important;
+  cursor: pointer;
+  transition: transform 0.2s, filter 0.2s;
+}
+
+.categoria-delete-icon:hover {
+  transform: scale(1.1);
+  filter: brightness(1.3);
+}
+
+/* ===== BOTÓN DE EDITAR ===== */
+.categorias-datagrid .editar-button {
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3) !important;
+  color: white;
+  cursor: pointer;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 8px 16px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.categorias-datagrid .editar-button:hover {
+  background: rgba(255, 255, 255, 0.1) !important;
+  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+}
+
+.categorias-datagrid .editar-button img {
+  width: 16px;
+  height: 16px;
+}
+
+.categorias-datagrid .editar-button .nohover-banco {
+  display: inline-block;
+}
+
+.categorias-datagrid .editar-button .hover-banco {
+  display: none;
+}
+
+.categorias-datagrid .editar-button:hover .nohover-banco {
+  display: none;
+}
+
+.categorias-datagrid .editar-button:hover .hover-banco {
+  display: inline-block;
+}
+
+/* ===== FOOTER Y PAGINACIÓN ===== */
+.categorias-datagrid .MuiDataGrid-footerContainer {
+  background: transparent !important;
+  border-top: 1px solid #535353 !important;
+  padding: 16px 0 !important;
+  justify-content: center !important;
+  min-height: 56px !important;
+  margin-top: auto !important;
+}
+
+/* ===== SCROLLBAR ===== */
+.categorias-datagrid .MuiDataGrid-virtualScroller::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.categorias-datagrid .MuiDataGrid-virtualScroller::-webkit-scrollbar-track {
+  background: #1F2336;
+  border-radius: 10px;
+}
+
+.categorias-datagrid .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb {
+  background: #535353;
+  border-radius: 10px;
+}
+
+.categorias-datagrid .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb:hover {
+  background: #6a6a6a;
+}
+
+/* ===== FILLER (espacio vacío) ===== */
+.categorias-datagrid .MuiDataGrid-filler {
+  background: #25293D !important;
+}
+
+/* ========================================
+   RESPONSIVE DESIGN
+   ======================================== */
+
+/* DESKTOP GRANDE (1920px+) */
+@media (min-width: 1920px) {
+  .categorias-datagrid .MuiDataGrid-columnHeaderTitle {
+    font-size: 18px !important;
+  }
+  
+  .categorias-datagrid .MuiDataGrid-cell {
+    font-size: 18px !important;
+  }
+  
+  .categoria-thumb {
+    width: 260px !important;
+    height: 120px !important;
+  }
+}
+
+
+
+@media (max-width: 767px) {
+  .categorias-table-container {
+    width: 94%;
+    padding: 3%;
+    border-radius: 20px;
+  }
+  
+  .categorias-datagrid .MuiDataGrid-columnHeaders {
+    min-height: 44px !important;
+    max-height: 44px !important;
+    height: 44px !important;
+  }
+  
+  .categorias-datagrid .MuiDataGrid-columnHeader {
+    padding: 0 8px !important;
+  }
+  
+  .categorias-datagrid .MuiDataGrid-columnHeaderTitle {
+    font-size: 12px !important;
+    line-height: 14px !important;
+  }
+  
+  .categorias-datagrid .MuiDataGrid-cell {
+    font-size: 12px !important;
+    padding: 6px 8px !important;
+  }
+  
+  .categorias-datagrid .MuiDataGrid-row {
+    min-height: 105px !important;
+    max-height: 105px !important;
+    margin-bottom: 12px !important;
+    border-radius: 10px !important;
+  }
+  
+   .responsive-img-category {
+    width: 122px;
+    height: 80px;
+}
+  
+  
+  .categorias-datagrid .editar-button {
+    font-size: 11px;
+    padding: 5px 8px;
+    gap: 4px;
+  }
+  
+  .categorias-datagrid .editar-button img {
+    width: 12px;
+    height: 12px;
+  }
+  
+  .categoria-delete-icon {
+    width: 18px !important;
+    height: 18px !important;
+  }
+}
+

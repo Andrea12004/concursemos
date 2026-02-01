@@ -1,0 +1,280 @@
+/* Emisor (mensajes propios) y receptor (mensajes de otros) */
+.container-emisor {
+  height: max-content;
+  display: inline-block;
+  max-width: 70%;
+  padding: 4%;
+  background: url("/svg/partida/emisor.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: right;
+  background-position-y: bottom;
+  box-sizing: border-box;
+}
+
+.container-receptor {
+  height: max-content;
+  display: inline-block;
+  max-width: 70%;
+  padding: 2%;
+  background: url("/svg/partida/receptor.svg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: left;
+  background-position-y: bottom;
+  box-sizing: border-box;
+}
+
+.container-space-chat {
+  height: 100%;
+}
+
+.container-space-chat2 {
+  height: calc(100% - 84px);
+  overflow-y: auto;
+  padding-bottom: 96px;
+}
+
+.mensaje-container {
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.name-user-chat {
+  color: var(--Azul---Gris, #25293d);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: 20px;
+}
+
+.message-text-user {
+  color: var(--Azul---Gris, #25293d);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  /* Allow long text to wrap instead of overflow */
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+  /* force breaking inside very long words */
+  word-break: break-all;
+  hyphens: auto;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 0;
+  margin-bottom: 10%;
+}
+
+/* Keep very long messages inside the bubble: allow internal scrolling */
+.container-emisor,
+.container-receptor {
+  position: relative;
+  max-height: 60vh; /* cap bubble height */
+  overflow: auto; /* scroll inside bubble if content too long */
+}
+
+.container-chat {
+  width: 21%;
+  height: 100%;
+  background: url("/images/Fondos/Fondo-chat.png") lightgray 50% / cover
+    no-repeat;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (min-width: 768px) and (max-width: 1700px) {
+  .container-chat {
+    width: 21%;
+    height: 100%;
+    background: url("/images/Fondos/Fondo-chat.png") lightgray 50% / cover
+      no-repeat;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .name-user-chat {
+    color: var(--Azul---Gris, #25293d);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 20px;
+  }
+
+  .message-text-user {
+    color: var(--Azul---Gris, #25293d);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    max-width: 100%;
+    /* mobile/tablet: also allow breaking inside long words */
+    word-break: break-all;
+    margin: 0%;
+    margin-bottom: 10%;
+  }
+
+  .container-emisor {
+    height: max-content;
+    /* allow flexible width but cap it so header/footer and tail fit */
+    max-width: 60%;
+    padding: 4%;
+    background: url("/svg/partida/emisor.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: right;
+    background-position-y: bottom;
+  }
+
+  .container-receptor {
+    height: max-content;
+    max-width: 60%;
+    padding: 2%;
+    background: url("/svg/partida/receptor.svg");
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position-x: left;
+    background-position-y: bottom;
+  }
+
+  .container-space-chat {
+    height: 100%;
+  }
+
+  .container-space-chat2 {
+    height: 90%;
+    overflow-y: scroll;
+  }
+
+  .mensaje-container {
+    height: min-content;
+  }
+}
+
+@media (max-width: 767px) {
+  /* Sobrescribir estilos del chat móvil */
+  .movil-chat {
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    border-radius: 100px;
+    background-color: #f26a2f;
+    width: 70px;
+    height: 70px;
+    z-index: 8;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(242, 106, 47, 0.3);
+  }
+
+  .movil-chat > img {
+    width: 30px !important;
+    height: 30px !important;
+  }
+
+  .movil-chat {
+    display: flex !important; /* Forzar que siempre sea visible */
+  }
+
+  /* Contenedor del chat con los nuevos estilos */
+  .container-chat {
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 70vh !important;
+    max-height: 600px !important;
+    background: url("/images/Fondos/Fondo-chat.png") lightgray 50% / cover
+      no-repeat !important;
+    border-radius: 20px 20px 0 0 !important;
+    display: flex !important;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    z-index: 1000 !important;
+    transition: transform 0.3s ease;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .container-chat-hidden {
+    transform: translateY(100%) !important;
+    display: flex !important;
+  }
+
+  .container-chat-visible {
+    transform: translateY(0) !important;
+    display: flex !important;
+  }
+
+  /* Remover reglas conflictivas del container-chat-hidden original */
+  .container-chat-hidden .container-chat,
+  .container-chat-hidden > div {
+    display: flex !important;
+  }
+
+  /* Overlay */
+  .chat-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+    display: none;
+  }
+
+  .chat-overlay-visible {
+    display: block !important;
+  }
+}
+
+/* Internal close button inside the chat header (mobile) */
+.movil-chat-inside {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.06);
+  /* hidden by default; will be enabled only on mobile via media query */
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1100;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+.movil-chat-inside img {
+  width: 18px;
+  height: 18px;
+}
+
+/* Ensure external movil-chat stays on top */
+.movil-chat {
+  z-index: 1200;
+}
+
+/* Show the internal close button only on mobile */
+@media (max-width: 767px) {
+  .movil-chat-inside {
+    display: flex !important;
+  }
+}

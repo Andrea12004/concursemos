@@ -1,0 +1,74 @@
+.image-button {
+  background: transparent;
+  border: 0;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-button img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Ensure hover images are hidden by default and shown only on hover (preserve original behavior) */
+.image-button .svg-accesos-rapidos {
+  display: none;
+}
+
+.div-accesos-rapidos > .image-button > img:not(.svg-accesos-rapidos) {
+  display: block;
+}
+
+.div-accesos-rapidos > .image-button:hover > img:not(.svg-accesos-rapidos) {
+  display: none;
+}
+
+.div-accesos-rapidos > .image-button:hover > .svg-accesos-rapidos {
+  display: block;
+}
+
+/* When using ImageButton for notification icons, preserve relative positioning for the badge */
+.image-button.notificaciones,
+.image-button.notificaciones-usuarios {
+  position: relative;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.image-button .notificaciones-flotantes,
+.image-button .notificaciones-flotantes-usuarios {
+  right: -8px;
+  top: -6px;
+  position: absolute;
+  z-index: 2;
+}
+
+/* Ensure icons used inside quick-access areas keep their size on desktop and scale on mobile */
+.image-button.icon-sm img {
+  width: 28px;
+  height: 28px;
+}
+
+.image-button.icon-md img {
+  width: 36px;
+  height: 36px;
+}
+
+@media (max-width: 767px) {
+  .image-button.icon-sm img {
+    width: 24px;
+    height: 24px;
+  }
+
+  .image-button.icon-md img {
+    width: 30px;
+    height: 30px;
+  }
+}

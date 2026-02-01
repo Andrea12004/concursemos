@@ -1,0 +1,746 @@
+
+/*REGISTRO*/
+.fondo-registro {
+  background-image: url("/images/Fondos/Fondo-Registro.png");
+  background-size: cover;
+  background-repeat: no-repeat;
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.div-form-registro {
+  background-color: #fff;
+  border-radius: 20px;
+  width: 667px;
+  height: 80%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.header-form-registro {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 2%;
+  width: 100%;
+  height: 35%;
+}
+
+.logo-registro {
+  width: 30%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo-img-registro {
+  width: 60%;
+}
+
+.h3-class-registro {
+  color: var(--Azul-Secundario, #f26a2f);
+  text-align: right;
+  text-wrap: wrap;
+  margin: 0px;
+}
+
+.div-header-text-registro {
+  width: 55%;
+  padding-right: 5%;
+}
+
+.descripcion-registro {
+  color: var(--Azul---Gris, #25293d);
+  text-align: right;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  margin: 0px;
+  margin-top: 2%;
+}
+
+.div-contenido-registro {
+  height: 60%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+}
+
+.form-registro {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 80%;
+}
+
+.input-registro {
+  border-radius: 10px;
+  border: 1px solid var(--Gris-3, #686868);
+  width: 98%;
+  height: 12%;
+  outline: none;
+  color: var(--Gris-3, #686868);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+.div-name-tel {
+  width: 98%;
+  height: 12%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 4%;
+}
+
+.input-name-registro {
+  border-radius: 10px;
+  border: 1px solid var(--Gris-3, #686868);
+  width: 48%;
+  height: 100%;
+  outline: none;
+  color: var(--Gris-3, #686868);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+.input-tel-registro {
+  border-radius: 10px;
+  border: 1px solid var(--Gris-3, #686868);
+  width: 48%;
+  height: 100%;
+  outline: none;
+  color: var(--Gris-3, #686868);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  padding-left: 10px;
+  margin-bottom: 10px;
+}
+
+.div-input-registro {
+  border-radius: 10px;
+  border: 1px solid var(--Gris-3, #686868);
+  width: 98%;
+  height: 12%;
+  padding-left: 10px;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.input2-registro {
+  border-radius: 10px;
+  border: 0px solid var(--Gris-3, #686868);
+  width: 80%;
+  height: 80%;
+  outline: none;
+  color: var(--Gris-3, #686868);
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.svg-registro {
+  cursor: pointer;
+}
+
+.copyraight {
+  color: var(--Blanco, #fff);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+}
+
+.label-check-registro {
+  color: var(--Gris-3, #686868);
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin-top: 2%;
+  gap: 2%;
+}
+
+.check-registro {
+  border-radius: 3px;
+  border: 1px solid var(--Gris-1, #d9d9d9);
+}
+
+.link-register-registro {
+  color: var(--Gris-3, #686868);
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px;
+  text-decoration: none;
+}
+
+.link-register-login:hover {
+  color: var(--Gris-3, #134e9d);
+}
+
+.div-link-reset-register {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  gap: 1%;
+  margin-bottom: 3%;
+  padding-left: 1%;
+}
+
+.div-link-reset-register > div {
+  width: 100%;
+}
+
+.div-link-reset-register > div > p {
+  margin: 0%;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1%;
+  padding-left: 1%;
+}
+
+.p-register {
+  margin: 0%;
+  color: var(--Naranja, #f26a2f);
+  font-family: Montserrat;
+  font-size: 15px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
+.p-register.valid {
+  color: #134e9d;
+}
+
+.p-register.invalid {
+  color: #f26a2f;
+}
+
+.button-ingresar-registro {
+  border-radius: 10px;
+  outline: none;
+  border: 0px;
+  background: var(--Azul-Secundario, #134e9d);
+  color: var(--Blanco, #fff);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 20px;
+  width: 100%;
+  height: 10%;
+  cursor: pointer;
+}
+
+.button-ingresar-registro:hover {
+  background: var(--Naranja, #f26a2f);
+}
+
+.div-register-link-registro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2%;
+  width: 100%;
+}
+
+.label-register-link-registro {
+  color: var(--Gris-3, #686868);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px;
+}
+
+.register-link-registro {
+  color: var(--Azul-Secundario, #134e9d);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 64px;
+  text-decoration: none;
+}
+
+.register-link-registro:hover {
+  color: var(--Naranja, #f26a2f);
+}
+/*END::REGISTRO*/
+
+
+@media (max-width: 767px) {
+  .fondo-registro {
+    background-image: url("/images/Fondos/Fondo-Registro.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 15px;
+    box-sizing: border-box;
+  }
+
+  .div-form-registro {
+    background-color: #fff;
+    border-radius: 20px;
+    width: 390px;
+    max-width: 100%;
+    height: auto;
+    min-height: 85vh;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px 0;
+  }
+
+  /* 🔧 CORRECCIÓN PRINCIPAL: Header reorganizado */
+  .header-form-registro {
+    display: flex;
+    flex-direction: column; /* Cambiado a columna para móviles */
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* Mayor espacio entre elementos */
+    width: 100%;
+    height: auto; /* Altura automática */
+    min-height: 200px; /* Altura mínima */
+    padding: 20px 15px;
+  }
+
+  .logo-registro {
+    width: 100%; /* Ancho completo */
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+
+  .logo-img-registro {
+    width: 80px; /* Tamaño fijo del logo */
+    height: auto;
+  }
+
+  /* 🔧 CORRECCIÓN: Título mejor organizado */
+  .h3-class-registro {
+    color: var(--Azul-Secundario, #f26a2f);
+    text-align: center; /* Centrado para móviles */
+    text-wrap: wrap;
+    margin: 0px;
+    font-size: 24px; /* Tamaño reducido */
+    line-height: 28px; /* Mejor espaciado de línea */
+    width: 100%;
+  }
+
+  /* 🔧 CORRECCIÓN: Contenedor de texto ajustado */
+  .div-header-text-registro {
+    width: 90%; /* Más ancho para el texto */
+    padding-right: 0; /* Sin padding derecho */
+    padding: 0 10px; /* Padding lateral */
+  }
+
+  /* 🔧 CORRECCIÓN: Descripción mejor espaciada */
+  .descripcion-registro {
+    color: var(--Azul---Gris, #25293d);
+    text-align: center; /* Centrado para móviles */
+    font-family: Montserrat;
+    font-size: 13px; /* Reducido para que quepa */
+    font-style: normal;
+    font-weight: 500;
+    line-height: 17px; /* Mejor espaciado entre líneas */
+    margin: 0px;
+    margin-top: 8px; /* Espacio superior */
+    word-wrap: break-word; /* Permite romper palabras largas */
+  }
+
+  .div-contenido-registro {
+    height: auto;
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    padding: 15px 0;
+    overflow-y: auto; /* Scroll si es necesario */
+  }
+
+  .form-registro {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 85%; /* Más ancho en móviles */
+    gap: 10px;
+  }
+
+  .input-registro {
+    border-radius: 10px;
+    border: 1px solid var(--Gris-3, #686868);
+    width: 100%;
+    height: 45px; /* Altura fija */
+    outline: none;
+    color: var(--Gris-3, #686868);
+    font-family: Montserrat;
+    font-size: 14px; /* Reducido */
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    padding-left: 10px;
+    margin-bottom: 8px;
+  }
+
+  .div-name-tel {
+    width: 100%;
+    height: auto;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 3%;
+  }
+
+  .input-name-registro {
+    border-radius: 10px;
+    border: 1px solid var(--Gris-3, #686868);
+    width: 48.5%;
+    height: 45px; /* Altura fija */
+    outline: none;
+    color: var(--Gris-3, #686868);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    padding-left: 10px;
+    margin-bottom: 0;
+  }
+
+  .input-tel-registro {
+    border-radius: 10px;
+    border: 1px solid var(--Gris-3, #686868);
+    width: 48.5%;
+    height: 45px; /* Altura fija */
+    outline: none;
+    color: var(--Gris-3, #686868);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    padding-left: 10px;
+    margin-bottom: 0;
+  }
+
+  .div-input-registro {
+    border-radius: 10px;
+    border: 1px solid var(--Gris-3, #686868);
+    width: 100%;
+    height: 45px; /* Altura fija */
+    padding-left: 10px;
+    margin-bottom: 8px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .input2-registro {
+    border-radius: 10px;
+    border: 0px solid var(--Gris-3, #686868);
+    width: 85%;
+    height: 100%;
+    outline: none;
+    color: var(--Gris-3, #686868);
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+  }
+
+  .svg-registro {
+    cursor: pointer;
+    width: 20px;
+    height: 20px;
+  }
+
+  .copyraight {
+    color: var(--Blanco, #fff);
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 13px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 18px;
+    padding: 0 15px;
+    margin-top: 10px;
+  }
+
+  .label-check-registro {
+    color: var(--Gris-3, #686868);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 15px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: 8px;
+    gap: 2%;
+  }
+
+  .check-registro {
+    border-radius: 3px;
+    border: 1px solid var(--Gris-1, #d9d9d9);
+    width: 16px;
+    height: 16px;
+  }
+
+  .link-register-registro {
+    color: var(--Gris-3, #686868);
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 15px;
+    text-decoration: none;
+  }
+
+  .div-link-reset-register {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: start;
+    gap: 5px;
+    margin-bottom: 15px;
+    padding-left: 5px;
+  }
+
+  .div-link-reset-register > div {
+    width: 100%;
+  }
+
+  .div-link-reset-register > div > p {
+    margin: 0%;
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 5px;
+    padding-left: 0;
+    font-size: 11px;
+  }
+
+  .p-register {
+    margin: 0%;
+    color: var(--Naranja, #f26a2f);
+    font-family: Montserrat;
+    font-size: 12px; /* Reducido */
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+  }
+
+  .p-register.valid {
+    color: #134e9d;
+  }
+
+  .p-register.invalid {
+    color: #f26a2f;
+  }
+
+  .button-ingresar-registro {
+    border-radius: 10px;
+    outline: none;
+    border: 0px;
+    background: var(--Azul-Secundario, #134e9d);
+    color: var(--Blanco, #fff);
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 15px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 20px;
+    width: 100%;
+    height: 45px; /* Altura fija */
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .button-ingresar-registro:hover {
+    background: var(--Naranja, #f26a2f);
+  }
+
+  .div-register-link-registro {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    width: 100%;
+    margin-top: 12px;
+  }
+
+  .label-register-link-registro {
+    color: var(--Gris-3, #686868);
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 15px;
+  }
+
+  .register-link-registro {
+    color: var(--Azul-Secundario, #134e9d);
+    text-align: center;
+    font-family: Montserrat;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 15px;
+    text-decoration: none;
+  }
+
+  .register-link-registro:hover {
+    color: var(--Naranja, #f26a2f);
+  }
+}
+
+/* ============================================
+   AJUSTES PARA iPhone SE (375px)
+   ============================================ */
+@media (max-width: 375px) {
+  .div-form-registro {
+    width: 95%;
+    max-width: 365px;
+    padding: 15px 0;
+  }
+
+  .header-form-registro {
+    min-height: 180px;
+    padding: 15px 10px;
+  }
+
+  .logo-img-registro {
+    width: 70px;
+  }
+
+  .h3-class-registro {
+    font-size: 22px;
+    line-height: 26px;
+  }
+
+  .descripcion-registro {
+    font-size: 12px;
+    line-height: 16px;
+  }
+
+  .form-registro {
+    width: 90%;
+  }
+
+  .input-registro,
+  .input-name-registro,
+  .input-tel-registro,
+  .div-input-registro {
+    height: 42px;
+    font-size: 13px;
+  }
+}
+
+/* ============================================
+   AJUSTES PARA PANTALLAS MUY PEQUEÑAS (320px)
+   ============================================ */
+@media (max-width: 320px) {
+  .div-form-registro {
+    width: 98%;
+    max-width: 310px;
+  }
+
+  .header-form-registro {
+    min-height: 170px;
+  }
+
+  .logo-img-registro {
+    width: 60px;
+  }
+
+  .h3-class-registro {
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  .descripcion-registro {
+    font-size: 11px;
+    line-height: 15px;
+  }
+
+  .input-registro,
+  .input-name-registro,
+  .input-tel-registro,
+  .div-input-registro {
+    height: 40px;
+    font-size: 12px;
+  }
+
+  .button-ingresar-registro {
+    height: 42px;
+    font-size: 14px;
+  }
+}

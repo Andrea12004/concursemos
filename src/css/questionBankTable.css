@@ -1,0 +1,173 @@
+/* banco-table.css - Estilos para la tabla del banco de preguntas */
+
+/* Contenedor principal de la tabla */
+.banco-table-container {
+  background-color: transparent;
+   border: none !important;
+  border-radius: 8px;
+  flex: 1 1 auto;  /* Ocupa todo el espacio disponible */
+    min-height: 0;  /* Importante para que funcione el flex */
+    overflow: hidden; 
+}
+
+.banco-table-container .MuiDataGrid-root {
+  border: none !important;
+  background: #25293d !important;
+  color: white !important;
+}
+
+/* Headers de la tabla */
+.banco-table-container .MuiDataGrid-columnHeaders {
+  background: #25293d!important;
+  min-height: 40px !important;
+  max-height: 40px !important;
+  border-bottom: none !important;
+}
+
+.banco-table-container .MuiDataGrid-columnHeader {
+  padding: 0 8px !important;
+  background: transparent !important;
+  border: none !important;
+}
+
+
+.banco-table-container .MuiDataGrid-columnHeaderTitle {
+  color: #A09F9F !important;
+  font-family: Montserrat !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  line-height: 20px !important;
+  white-space: normal !important;
+  overflow: visible !important;
+}
+
+
+
+/* Filas de la tabla */
+.banco-table-container .MuiDataGrid-row {
+  background: #1f2238!important;
+  border-radius: 15px !important;
+  margin-bottom: 8px !important;
+  min-height: 70px !important;
+  max-height: 70px !important;
+  border: none !important;
+}
+
+.banco-table-container .MuiDataGrid-row.Mui-selected {
+  background-color: transparent;
+}
+
+
+
+/* Fila reportada - Naranja */
+.banco-table-container .MuiDataGrid-row.reported {
+  background-color: rgb(242, 105, 46) !important;
+  border-left: 4px solid #f2692e;
+}
+
+
+/* Celdas */
+.banco-table-container .MuiDataGrid-cell {
+ border-bottom: none !important;
+  border-top: none !important;
+  border-left: none !important;
+  border-right: none !important;
+  color: white !important;
+  font-family: Montserrat !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  line-height: 20px !important;
+  padding: 8px 12px !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
+
+
+/* Footer - Paginación */
+.banco-table-container .MuiDataGrid-footerContainer {
+  background-color: transparent;
+  border-top: 1px solid rgba(160, 159, 159, 0.1);
+}
+
+.banco-table-container .MuiTablePagination-root {
+  color: #A09F9F;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.banco-table-container .MuiTablePagination-selectLabel,
+.banco-table-container .MuiTablePagination-displayedRows {
+  color: #A09F9F;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 14px;
+}
+
+.banco-table-container .MuiTablePagination-select {
+  color: #ffffff;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.banco-table-container .MuiTablePagination-selectIcon {
+  color: #A09F9F;
+}
+
+/* Botones de paginación */
+.banco-table-container .MuiIconButton-root {
+  color: #A09F9F;
+}
+
+.banco-table-container .MuiIconButton-root:hover {
+  background-color: rgba(60, 235, 255, 0.1);
+  color: #3CEBFF;
+}
+
+.banco-table-container .MuiIconButton-root.Mui-disabled {
+  color: rgba(160, 159, 159, 0.3);
+}
+
+/* Overlay cuando no hay datos */
+.banco-table-container .MuiDataGrid-overlay {
+  background-color: rgba(37, 41, 61, 0.9);
+  color: #A09F9F;
+  font-family: 'Montserrat', sans-serif;
+}
+
+/* Virtual scroller */
+.banco-table-container .MuiDataGrid-virtualScroller {
+  background-color: transparent;
+}
+
+.banco-table-container .MuiDataGrid-virtualScrollerContent {
+  background-color: transparent;
+}
+
+.banco-table-container .MuiDataGrid-virtualScrollerRenderZone {
+  background-color: transparent;
+}
+
+/* Scrollbars personalizados */
+.banco-table-container .MuiDataGrid-virtualScroller::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.banco-table-container .MuiDataGrid-virtualScroller::-webkit-scrollbar-track {
+  background: rgba(37, 41, 61, 0.5);
+  border-radius: 4px;
+}
+
+.banco-table-container .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb {
+  background: #A09F9F;
+  border-radius: 4px;
+}
+
+.banco-table-container .MuiDataGrid-virtualScroller::-webkit-scrollbar-thumb:hover {
+  background: #3CEBFF;
+}
+
+/* Estilos para el botón Editar */
+.banco-table-container .MuiDataGrid-cell button {
+  font-family: 'Montserrat', sans-serif;
+}
+
+

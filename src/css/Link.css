@@ -1,0 +1,131 @@
+.link-register-login {
+  color: var(--Gris-3, #686868);
+  /* Texto Mínimo */
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px; /* 100% */
+  text-decoration: none;
+}
+
+.link-register-login:hover {
+  color: var(--Gris-3, #134E9D);
+}
+
+.div-link-reset-login{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15%;
+  
+}
+
+.div-register-link{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2%;
+  width: 100%;
+}
+
+.label-register-link{
+  color: var(--Gris-3, #686868);
+  text-align: center;
+  /* Texto Mínimo */
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px; /* 100% */
+}
+
+.register-link {
+  color: var(--Azul-Secundario, #134E9D);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 64px; /* 492.308% */
+  text-decoration: none;
+}
+
+.register-link:hover {
+  color: var(--Naranja, #F26A2F );
+}
+
+/* Estilos para el recordar datos de usuario y olvido de contraseña */
+.div-link-reset-login {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 15%;
+}
+
+/* Estilos para el checkbox de recordar usuario */
+.label-check-login {
+  color: var(--Gris-3, #686868);
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Estilos para el enlace de olvido de contraseña */
+.link-register-login {
+  color: var(--Gris-3, #686868);
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px;
+  text-decoration: none;
+}
+
+.link-register-login:hover {
+  color: var(--Azul-Secundario, #134E9D);
+}
+
+/* Estilos para el área de registro */
+.div-register-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.label-register-link {
+  color: var(--Gris-3, #686868);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 13px;
+}
+
+.register-link {
+  color: var(--Azul-Secundario, #134E9D);
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 64px;
+  text-decoration: none;
+}
+
+.register-link:hover {
+  color: var(--Naranja, #F26A2F);
+}
+
+
+/* Estilos para móviles */

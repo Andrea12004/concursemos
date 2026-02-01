@@ -1,0 +1,466 @@
+/*USUARIOS-RANKING*/
+  .content-usuarios{
+    width: 98%;
+    height: 83%;
+    border-radius: 25px;
+    background: var(--Azul---Gris, #25293D);
+    box-shadow: 135px 118px 50px 0px rgba(0, 0, 0, 0.00), 86px 75px 46px 0px rgba(0, 0, 0, 0.01), 49px 42px 39px 0px rgba(0, 0, 0, 0.05), 22px 19px 29px 0px rgba(0, 0, 0, 0.09), 5px 5px 16px 0px rgba(0, 0, 0, 0.10);
+    padding: 2%;
+    display: flex !important;  /* Añade esto */
+    flex-direction: column !important;  /* Añade esto */
+    gap: 16px;
+  }
+
+  .table-usuarios{
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+  }
+
+  .thead-suaurios {
+    width: 100%;
+    height: 5%;
+    display: flex;
+    flex-direction: column;
+    border-bottom: 1px solid #535353;
+  }
+
+  .thead-suaurios > tr {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+
+    color: var(--Gris-4, #A09F9F);
+    /* Textos Generales */
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 14px; /* 87.5% */
+    text-align: left;
+  }
+
+  .tbody-usuarios {
+    width: 100%;
+    height: 90%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tr-usuarios {
+    width: 100%;
+    height: 10%;
+    display: flex;
+    align-items: center;
+    /* Textos Generales */
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 14px; /* 87.5% */
+    text-align: left;
+    border-bottom: 1px solid #535353;
+  }
+
+  .td-id{width: 7%;}
+  .td-name{width: 15%;}
+  .td-verified{width: 5%;}
+  .td-tel{width: 15%;}
+  .td-ciudad{width: 12%;}
+  .td-nivel{width: 6%;}
+  .td-puntosusers{width: 8%;}
+  .td-estadopago{width: 15%;}
+  .td-eliminar{width: 7%;}
+
+
+  .td-nivel > img {
+    width: 60%;
+    border: 2px solid #fff;
+    border-radius: 50px;
+  }
+
+  .td-estadopago > select {
+    width: 70%;
+    outline: none;
+    padding: 2%;
+    border-radius: 3px;
+    background: var(--Azul-Secundario, #134E9D);
+
+    color: var(--Blanco, #FFF);
+    /* Texto Mínimo */
+    font-family: Montserrat;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: 13px; /* 100% */
+  }
+
+
+
+  .td-id-ranking{
+    width: 10%;
+  }
+  .td-name-ranking{width: 35%;}
+  .td-nivel-ranking{width: 10%;}
+  .td-preguntas-ranking{width: 15%;}
+  .td-salas-ranking{width: 15%;}
+  .td-puntosusers-ranking{width: 25%;}
+
+  .td-nivel-ranking > img {
+    width: 30%;
+    border: 2px solid #fff;
+    border-radius: 50px;
+  }
+  /*END:USUARIOS-RANKING*/
+
+  /* ================= USUARIOS-RANKING ================= */
+
+/* Portátil (992px - 1200px) */
+@media (min-width: 992px) and (max-width: 1200px) {
+  .content-usuarios {
+    padding: 1.5%;
+    gap: 12px;
+  }
+  
+  .thead-suaurios > tr {
+    font-size: 13px;
+    line-height: 13px;
+  }
+  
+  .tr-usuarios {
+    font-size: 13px;
+    line-height: 13px;
+  }
+  
+  .td-estadopago > select {
+    font-size: 13px;
+    width: 80%;
+  }
+  
+  .td-nivel > img,
+  .td-nivel-ranking > img {
+    width: 70%;
+  }
+}
+
+/* Tablet (768px - 991px) */
+@media (min-width: 768px) and (max-width: 991px) {
+  .content-usuarios {
+    height: 85%;
+    padding: 1.5%;
+    gap: 10px;
+    overflow-x: auto;
+  }
+  
+  .table-usuarios {
+    min-width: 900px; /* Ancho mínimo para mantener estructura */
+  }
+  
+  .thead-suaurios {
+    height: 6%;
+  }
+  
+  .thead-suaurios > tr {
+    font-size: 12px;
+    line-height: 12px;
+  }
+  
+  .tbody-usuarios {
+    min-height: 500px;
+  }
+  
+  .tr-usuarios {
+    height: 9%;
+    font-size: 12px;
+    line-height: 12px;
+  }
+  
+  /* Ajustar anchos de columnas */
+  .td-id { width: 6%; }
+  .td-name { width: 14%; }
+  .td-verified { width: 5%; }
+  .td-tel { width: 14%; }
+  .td-ciudad { width: 11%; }
+  .td-nivel { width: 6%; }
+  .td-puntosusers { width: 9%; }
+  .td-estadopago { width: 16%; }
+  .td-eliminar { width: 8%; }
+  
+  .td-estadopago > select {
+    font-size: 12px;
+    width: 85%;
+    padding: 3%;
+  }
+  
+  .td-nivel > img,
+  .td-nivel-ranking > img {
+    width: 80%;
+  }
+  
+  /* Ranking específico */
+  .td-id-ranking { width: 8%; }
+  .td-name-ranking { width: 32%; }
+  .td-nivel-ranking { width: 10%; }
+  .td-preguntas-ranking { width: 16%; }
+  .td-salas-ranking { width: 16%; }
+  .td-puntosusers-ranking { width: 28%; }
+}
+
+/* Móvil (≤767px) */
+@media (max-width: 767px) {
+  .content-usuarios {
+    width: 100%;
+    height: 90%;
+    padding: 3%;
+    border-radius: 15px;
+    overflow-x: auto;
+    gap: 8px;
+    box-shadow: none; /* Simplificar sombra en móvil */
+  }
+
+  /* Banco header tweaks for mobile */
+  .banco-header {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* más espacio entre título y botón */
+    width: 100%;
+  }
+
+  .banco-header .h3-content-perfil {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    width: calc(100% - 120px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-size: 18px;
+    font-weight: 600; /* menos 'pesado' visualmente pero aún destacado */
+    line-height: 1.1;
+  }
+
+  .banco-header .link-categorias-movil {
+    width: auto !important;
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    margin-top: 0 !important;
+    align-self: center !important;
+    min-width: 100px !important;
+  }
+
+  @media (max-width: 640px) {
+    .banco-header .h3-content-perfil {
+      font-size: 15px; /* reducir un punto más */
+      width: calc(100% - 110px);
+      font-weight: 500; /* menos peso en móviles para mejorar lectura */
+    }
+
+    .banco-header .h3-content-perfil .textos-peques {
+      padding-top: 2px;
+      font-size: 12px;
+      opacity: 0.95;
+    }
+
+    /* Botón más alargado en móvil */
+    .banco-header .link-categorias-movil {
+      min-width: 140px !important;
+      width: 140px !important;
+      padding: 8px 12px !important;
+      font-size: 13px !important;
+      border-radius: 8px !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+    }
+
+    /* Ajuste para móviles muy estrechos */
+    @media (max-width: 480px) {
+      .banco-header .link-categorias-movil {
+        min-width: 120px !important;
+        width: 120px !important;
+        padding: 7px 10px !important;
+        font-size: 12px !important;
+      }
+    }
+  }
+
+  .banco-header .link-categorias-movil {
+    width: auto !important;
+    padding: 6px 10px !important;
+    font-size: 13px !important;
+    margin-top: 0 !important;
+    align-self: center !important;
+    min-width: 100px !important;
+  }
+  
+  .table-usuarios {
+    min-width: 800px;
+  }
+  
+  .thead-suaurios {
+    height: 7%;
+    position: sticky;
+    left: 0;
+  }
+  
+  .thead-suaurios > tr {
+    font-size: 11px;
+    line-height: 11px;
+    background: #25293D;
+  }
+  
+  .tbody-usuarios {
+    min-height: 400px;
+  }
+  
+  .tr-usuarios {
+    height: 8%;
+    font-size: 11px;
+    line-height: 11px;
+    min-height: 40px;
+  }
+  
+  /* Reducir aún más anchos */
+  .td-id { width: 5%; }
+  .td-name { width: 13%; }
+  .td-verified { width: 4%; }
+  .td-tel { width: 13%; }
+  .td-ciudad { width: 10%; }
+  .td-nivel { width: 5%; }
+  .td-puntosusers { width: 10%; }
+  .td-estadopago { width: 17%; }
+  .td-eliminar { width: 9%; }
+  
+  .td-estadopago > select {
+    font-size: 11px;
+    width: 90%;
+    padding: 4%;
+    line-height: 11px;
+  }
+  
+  .td-nivel > img,
+  .td-nivel-ranking > img {
+    width: 90%;
+  }
+  
+  /* Ocultar columnas menos importantes en móvil */
+  .td-verified,
+  .td-ciudad {
+    display: none;
+  }
+  
+  .td-tel { width: 18%; }
+  .td-name { width: 18%; }
+  .td-estadopago { width: 20%; }
+  .td-puntosusers { width: 12%; }
+  
+  /* Ranking específico móvil */
+  .td-id-ranking { width: 7%; }
+  .td-name-ranking { width: 35%; }
+  .td-nivel-ranking { width: 9%; }
+  .td-preguntas-ranking { width: 18%; }
+  .td-salas-ranking { width: 18%; }
+  .td-puntosusers-ranking { width: 23%; }
+  
+  /* Ocultar columnas ranking menos importantes */
+  .td-salas-ranking,
+  .td-preguntas-ranking {
+    display: none;
+  }
+  
+  .td-name-ranking { width: 45%; }
+  .td-puntosusers-ranking { width: 35%; }
+}
+
+/* Móvil pequeño (≤480px) */
+@media (max-width: 480px) {
+  .content-usuarios {
+    padding: 2%;
+    height: 92%;
+  }
+  
+  .table-usuarios {
+    min-width: 700px;
+  }
+  
+  .thead-suaurios > tr {
+    font-size: 10px;
+  }
+  
+  .tr-usuarios {
+    font-size: 10px;
+    min-height: 35px;
+  }
+  
+  .td-estadopago > select {
+    font-size: 10px;
+    width: 95%;
+  }
+  
+  /* Ocultar más columnas en móvil pequeño */
+  .td-tel,
+  .td-puntosusers {
+    display: none;
+  }
+  
+  .td-name { width: 25%; }
+  .td-estadopago { width: 30%; }
+  .td-nivel { width: 8%; }
+  .td-id { width: 7%; }
+  .td-eliminar { width: 12%; }
+  
+  /* Ranking móvil pequeño */
+  .td-id-ranking { width: 8%; }
+  .td-name-ranking { width: 50%; }
+  .td-nivel-ranking { width: 10%; }
+  .td-puntosusers-ranking { width: 42%; }
+}
+
+/* Orientación landscape móvil */
+@media (max-width: 991px) and (orientation: landscape) {
+  .content-usuarios {
+    height: 88%;
+  }
+  
+  .tbody-usuarios {
+    min-height: 300px;
+  }
+  
+  .tr-usuarios {
+    height: 10%;
+    min-height: 30px;
+  }
+}
+
+/* Pantallas muy pequeñas (≤320px) */
+@media (max-width: 320px) {
+  .content-usuarios {
+    padding: 1%;
+  }
+  
+  .thead-suaurios > tr {
+    font-size: 9px;
+  }
+  
+  .tr-usuarios {
+    font-size: 9px;
+  }
+  
+  .td-estadopago > select {
+    font-size: 9px;
+  }
+  
+  /* Ocultar todas las columnas excepto las esenciales */
+  .td-id,
+  .td-nivel,
+  .td-eliminar {
+    display: none;
+  }
+  
+  .td-name { width: 40%; }
+  .td-estadopago { width: 60%; }
+}
