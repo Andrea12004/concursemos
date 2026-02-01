@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import dayjs from "dayjs";
 import { getColumnsUsuarios } from "@/lib/constants/ColumnsTable/UserColumnsConfig";
 import { getAllProfilesEndpoint } from "@/lib/api/profile";
@@ -22,24 +22,25 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
   }, []);
 
   const [users, setUsers] = useState<User[]>([]);
-  const [totalUsers, setTotalUsers] = useState<number>(0);
+  const [totalUsers, setTotalUsers] = useState<number>(1);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(10);
 
-
-  const getUsers = async () => {
+  // ✅ Función para obtener usuarios (con useCallback para estabilidad)
+  const getUsers = useCallback(async () => {
     if (!token) return;
 
     setLoading(true);
     try {
+      // ✅ IMPORTANTE: Pasar searchQuery al endpoint
       const response = await getAllProfilesEndpoint(
         token,
         searchQuery
       );
       const incoming = response.users || response || [];
       setUsers(incoming);
-      setTotalUsers(response.total || 0);
+      setTotalUsers(response.total || incoming.length || 0);
     } catch (error: any) {
       console.error("Error al obtener usuarios:", error);
 
@@ -62,14 +63,16 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [token, searchQuery, logout]);
 
+  // ✅ Cargar usuarios al montar Y cuando cambie el searchQuery
   useEffect(() => {
     if (token) {
       getUsers();
     }
-  }, [token]);
+  }, [token, searchQuery, getUsers]);
 
+  // Función para actualizar pago
   const actualizarPago = async (id: string) => {
     if (!token) return;
 
@@ -111,6 +114,7 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
     }
   };
 
+  // Función para confirmar pago
   const confirmarPago = async (id: string) => {
     if (!token) return;
 
@@ -123,6 +127,7 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
         "success"
       );
 
+      // ✅ Recargar usuarios sin reload
       getUsers();
     } catch (error: any) {
       console.error("Error al confirmar pago:", error);
@@ -146,6 +151,7 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
     }
   };
 
+  // Handler para cambio de estado de pago
   const handleChangeEstadoPago = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const { name, value } = e.target;
 
@@ -154,6 +160,7 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
     }
   };
 
+  // Función para verificar/desverificar usuario
   const verifyPerson = async (verified: boolean, id: string) => {
     if (!token) return;
 
@@ -166,6 +173,7 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
         "success"
       );
 
+      // ✅ Recargar usuarios sin reload
       getUsers();
     } catch (error: any) {
       console.error("Error al verificar usuario:", error);
@@ -189,8 +197,15 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
     }
   };
 
-  const columns = getColumnsUsuarios(token, handleChangeEstadoPago, verifyPerson);
+  // Generar columnas con handlers
+  const columns = getColumnsUsuarios(
+    token, 
+    handleChangeEstadoPago, 
+    verifyPerson,
+    // ✅ Pasar función de refresh
+  );
 
+  // Preparar filas para la tabla
   const tableRows = (users || []).map((u: any) => ({
     ...u,
     id: u.id,
@@ -203,15 +218,29 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
     verified: !!u.verified,
   }));
 
+  // ✅ Filtrar usuarios por búsqueda local (adicional al backend)
+  const filteredUsers = useMemo(() => {
+    if (!searchQuery) return tableRows;
+
+    const query = searchQuery.toLowerCase();
+    return tableRows.filter((user: any) => {
+      return (
+        user.nickname?.toLowerCase().includes(query) ||
+        user.lastName?.toLowerCase().includes(query) ||
+        user.city?.toLowerCase().includes(query)
+      );
+    });
+  }, [tableRows, searchQuery]);
+
   return {
     page,
     setPage,
     limit,
     loading,
-    filteredUsers: tableRows,
-    totalUsers,
+    filteredUsers, // ✅ Usar filteredUsers en lugar de tableRows
+    totalUsers: filteredUsers.length, // ✅ Total de usuarios filtrados
     columns,
-    refreshUsers: getUsers,
+    refreshUsers: getUsers, // ✅ Exponer función para refrescar desde fuera
     tableRows,
   };
 };

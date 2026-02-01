@@ -27,6 +27,7 @@ export const useTableRankingLogic = ({ searchQuery = "" }: TableRankingLogicProp
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(10);
   const [users, setUsers] = useState<RankingUser[]>([]);
+  const [totalUsers, setTotalUsers] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const { logout } = useLogout();
 
@@ -48,7 +49,6 @@ export const useTableRankingLogic = ({ searchQuery = "" }: TableRankingLogicProp
       try {
         const response = await getAllProfilesEndpoint(token);
 
-
         if (cancelled) return;
 
         // Ordenar por puntos totales (descendente)
@@ -58,6 +58,7 @@ export const useTableRankingLogic = ({ searchQuery = "" }: TableRankingLogicProp
         );
 
         setUsers(sortedProfiles);
+        setTotalUsers(sortedProfiles.length);
       } catch (error: any) {
         if (cancelled) return;
 
@@ -90,11 +91,10 @@ export const useTableRankingLogic = ({ searchQuery = "" }: TableRankingLogicProp
 
     fetchUsers();
 
-
     return () => {
       cancelled = true;
     };
-  }, [token]);
+  }, [token, logout]);
 
   // Función para refrescar usuarios (reutilizable desde componente padre)
   const refreshUsers = () => {
@@ -116,6 +116,7 @@ export const useTableRankingLogic = ({ searchQuery = "" }: TableRankingLogicProp
         );
 
         setUsers(sortedProfiles);
+        setTotalUsers(sortedProfiles.length);
       } catch (error: any) {
         if (cancelled) return;
         console.error("Error al obtener usuarios:", error);
@@ -130,7 +131,7 @@ export const useTableRankingLogic = ({ searchQuery = "" }: TableRankingLogicProp
   };
 
   // Filtrar usuarios por búsqueda
-  const filteredUsers = useMemo(() => {
+  const allFilteredUsers = useMemo(() => {
     if (!searchQuery) return users;
 
     return users.filter(user =>
@@ -138,14 +139,22 @@ export const useTableRankingLogic = ({ searchQuery = "" }: TableRankingLogicProp
     );
   }, [users, searchQuery]);
 
-  // Preparar filas para la tabla
-  const tableRows = useMemo(() => {
-    return filteredUsers.map((u) => ({
+  // ✅ PAGINACIÓN: Preparar filas solo de la página actual
+  const filteredUsers = useMemo(() => {
+    const startIndex = (page - 1) * limit;
+    const endIndex = startIndex + limit;
+    
+    return allFilteredUsers.slice(startIndex, endIndex).map((u) => ({
       ...u,
       id: u.id,
       profile: u.profile || {},
     }));
-  }, [filteredUsers]);
+  }, [allFilteredUsers, page, limit]);
+
+  // ✅ Total de usuarios después del filtro (NO de la página)
+  const totalFilteredUsers = useMemo(() => {
+    return allFilteredUsers.length;
+  }, [allFilteredUsers]);
 
   const columns = useMemo(() => getColumnsRanking(), []);
 
@@ -155,9 +164,10 @@ export const useTableRankingLogic = ({ searchQuery = "" }: TableRankingLogicProp
     limit,
     users,
     loading,
-    filteredUsers: tableRows,
+    filteredUsers, // ✅ Solo usuarios de la página actual
+    totalUsers: totalFilteredUsers, // ✅ Total de usuarios filtrados
     columns,
-    tableRows,
+    tableRows: filteredUsers,
     refreshUsers
   };
 };

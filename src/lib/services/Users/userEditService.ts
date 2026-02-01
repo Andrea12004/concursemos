@@ -7,6 +7,7 @@ import { showAlert } from "@/lib/utils/showAlert";
 interface CrearUsuarioLogicProps {
   item: User;
   token: string;
+  onSuccess?: () => void; // ✅ Callback para actualizar sin reload
 }
 
 interface FormData {
@@ -19,7 +20,7 @@ interface FormData {
   password2: string;
 }
 
-export const useCrearUsuarioLogic = ({ item, token }: CrearUsuarioLogicProps) => {
+export const useCrearUsuarioLogic = ({ item, token, onSuccess }: CrearUsuarioLogicProps) => {
   const [formData, setFormData] = useState<FormData>({
     nombre: "",
     email: "",
@@ -113,9 +114,13 @@ export const useCrearUsuarioLogic = ({ item, token }: CrearUsuarioLogicProps) =>
         "success"
       );
 
-      // Cerrar modal y recargar página
+      // Cerrar modal
       setIsOpen(false);
-      location.reload();
+
+      // ✅ Llamar callback en lugar de location.reload()
+      if (onSuccess) {
+        onSuccess();
+      }
     } catch (error) {
       console.error("Error al editar usuario:", error);
       showAlert(
@@ -126,7 +131,7 @@ export const useCrearUsuarioLogic = ({ item, token }: CrearUsuarioLogicProps) =>
     } finally {
       setIsLoading(false);
     }
-  }, [formData, item.id, token]);
+  }, [formData, item.id, token, onSuccess]);
 
   return {
     formData,

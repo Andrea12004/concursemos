@@ -11,9 +11,10 @@ import { useCrearUsuarioLogic } from "@/lib/services/Users/userEditService";
 interface CrearUsuarioProps {
   item: User;
   token: string;
+  onSuccess?: () => void; // ✅ Agregar prop para actualización
 }
 
-const Crearusuario: React.FC<CrearUsuarioProps> = ({ item, token }) => {
+const Crearusuario: React.FC<CrearUsuarioProps> = ({ item, token, onSuccess }) => {
   const {
     formData,
     isOpen,
@@ -21,7 +22,7 @@ const Crearusuario: React.FC<CrearUsuarioProps> = ({ item, token }) => {
     setIsOpen,
     handleChange,
     handleSubmit
-  } = useCrearUsuarioLogic({ item, token });
+  } = useCrearUsuarioLogic({ item, token, onSuccess });
 
   return (
     <>

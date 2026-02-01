@@ -8,7 +8,8 @@ import EditarUser from "@/components/Users/editarUser";
 export const getColumnsUsuarios = (
   token: string,
   handleChangeEstadoPago: (e: React.ChangeEvent<HTMLSelectElement>) => void,
-  verifyPerson: (verified: boolean, id: string) => void
+  verifyPerson: (verified: boolean, id: string) => void,
+  onRefreshUsers?: () => void 
 ): GridColDef<User>[] => {
   const columns: GridColDef<User>[] = [
     {
@@ -143,7 +144,12 @@ export const getColumnsUsuarios = (
       headerClassName: "text-[#A09F9F] font-montserrat text-base",
       renderCell: (params) => (
         <div className="w-full flex items-center justify-center">
-          <EditarUser item={params.row} token={token} />
+          {/* ✅ Pasar callback de actualización */}
+          <EditarUser 
+            item={params.row} 
+            token={token} 
+            onSuccess={onRefreshUsers}
+          />
         </div>
       ),
     },
@@ -157,7 +163,12 @@ export const getColumnsUsuarios = (
       headerClassName: "text-[#A09F9F] font-montserrat text-base",
       renderCell: (params) => (
         <div className="w-full flex items-center justify-center">
-          <DeleteUser id={String(params.row.id)} token={token} />
+          {/* ✅ Pasar callback de actualización */}
+          <DeleteUser 
+            id={String(params.row.id)} 
+            token={token}
+            onSuccess={onRefreshUsers}
+          />
         </div>
       ),
     },
@@ -171,7 +182,12 @@ export const getColumnsUsuarios = (
       headerClassName: "text-[#A09F9F] font-montserrat text-base",
       renderCell: (params) => (
         <div className="w-full flex items-center justify-center">
-          <BlockUser user={params.row} token={token} />
+          {/* ✅ Pasar callback de actualización */}
+          <BlockUser 
+            user={params.row} 
+            token={token}
+            onBlockSuccess={onRefreshUsers}
+          />
         </div>
       ),
     },

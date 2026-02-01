@@ -12,7 +12,7 @@ const TableRanking: React.FC<TableRankingProps> = ({
   searchQuery = "",
   onRefreshReady,
 }) => {
-  const { page, setPage, limit, filteredUsers, columns, refreshUsers } =
+  const { page, setPage, limit, filteredUsers, totalUsers, columns, refreshUsers } =
     useTableRankingLogic({ searchQuery });
 
   // Informar al padre que refreshUsers está listo (una sola vez)
@@ -31,7 +31,7 @@ const TableRanking: React.FC<TableRankingProps> = ({
           rows={filteredUsers as unknown as any[]}
           pageSize={limit}
           limit={limit}
-          totalItems={filteredUsers.length}
+          totalItems={totalUsers}
           setPage={setPage}
           page={page}
           showExport={false}
