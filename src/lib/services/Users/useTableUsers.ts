@@ -22,7 +22,7 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
   }, []);
 
   const [users, setUsers] = useState<User[]>([]);
-  const [totalUsers, setTotalUsers] = useState<number>(1);
+  const [totalUsers, setTotalUsers] = useState<number>(0);
   const [loading, setLoading] = useState<boolean>(true);
   const [page, setPage] = useState<number>(1);
   const [limit] = useState<number>(10);
@@ -33,7 +33,7 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
 
     setLoading(true);
     try {
-      // ✅ IMPORTANTE: Pasar searchQuery al endpoint
+      // Pasar searchQuery al endpoint
       const response = await getAllProfilesEndpoint(
         token,
         searchQuery
@@ -41,6 +41,9 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
       const incoming = response.users || response || [];
       setUsers(incoming);
       setTotalUsers(response.total || incoming.length || 0);
+      
+      // ✅ IMPORTANTE: Resetear página a 1 cuando cambia la búsqueda
+      setPage(1);
     } catch (error: any) {
       console.error("Error al obtener usuarios:", error);
 
@@ -65,7 +68,7 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
     }
   }, [token, searchQuery, logout]);
 
-  // ✅ Cargar usuarios al montar Y cuando cambie el searchQuery
+  // Cargar usuarios al montar Y cuando cambie el searchQuery
   useEffect(() => {
     if (token) {
       getUsers();
@@ -127,7 +130,7 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
         "success"
       );
 
-      // ✅ Recargar usuarios sin reload
+      // Recargar usuarios sin reload
       getUsers();
     } catch (error: any) {
       console.error("Error al confirmar pago:", error);
@@ -173,7 +176,7 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
         "success"
       );
 
-      // ✅ Recargar usuarios sin reload
+      // Recargar usuarios sin reload
       getUsers();
     } catch (error: any) {
       console.error("Error al verificar usuario:", error);
@@ -197,50 +200,62 @@ export const useTableUsersLogic = ({ searchQuery }: TableUsersLogicProps) => {
     }
   };
 
-  // Generar columnas con handlers
-  const columns = getColumnsUsuarios(
-    token, 
-    handleChangeEstadoPago, 
-    verifyPerson,
-    // ✅ Pasar función de refresh
-  );
+  // ✅ PREPARAR FILAS COMPLETAS (sin paginar aún)
+  const allTableRows = useMemo(() => {
+    return (users || []).map((u: any) => ({
+      ...u,
+      id: u.id,
+      nickname: u.profile?.nickname,
+      lastName: u.phone || u.lastName || '',
+      city: u.profile?.City || '',
+      level: u.profile?.level || '',
+      points: u.profile?.Total_points || 0,
+      lastPaymentDate: u.lastPaymentDate || null,
+      verified: !!u.verified,
+    }));
+  }, [users]);
 
-  // Preparar filas para la tabla
-  const tableRows = (users || []).map((u: any) => ({
-    ...u,
-    id: u.id,
-    nickname: u.profile?.nickname,
-    lastName: u.phone || u.lastName || '',
-    city: u.profile?.City || '',
-    level: u.profile?.level || '',
-    points: u.profile?.Total_points || 0,
-    lastPaymentDate: u.lastPaymentDate || null,
-    verified: !!u.verified,
-  }));
-
-  // ✅ Filtrar usuarios por búsqueda local (adicional al backend)
-  const filteredUsers = useMemo(() => {
-    if (!searchQuery) return tableRows;
+  // ✅ FILTRAR usuarios por búsqueda local (todo el dataset)
+  const allFilteredUsers = useMemo(() => {
+    if (!searchQuery) return allTableRows;
 
     const query = searchQuery.toLowerCase();
-    return tableRows.filter((user: any) => {
+    return allTableRows.filter((user: any) => {
       return (
         user.nickname?.toLowerCase().includes(query) ||
         user.lastName?.toLowerCase().includes(query) ||
         user.city?.toLowerCase().includes(query)
       );
     });
-  }, [tableRows, searchQuery]);
+  }, [allTableRows, searchQuery]);
+
+  // ✅ TOTAL de usuarios filtrados (para la paginación)
+  const totalFilteredUsers = useMemo(() => {
+    return allFilteredUsers.length;
+  }, [allFilteredUsers]);
+
+  // ✅ Generar columnas con handlers
+  const columns = useMemo(
+    () => getColumnsUsuarios(
+      token, 
+      handleChangeEstadoPago, 
+      verifyPerson,
+      getUsers // Pasar función de refresh
+    ),
+    [token]
+  );
 
   return {
     page,
     setPage,
     limit,
     loading,
-    filteredUsers, // ✅ Usar filteredUsers en lugar de tableRows
-    totalUsers: filteredUsers.length, // ✅ Total de usuarios filtrados
+    // ✅ Pasar TODOS los usuarios filtrados (sin paginar)
+    // El componente Table se encarga de la paginación
+    filteredUsers: allFilteredUsers,
+    totalUsers: totalFilteredUsers,
     columns,
-    refreshUsers: getUsers, // ✅ Exponer función para refrescar desde fuera
-    tableRows,
+    refreshUsers: getUsers,
+    tableRows: allFilteredUsers,
   };
 };

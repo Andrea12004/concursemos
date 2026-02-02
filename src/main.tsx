@@ -9,7 +9,7 @@ import App from '@/App.tsx'
 
 import {baseUrl} from '@/settings/baseUrl.ts'
 
-axios.defaults.baseURL = `${baseUrl}api/`;
+axios.defaults.baseURL = `${baseUrl}/api/`;
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { getColumnsRanking } from "@/lib/constants/ColumnsTable/RankingColumnsConfig";
 import { getAllProfilesEndpoint } from "@/lib/api/profile";
 import { showAlert } from "@/lib/utils/showAlert";
@@ -37,125 +37,88 @@ export const useTableRankingLogic = ({ searchQuery = "" }: TableRankingLogicProp
       '';
   }, []);
 
-
-  useEffect(() => {
+  // ✅ Función para obtener usuarios
+  const fetchUsers = useCallback(async () => {
     if (!token) return;
 
-    let cancelled = false;
+    setLoading(true);
 
-    const fetchUsers = async () => {
-      setLoading(true);
+    try {
+      const response = await getAllProfilesEndpoint(token);
 
-      try {
-        const response = await getAllProfilesEndpoint(token);
+      // Ordenar por puntos totales (descendente)
+      const sortedProfiles = (response || []).sort(
+        (a: RankingUser, b: RankingUser) =>
+          (b.profile?.Total_points || 0) - (a.profile?.Total_points || 0)
+      );
 
-        if (cancelled) return;
+      setUsers(sortedProfiles);
+      setTotalUsers(sortedProfiles.length);
+      
+      // ✅ Resetear página a 1 cuando cambia la búsqueda
+      setPage(1);
+    } catch (error: any) {
+      console.error("Error al obtener usuarios:", error);
 
-        // Ordenar por puntos totales (descendente)
-        const sortedProfiles = (response || []).sort(
-          (a: RankingUser, b: RankingUser) =>
-            (b.profile?.Total_points || 0) - (a.profile?.Total_points || 0)
-        );
-
-        setUsers(sortedProfiles);
-        setTotalUsers(sortedProfiles.length);
-      } catch (error: any) {
-        if (cancelled) return;
-
-        console.error("Error al obtener usuarios:", error);
-
-        // Manejar token expirado
-        if (error.response?.data?.message === "Token expirado" ||
-          error.response?.status === 401) {
-          await showAlert(
-            "Sesión Expirada",
-            "Por favor, inicia sesión nuevamente",
-            "error"
-          );
-          logout();
-          return;
-        }
-
-        // Error genérico
-        showAlert(
-          "Error",
-          "Estamos teniendo fallas técnicas al cargar el ranking",
+      // Manejar token expirado
+      if (error.response?.data?.message === "Token expirado" ||
+        error.response?.status === 401) {
+        await showAlert(
+          "Sesión Expirada",
+          "Por favor, inicia sesión nuevamente",
           "error"
         );
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
+        logout();
+        return;
       }
-    };
 
-    fetchUsers();
-
-    return () => {
-      cancelled = true;
-    };
+      // Error genérico
+      showAlert(
+        "Error",
+        "Estamos teniendo fallas técnicas al cargar el ranking",
+        "error"
+      );
+    } finally {
+      setLoading(false);
+    }
   }, [token, logout]);
 
-  // Función para refrescar usuarios (reutilizable desde componente padre)
-  const refreshUsers = () => {
-    if (!token) return;
+  // ✅ Cargar usuarios al montar
+  useEffect(() => {
+    if (token) {
+      fetchUsers();
+    }
+  }, [token, fetchUsers]);
 
-    let cancelled = false;
-
-    const fetchUsers = async () => {
-      setLoading(true);
-
-      try {
-        const response = await getAllProfilesEndpoint(token);
-
-        if (cancelled) return;
-
-        const sortedProfiles = (response || []).sort(
-          (a: RankingUser, b: RankingUser) =>
-            (b.profile?.Total_points || 0) - (a.profile?.Total_points || 0)
-        );
-
-        setUsers(sortedProfiles);
-        setTotalUsers(sortedProfiles.length);
-      } catch (error: any) {
-        if (cancelled) return;
-        console.error("Error al obtener usuarios:", error);
-      } finally {
-        if (!cancelled) {
-          setLoading(false);
-        }
-      }
-    };
-
+  // ✅ Función para refrescar usuarios (reutilizable desde componente padre)
+  const refreshUsers = useCallback(() => {
     fetchUsers();
-  };
+  }, [fetchUsers]);
 
-  // Filtrar usuarios por búsqueda
-  const allFilteredUsers = useMemo(() => {
-    if (!searchQuery) return users;
-
-    return users.filter(user =>
-      user.profile?.nickname?.toLowerCase().includes(searchQuery.toLowerCase())
-    );
-  }, [users, searchQuery]);
-
-  // ✅ PAGINACIÓN: Preparar filas solo de la página actual
-  const filteredUsers = useMemo(() => {
-    const startIndex = (page - 1) * limit;
-    const endIndex = startIndex + limit;
-    
-    return allFilteredUsers.slice(startIndex, endIndex).map((u) => ({
+  // ✅ PREPARAR todas las filas (sin paginar)
+  const allTableRows = useMemo(() => {
+    return users.map((u) => ({
       ...u,
       id: u.id,
       profile: u.profile || {},
     }));
-  }, [allFilteredUsers, page, limit]);
+  }, [users]);
 
-  // ✅ Total de usuarios después del filtro (NO de la página)
+  // ✅ FILTRAR usuarios por búsqueda (todo el dataset)
+  const allFilteredUsers = useMemo(() => {
+    if (!searchQuery) return allTableRows;
+
+    return allTableRows.filter(user =>
+      user.profile?.nickname?.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+  }, [allTableRows, searchQuery]);
+
+  // ✅ Total de usuarios después del filtro
   const totalFilteredUsers = useMemo(() => {
     return allFilteredUsers.length;
   }, [allFilteredUsers]);
 
+  // ✅ Generar columnas
   const columns = useMemo(() => getColumnsRanking(), []);
 
   return {
@@ -164,10 +127,12 @@ export const useTableRankingLogic = ({ searchQuery = "" }: TableRankingLogicProp
     limit,
     users,
     loading,
-    filteredUsers, // ✅ Solo usuarios de la página actual
-    totalUsers: totalFilteredUsers, // ✅ Total de usuarios filtrados
+    // ✅ Pasar TODOS los usuarios filtrados (sin paginar)
+    // El componente Table se encarga de la paginación
+    filteredUsers: allFilteredUsers,
+    totalUsers: totalFilteredUsers,
     columns,
-    tableRows: filteredUsers,
+    tableRows: allFilteredUsers,
     refreshUsers
   };
 };
