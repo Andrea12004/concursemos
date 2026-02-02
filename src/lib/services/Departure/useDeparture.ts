@@ -1,25 +1,15 @@
-import { useState, useEffect, useRef, useCallback } from 'react';
+// 📁 src/lib/services/Departure/useDeparture.ts
+import { useState, useEffect, useRef, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import socket from '@/settings/socket';
-import { showNotification } from '@/lib/utils/notify';
-import { showAlert } from '@/lib/utils/showAlert';
-import { handleAxiosError } from '@/lib/utils/parseErrors';
-import { getRoomByCodeEndpoint, sendSyncDataEndpoint } from '@/lib/api/rooms';
-import { getQuestionsIdEndpoint } from '@/lib/api/Questions';
-
-// Interfaces
-interface Player {
-  id: string;
-  nickname: string;
-  photoUrl?: string;
-  totalScore?: number;
-}
+import { useAuthData } from '@/lib/hooks/useAuthData';
+import axios from 'axios';
+import Swal from 'sweetalert2';
 
 interface Question {
   id: string;
   text: string;
   answers: Answer[];
-  category?: Category;
 }
 
 interface Answer {
@@ -28,297 +18,250 @@ interface Answer {
   isCorrect: boolean;
 }
 
-interface Category {
-  id: string;
-  category: string;
-  photo_category?: string;
-}
-
-interface GameData {
-  questions: Question[];
-  [key: string]: any;
-}
-
-interface UsePartidaReturn {
-  // Estados
-  isChatVisible: boolean;
-  start: boolean;
-  questions: Question[];
-  currentQuestionIndex: number;
-  timeUp: boolean;
-  endGame: boolean;
-  loader: boolean; // ✅ AGREGADO
+interface GameState {
   roomId: string;
-  token: string;
-  profile: any;
-  category: Category | null;
-  tiempoTranscurrido: number;
-  timeQuestion: number | null;
-  timeQuestionReconexion: number | null;
-  newPlayer: string | null;
-  timerKey: number;
-  rankingFinal: Player[];
-  reportado: boolean;
-  respuestasColores: Record<string, string>;
-  respuestaSeleccionada: string | null;
-  
-  // Referencias
-  respuestaSeleccionadaRef: React.MutableRefObject<string | null>;
-  
-  // Funciones
-  toggleChat: () => void;
-  logout: () => void;
-  getRoom: () => Promise<void>;
-  getQuestion: (id: string) => Promise<void>;
-  report: () => void;
-  manejarRespuesta: (respuestaId: string) => void;
-  evaluarRespuestas: () => void;
-  siguientePregunta: () => void;
-  back: () => void;
-  handleGameEnd: (result: any) => void;
-  sendSyncData: () => Promise<void>;
-  setRankingFinal: (players: Player[]) => void; // ✅ AGREGADO
-  setTiempoTranscurrido: (tiempo: number) => void; // ✅ AGREGADO
+  startGame: boolean;
+  questions: Question[];
 }
 
-export const usePartida = (): UsePartidaReturn => {
-  const navigate = useNavigate();
+export const usePartida = () => {
   const { id: roomCode } = useParams<{ id: string }>();
-  
-  // Estados
+  const navigate = useNavigate();
+  const { profile } = useAuthData();
+
   const [isChatVisible, setIsChatVisible] = useState(true);
-  const [token, setToken] = useState('');
-  const [profile, setProfile] = useState<any>(null);
-  const [roomId, setRoomId] = useState('');
   const [start, setStart] = useState(false);
   const [questions, setQuestions] = useState<Question[]>([]);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [timeUp, setTimeUp] = useState(false);
   const [respuestasColores, setRespuestasColores] = useState<Record<string, string>>({});
+  const [respuestaSeleccionada, setRespuestaSeleccionada] = useState<string | null>(null);
   const [endGame, setEndgame] = useState(false);
-  const [loader, setLoader] = useState(false); // ✅ AGREGADO
-  const [tiempoRestanteAlSeleccionar, setTiempoRestanteAlSeleccionar] = useState<number | null>(null);
-  const [tiempoTranscurrido, setTiempoTranscurrido] = useState(0);
-  const [timeQuestion, setTimequestion] = useState<number | null>(null);
+  const [loader, setLoader] = useState(false);
+  const [reportado, setReportado] = useState(false);
+  const [roomId, setRoomId] = useState('');
+  const [category, setCategory] = useState<any>(null);
+  const [timeQuestion, setTimequestion] = useState<number>(30);
   const [timeQuestionReconexion, setTimequestionReconexion] = useState<number | null>(null);
   const [newPlayer, setNewplayer] = useState<string | null>(null);
   const [timerKey, setTimerKey] = useState(0);
-  const [category, setCategory] = useState<Category | null>(null);
-  const [reportado, setReportado] = useState(false);
-  const [rankingFinal, setRankingFinal] = useState<Player[]>([]);
-  const [respuestaSeleccionada, setRespuestaSeleccionada] = useState<string | null>(null);
-  
-  // Referencias
+  const [rankingFinal, setRankingFinal] = useState<any[]>([]);
+  const [tiempoTranscurrido, setTiempoTranscurrido] = useState(0);
+  const [tiempoRestanteAlSeleccionar, setTiempoRestanteAlSeleccionar] = useState<number | null>(null);
+
   const respuestaSeleccionadaRef = useRef<string | null>(null);
-  
-  // Toggle del chat
-  const toggleChat = useCallback(() => {
-    setIsChatVisible(prevState => !prevState);
+
+  const token = useMemo(() => {
+    return localStorage.getItem('authToken') || localStorage.getItem('cnrsms_token') || '';
   }, []);
-  
-  // Logout
-  const logout = useCallback(() => {
-    localStorage.removeItem("authResponse");
-    localStorage.removeItem("gameState");
-    navigate("/");
-  }, [navigate]);
-  
-  // Cargar datos del localStorage
+
+  // ✅ 1. CARGAR ESTADO DEL JUEGO DESDE localStorage
   useEffect(() => {
-    const authResponse = JSON.parse(localStorage.getItem('authResponse') || '{}');
-    if (authResponse) {
-      setToken(authResponse.accesToken || '');
-      setProfile(authResponse.user?.profile || null);
-    }
-    
-    const storedGameState = JSON.parse(localStorage.getItem('gameState') || '{}');
-    if (storedGameState && storedGameState.roomId === roomCode) {
-      setQuestions(storedGameState.questions || []);
-      setStart(true);
+    const storedGameState = localStorage.getItem('gameState');
+
+    if (storedGameState) {
+      try {
+        const gameState: GameState = JSON.parse(storedGameState);
+
+        if (gameState.roomId === roomCode) {
+          console.log('[useDeparture] Restaurando estado del juego');
+          setQuestions(gameState.questions);
+          setStart(true);
+        }
+      } catch (error) {
+        console.error('[useDeparture] Error al parsear gameState:', error);
+      }
     }
   }, [roomCode]);
-  
-  // Obtener sala
-  const getRoom = useCallback(async () => {
+
+  // ✅ 2. OBTENER DATOS DE LA SALA
+  useEffect(() => {
     if (!token || !roomCode) return;
-    
-    try {
-      const response = await getRoomByCodeEndpoint(token, roomCode);
-      setRoomId(response.id || '');
-      setTimequestion(response.time_question || null);
-    } catch (error) {
-      handleAxiosError(error, logout);
-    }
-  }, [token, roomCode, logout]);
-  
-  // Obtener pregunta
-  const getQuestion = useCallback(async (id: string) => {
-    if (!token) return;
-    
-    try {
-      const response = await getQuestionsIdEndpoint(token, id);
-      setCategory(response.data?.category || response.category || null);
-    } catch (error) {
-      handleAxiosError(error, logout);
-    }
-  }, [token, logout]);
-  
-  // Enviar datos de sincronización
-  const sendSyncData = useCallback(async () => {
-    if (!token || !roomId) return;
-    
-    try {
-      await sendSyncDataEndpoint(token, {
-        numberQuestion: currentQuestionIndex,
-        time: timeQuestion ? timeQuestion - tiempoTranscurrido : 0,
-        includeQuestions: start,
-        roomId: roomId
-      });
-    } catch (error) {
-      handleAxiosError(error);
-    }
-  }, [token, currentQuestionIndex, timeQuestion, tiempoTranscurrido, start, roomId]);
-  
-  // Escuchar jugadores que se unen
-  useEffect(() => {
-    if (!roomId || !profile) return;
-    
-    const handlePlayerJoined = (newPlayer: any) => {
-      setNewplayer(newPlayer.profileId);
-      if (newPlayer.profileId !== profile.id) {
-        sendSyncData();
+
+    const fetchRoom = async () => {
+      try {
+        const response = await axios.get(`/rooms/by-code/${roomCode}`, {
+          headers: { cnrsms_token: token }
+        });
+
+        setRoomId(response.data.id);
+        setTimequestion(response.data.time_question);
+      } catch (error: any) {
+        console.error('[useDeparture] Error al obtener sala:', error);
+
+        if (error.response?.data?.message === 'Token expirado') {
+          Swal.fire({
+            title: 'Token Expirado',
+            text: 'Vuelve a ingresar a la plataforma',
+            icon: 'error',
+            confirmButtonText: 'Ok'
+          });
+          navigate('/');
+        }
       }
     };
-    
-    socket.on('playerJoined', handlePlayerJoined);
-    
-    return () => {
-      socket.off('playerJoined', handlePlayerJoined);
-    };
-  }, [roomId, profile, sendSyncData]);
-  
-  // Escuchar errores del socket
+
+    fetchRoom();
+  }, [token, roomCode, navigate]);
+
+  // ✅ 3. ESCUCHAR INICIO DEL JUEGO
   useEffect(() => {
-    const handleError = (error: any) => {
-      if (error.message === 'La sala no está disponible para unirse en este momento.') {
-        showAlert('Error', 'La sala no está disponible para unirse en este momento.', 'error');
-      } else if (error.message === 'No hay preguntas disponibles para esta sala.') {
-        showAlert('Error', 'No hay suficientes preguntas disponibles para esta sala.', 'error');
-      }
-    };
-    
-    socket.on('error', handleError);
-    
-    return () => {
-      socket.off('error', handleError);
-    };
-  }, []);
-  
-  // Escuchar inicio del juego
-  useEffect(() => {
-    const handleGameStarted = (gameData: GameData) => {
-      setQuestions(gameData.questions || []);
+    const handleGameStarted = (gameData: any) => {
+      console.log('[useDeparture] Juego comenzado:', gameData);
+
+      setQuestions(gameData.questions);
       setStart(true);
-      
-      const gameState = {
+
+      localStorage.setItem('gameState', JSON.stringify({
         roomId: roomCode,
         startGame: true,
         questions: gameData.questions
-      };
-      localStorage.setItem('gameState', JSON.stringify(gameState));
+      }));
     };
-    
+
+    const handleError = (error: any) => {
+      console.error('[useDeparture] Error:', error);
+
+      if (error.message === 'La sala no está disponible para unirse en este momento.') {
+        Swal.fire({
+          title: 'Error',
+          text: 'La sala no está disponible para unirse en este momento.',
+          icon: 'error',
+          confirmButtonText: 'Ok'
+        });
+      }
+    };
+
     socket.on('gameStarted', handleGameStarted);
-    
+    socket.on('error', handleError);
+
     return () => {
       socket.off('gameStarted', handleGameStarted);
+      socket.off('error', handleError);
     };
   }, [roomCode]);
-  
-  // Escuchar datos del jugador (reconexión)
+
+  // ✅ 4. SINCRONIZACIÓN PARA RECONEXIÓN (dataPlayer)
   useEffect(() => {
     const handleDataPlayer = (result: any) => {
+      console.log('[useDeparture] Datos de reconexión:', result);
+
       if (result.numberQuestion != null && result.time != null) {
         setCurrentQuestionIndex(result.numberQuestion);
         setTimequestionReconexion(result.time);
-        
-        if (result.includeQuestions === true && result.questions?.length > 0) {
+
+        if (result.includeQuestions && result.questions && result.questions.length > 0) {
           setQuestions(result.questions);
           setStart(true);
         }
-        
+
         if (newPlayer === profile?.id) {
+          console.log('[useDeparture] Reiniciando timer para jugador reconectado');
           setTimerKey(prev => prev + 1);
         }
       }
     };
-    
+
     socket.on('dataPlayer', handleDataPlayer);
-    
+
     return () => {
       socket.off('dataPlayer', handleDataPlayer);
     };
-  }, [profile, newPlayer]);
-  
-  // Inicializar colores de respuestas cuando cambia la pregunta
+  }, [newPlayer, profile?.id]);
+
+  // ✅ 5. ESCUCHAR NUEVOS JUGADORES
   useEffect(() => {
-    if (questions.length > 0 && currentQuestionIndex < questions.length) {
+    const handlePlayerJoined = (newPlayer: any) => {
+      console.log('[useDeparture] Nuevo jugador:', newPlayer);
+      setNewplayer(newPlayer.profileId);
+
+      // Si NO es el jugador actual, enviar datos de sincronización
+      if (newPlayer.profileId !== profile?.id && start) {
+        sendDataToPlayer();
+      }
+    };
+
+    socket.on('playerJoined', handlePlayerJoined);
+
+    return () => {
+      socket.off('playerJoined', handlePlayerJoined);
+    };
+  }, [profile?.id, start, currentQuestionIndex, timeQuestion, tiempoTranscurrido]);
+
+  // ✅ 6. FUNCIÓN PARA ENVIAR DATOS DE SINCRONIZACIÓN
+  const sendDataToPlayer = async () => {
+    if (!token || !roomId) return;
+
+    try {
+      await axios.post('/rooms/send-data', {
+        numberQuestion: currentQuestionIndex,
+        time: timeQuestion - tiempoTranscurrido,
+        includeQuestions: start,
+        roomId: roomId
+      }, {
+        headers: { cnrsms_token: token }
+      });
+    } catch (error) {
+      console.error('[useDeparture] Error enviando datos:', error);
+    }
+  };
+
+  // ✅ 7. OBTENER CATEGORÍA DE LA PREGUNTA
+  useEffect(() => {
+    if (questions.length > 0 && token) {
+      const fetchQuestion = async () => {
+        try {
+          const response = await axios.get(`/questions/${questions[currentQuestionIndex].id}`, {
+            headers: { cnrsms_token: token }
+          });
+          setCategory(response.data.category);
+        } catch (error) {
+          console.error('[useDeparture] Error al obtener pregunta:', error);
+        }
+      };
+
+      fetchQuestion();
+    }
+  }, [currentQuestionIndex, questions, token]);
+
+  // ✅ 8. INICIALIZAR COLORES DE RESPUESTAS
+  useEffect(() => {
+    if (questions.length > 0) {
       const nuevosColores: Record<string, string> = {};
       questions[currentQuestionIndex].answers.forEach((answer) => {
         nuevosColores[answer.id] = 'neutral';
       });
       setRespuestasColores(nuevosColores);
-      
-      getQuestion(questions[currentQuestionIndex].id);
     }
-  }, [currentQuestionIndex, questions, getQuestion]);
-  
-  // Reportar pregunta
-  const report = useCallback(() => {
-    if (!questions[currentQuestionIndex]) return;
-    
-    setReportado(prev => !prev);
-    
-    socket.emit('reportQuestion', {
-      questionId: questions[currentQuestionIndex].id,
-      reason: "Nueva pregunta requiere atención."
-    });
-    
-    showNotification({
-      message: "Pregunta reportada",
-      description: "Se ha reportado una pregunta"
-    });
   }, [currentQuestionIndex, questions]);
-  
-  // Manejar respuesta
-  const manejarRespuesta = useCallback((respuestaId: string) => {
-    if (timeUp) return;
-    
-    if (respuestaSeleccionadaRef.current === null) {
-      setRespuestaSeleccionada(respuestaId);
-      respuestaSeleccionadaRef.current = respuestaId;
-      setRespuestasColores(prev => ({ ...prev, [respuestaId]: 'seleccionada' }));
-      setTiempoRestanteAlSeleccionar((tiempoTranscurrido / (timeQuestion || 1)) * 100);
-    } else if (respuestaSeleccionadaRef.current !== respuestaId) {
-      setRespuestaSeleccionada(respuestaId);
-      const anteriorId = respuestaSeleccionadaRef.current;
-      respuestaSeleccionadaRef.current = respuestaId;
-      setRespuestasColores(prev => ({
-        ...prev,
-        [anteriorId]: 'neutral',
-        [respuestaId]: 'seleccionada'
-      }));
-      setTiempoRestanteAlSeleccionar((tiempoTranscurrido / (timeQuestion || 1)) * 100);
+
+  // ✅ 9. MANEJAR SELECCIÓN DE RESPUESTA
+  const manejarRespuesta = (respuesta: string) => {
+    if (!timeUp) {
+      if (respuestaSeleccionadaRef.current === null) {
+        respuestaSeleccionadaRef.current = respuesta;
+        const nuevosColores = { ...respuestasColores };
+        nuevosColores[respuesta] = 'seleccionada';
+        setRespuestasColores(nuevosColores);
+        setTiempoRestanteAlSeleccionar((tiempoTranscurrido / timeQuestion) * 100);
+      } else if (respuestaSeleccionadaRef.current !== respuesta) {
+        const nuevosColores = { ...respuestasColores };
+        nuevosColores[respuestaSeleccionadaRef.current] = 'neutral';
+        nuevosColores[respuesta] = 'seleccionada';
+        setRespuestasColores(nuevosColores);
+        respuestaSeleccionadaRef.current = respuesta;
+        setTiempoRestanteAlSeleccionar((tiempoTranscurrido / timeQuestion) * 100);
+      }
     }
-  }, [timeUp, tiempoTranscurrido, timeQuestion]);
-  
-  // Evaluar respuestas
-  const evaluarRespuestas = useCallback(() => {
-    if (timeUp || !questions[currentQuestionIndex]) return;
-    
+  };
+
+  // ✅ 10. EVALUAR RESPUESTAS AL TERMINAR EL TIEMPO
+  const evaluarRespuestas = () => {
+    if (timeUp) return;
+
     const nuevosColores = { ...respuestasColores };
-    const respuestaCorrecta = questions[currentQuestionIndex].answers.find(answer => answer.isCorrect);
-    
+    const respuestaCorrecta = questions[currentQuestionIndex]?.answers.find((answer) => answer.isCorrect);
+
     if (respuestaSeleccionadaRef.current && respuestaCorrecta) {
       if (respuestaSeleccionadaRef.current === respuestaCorrecta.id) {
         nuevosColores[respuestaSeleccionadaRef.current] = 'correcto';
@@ -329,111 +272,111 @@ export const usePartida = (): UsePartidaReturn => {
     } else if (respuestaCorrecta) {
       nuevosColores[respuestaCorrecta.id] = 'correcto';
     }
-    
+
     setRespuestasColores(nuevosColores);
     setTimeUp(true);
-  }, [timeUp, questions, currentQuestionIndex, respuestasColores]);
-  
-  // Siguiente pregunta
-  const siguientePregunta = useCallback(() => {
+  };
+
+  // ✅ 11. ENVIAR RESPUESTA AL BACKEND
+  useEffect(() => {
+    if (timeUp && profile?.id && roomId && questions.length > 0) {
+      console.log('[useDeparture] Enviando respuesta al backend');
+
+      socket.emit('answerQuestion', {
+        profileId: profile.id,
+        questionId: questions[currentQuestionIndex].id,
+        selectedAnswerId: respuestaSeleccionadaRef.current,
+        roomId: roomId,
+        remainingTimePercentage: (100 - (tiempoRestanteAlSeleccionar || 0))
+      });
+
+      setTimeout(() => {
+        setReportado(false);
+        siguientePregunta();
+        setTimeUp(false);
+        respuestaSeleccionadaRef.current = null;
+      }, 2000);
+    }
+  }, [timeUp, profile?.id, roomId, questions]);
+
+  // ✅ 12. SIGUIENTE PREGUNTA O TERMINAR JUEGO
+  const siguientePregunta = () => {
     if (currentQuestionIndex + 1 < questions.length) {
-      setCurrentQuestionIndex(prev => prev + 1);
+      setCurrentQuestionIndex(currentQuestionIndex + 1);
       setRespuestasColores({});
       setRespuestaSeleccionada(null);
-      respuestaSeleccionadaRef.current = null;
       setTimeUp(false);
-      setReportado(false);
       setTimequestionReconexion(null);
-      
+
       if (newPlayer === profile?.id) {
         setTimerKey(prev => prev + 1);
       }
     } else {
-      // ✅ Mostrar loader antes de finalizar
+      console.log('[useDeparture] Juego terminado, emitiendo endGame');
+      socket.emit('endGame', { roomId });
       setLoader(true);
     }
-  }, [currentQuestionIndex, questions.length, newPlayer, profile]);
-  
-  // Enviar respuesta cuando se acaba el tiempo
-  useEffect(() => {
-    if (timeUp && questions[currentQuestionIndex]) {
-      socket.emit('answerQuestion', {
-        profileId: profile?.id,
-        questionId: questions[currentQuestionIndex].id,
-        selectedAnswerId: respuestaSeleccionadaRef.current,
-        roomId: roomId,
-        remainingTimePercentage: tiempoRestanteAlSeleccionar ? 100 - tiempoRestanteAlSeleccionar : 0
-      });
-      
-      const timer = setTimeout(() => {
-        siguientePregunta();
-      }, 2000);
-      
-      return () => clearTimeout(timer);
-    }
-  }, [timeUp, currentQuestionIndex, questions, profile, roomId, tiempoRestanteAlSeleccionar, siguientePregunta]);
-  
-  // Salir de la sala
-  const back = useCallback(() => {
-    socket.emit('leaveSala', { 
-      profileId: profile?.id, 
-      room_code: roomCode 
-    });
-    localStorage.removeItem('gameState');
-    navigate("/dashboard");
-  }, [profile, roomCode, navigate]);
-  
-  // Escuchar final del juego
+  };
+
+  // ✅ 13. ESCUCHAR FIN DEL JUEGO
   useEffect(() => {
     const handleGameEnded = (result: any) => {
+      console.log('[useDeparture] Juego terminado:', result);
+
       localStorage.removeItem('gameState');
-      const sortedScores = (result.finalScores || []).sort((a: Player, b: Player) => 
-        (b.totalScore || 0) - (a.totalScore || 0)
-      );
-      setRankingFinal(sortedScores);
-      setLoader(false); // ✅ Ocultar loader
+      setRankingFinal(result.finalScores.sort((a: any, b: any) => b.totalScore - a.totalScore));
       setEndgame(true);
+      setLoader(false);
     };
-    
+
     socket.on('gameEnded', handleGameEnded);
-    
+
     return () => {
       socket.off('gameEnded', handleGameEnded);
     };
   }, []);
-  
-  // Manejar fin del juego (desde Loader)
-  const handleGameEnd = useCallback((result: any) => {
-    localStorage.removeItem('gameState');
-    const sortedScores = (result.finalScores || []).sort((a: Player, b: Player) => 
-      (b.totalScore || 0) - (a.totalScore || 0)
-    );
-    setRankingFinal(sortedScores);
-    setLoader(false); // ✅ Ocultar loader
-    setEndgame(true);
-  }, []);
-  
-  // Inicializar cuando hay token
-  useEffect(() => {
-    if (token) {
-      getRoom();
+
+  // ✅ 14. REPORTAR PREGUNTA
+  const report = () => {
+    setReportado(prev => !prev);
+
+    socket.emit('reportQuestion', {
+      questionId: questions[currentQuestionIndex].id,
+      reason: 'Nueva pregunta requiere atención.'
+    });
+
+    console.log('[useDeparture] Pregunta reportada');
+  };
+
+  // ✅ 15. SALIR DE LA PARTIDA
+  const back = () => {
+    if (profile?.id && roomCode) {
+      socket.emit('leaveSala', { profileId: profile.id, room_code: roomCode });
+      navigate('/dashboard');
     }
-  }, [token, getRoom]);
-  
+  };
+
+  // ✅ 16. MANEJAR FIN DEL JUEGO DESDE LOADER
+  const handleGameEnd = (result: any) => {
+    console.log('[useDeparture] Manejando fin del juego:', result);
+    localStorage.removeItem('gameState');
+    setRankingFinal(result.finalScores.sort((a: any, b: any) => b.totalScore - a.totalScore));
+    setEndgame(true);
+  };
+
+  const toggleChat = () => setIsChatVisible(prev => !prev);
+
   return {
-    // Estados
     isChatVisible,
     start,
     questions,
     currentQuestionIndex,
     timeUp,
     endGame,
-    loader, // ✅ EXPORTAR
+    loader,
     roomId,
-    token,
     profile,
     category,
-    tiempoTranscurrido,
     timeQuestion,
     timeQuestionReconexion,
     newPlayer,
@@ -442,23 +385,13 @@ export const usePartida = (): UsePartidaReturn => {
     reportado,
     respuestasColores,
     respuestaSeleccionada,
-    
-    // Referencias
-    respuestaSeleccionadaRef,
-    
-    // Funciones
     toggleChat,
-    logout,
-    getRoom,
-    getQuestion,
-    report,
     manejarRespuesta,
     evaluarRespuestas,
-    siguientePregunta,
+    report,
     back,
     handleGameEnd,
-    sendSyncData,
-    setRankingFinal, // ✅ EXPORTAR
-    setTiempoTranscurrido, // ✅ EXPORTAR
+    setRankingFinal,
+    setTiempoTranscurrido
   };
 };

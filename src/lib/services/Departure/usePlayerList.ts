@@ -1,48 +1,27 @@
+// 📁 src/lib/services/Departure/usePlayerList.ts
 import { useState, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
 import socket from '@/settings/socket';
-import { getProfileByIdEndpoint } from '@/lib/api/profile'; 
-import { handleAxiosError } from '@/lib/utils/parseErrors';
 
-import type { Player, Profile } from '@/lib/types/playerList';
+interface Player {
+  id: string;
+  profileId: string;
+  nickname: string;
+  photoUrl: string | null;
+  score?: number;
+  correctAnswers?: number;
+  verified?: boolean;
+}
 
-export const useListaJugadores = (
-  timeup: boolean,
-  setFinal: (players: Player[]) => void
-) => {
-
-  const { id: roomId } = useParams<{ id: string }>();
-
-  const [token, setToken] = useState<string>('');
-  const [profile, setProfile] = useState<Profile | null>(null);
+export const useListaJugadores = (timeup: boolean, setFinal: (players: Player[]) => void) => {
   const [players, setPlayers] = useState<Player[]>([]);
 
-  // 1️⃣ Cargar token y perfil
+  // ✅ 1. ESCUCHAR PERFILES CONECTADOS
   useEffect(() => {
-    const authResponse = JSON.parse(localStorage.getItem('authResponse') || '{}');
+    const handleConnectedProfiles = (data: any) => {
+      console.log('[useListaJugadores] Perfiles conectados:', data);
 
-    if (authResponse?.accesToken) {
-      setToken(authResponse.accesToken);
-      setProfile(authResponse.user?.profile ?? null);
-    }
-  }, []);
-
-  // 2️⃣ Emitir jugadores conectados
-  useEffect(() => {
-    if (!roomId) return;
-
-    socket.emit('listConnectedProfiles', { roomCode: roomId });
-
-    return () => {
-      socket.off('connectedProfiles');
-    };
-  }, [roomId]);
-
-  // 3️⃣ Escuchar jugadores conectados
-  useEffect(() => {
-    const handleConnectedProfiles = (data: { profiles: Player[] }) => {
-      if (Array.isArray(data?.profiles)) {
-        setPlayers([...data.profiles]);
+      if (data.profiles && Array.isArray(data.profiles)) {
+        setPlayers(data.profiles);
       }
     };
 
@@ -51,49 +30,15 @@ export const useListaJugadores = (
     return () => {
       socket.off('connectedProfiles', handleConnectedProfiles);
     };
-  }, [roomId, profile, timeup]);
+  }, []);
 
-  // 4️⃣ Obtener info jugador
-  const getPlayer = async (playerId: string): Promise<Player | null> => {
-    if (!token) return null;
-
-    try {
-      const response = await getProfileByIdEndpoint(token, playerId);
-      return response.data?.profile ?? null;
-    } catch (error) {
-      handleAxiosError(error);
-      return null;
-    }
-  };
-
-  // 5️⃣ Actualizar cuando termina el tiempo
+  // ✅ 2. ESCUCHAR CUANDO JUGADOR SE VA
   useEffect(() => {
-    if (!timeup || !token) return;
+    const handlePlayerLeft = (leftPlayer: any) => {
+      console.log('[useListaJugadores] Jugador salió:', leftPlayer);
 
-    const updatePlayersInfo = async () => {
-      const updated = await Promise.all(
-        players.map(async (player) => {
-          const profileData = await getPlayer(player.id);
-          return profileData ? { ...player, ...profileData } : player;
-        })
-      );
-
-      updated.sort(
-        (a, b) => (b.pointsAwarded ?? 0) - (a.pointsAwarded ?? 0)
-      );
-
-      setPlayers(updated);
-      setFinal(updated);
-    };
-
-    updatePlayersInfo();
-  }, [timeup]); // 👈 igual que el original
-
-  // 6️⃣ Jugador sale
-  useEffect(() => {
-    const handlePlayerLeft = (leftPlayer: { profileId: string }) => {
-      setPlayers(prev =>
-        prev.filter(p => p.profileId !== leftPlayer.profileId)
+      setPlayers((prevPlayers) =>
+        prevPlayers.filter(player => player.profileId !== leftPlayer.profileId)
       );
     };
 
@@ -104,9 +49,22 @@ export const useListaJugadores = (
     };
   }, []);
 
+  // ✅ 3. ACTUALIZAR RANKING FINAL CUANDO TERMINA EL TIEMPO
+  useEffect(() => {
+    if (timeup && players.length > 0) {
+      console.log('[useListaJugadores] Tiempo agotado, ordenando jugadores');
+
+      // Ordenar por puntaje de mayor a menor
+      const sortedPlayers = [...players].sort((a, b) => 
+        (b.score || 0) - (a.score || 0)
+      );
+
+      setPlayers(sortedPlayers);
+      setFinal(sortedPlayers);
+    }
+  }, [timeup, players, setFinal]);
+
   return {
-    players,
-    token,
-    profile,
+    players
   };
 };

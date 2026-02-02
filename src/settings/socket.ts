@@ -1,7 +1,9 @@
 
 import { io } from 'socket.io-client';
+import { baseUrl } from './baseUrl';
 
-const socket = io('https://api.backconcursemos.com', {
+
+const socket = io(baseUrl, {
   transports: ['polling', 'websocket'],
   reconnection: true,
   reconnectionDelay: 1000,

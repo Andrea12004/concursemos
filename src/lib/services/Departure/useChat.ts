@@ -1,134 +1,73 @@
 // 📁 src/lib/services/Departure/useChat.ts
-import { useState, useEffect, useRef, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import socket from '@/settings/socket';
+import { useAuthData } from '@/lib/hooks/useAuthData';
 
-export interface Message {
+interface Message {
   fromUserId: string;
   text: string;
   nickname: string;
-  photoUrl?: string;
+  photoUrl: string | null;
 }
 
 export const useChat = (roomCode: string) => {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [profile, setProfile] = useState<any>(null);
-  const [user, setUser] = useState<any>(null);
+  const { profile } = useAuthData();
   
-  // Refs para evitar dependencias circulares
-  const hasJoinedRef = useRef(false);
-  const messagesRef = useRef<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>([]);
 
-  /**
-   * ============================================
-   * 1️⃣ CARGAR PERFIL DEL USUARIO - SOLO UNA VEZ
-   * ============================================
-   */
+  // ✅ 1. ESCUCHAR MENSAJES ENTRANTES
   useEffect(() => {
-    const authResponse = JSON.parse(localStorage.getItem('authResponse') || '{}');
-    if (authResponse?.user?.profile) {
-      setProfile(authResponse.user.profile);
-      setUser(authResponse.user);
-    }
-  }, []); // ✅ Solo al montar
-
-  /**
-   * ============================================
-   * 2️⃣ UNIRSE A LA SALA DE CHAT - SOLO UNA VEZ
-   * ============================================
-   */
-  useEffect(() => {
-    if (!roomCode || !profile?.id || hasJoinedRef.current) return;
-
-    console.log(`💬 Uniéndose al chat de sala: ${roomCode}`);
-
-    socket.emit('joinSala', {
-      profileId: profile.id,
-      room_code: roomCode,
-    });
-
-    hasJoinedRef.current = true;
-
-  }, [roomCode, profile?.id]);
-
-  /**
-   * ============================================
-   * 3️⃣ ESCUCHAR MENSAJES ENTRANTES - SIN messages EN DEPS
-   * ============================================
-   */
-  useEffect(() => {
-    if (!profile?.id) return;
-
-    /**
-     * Manejar mensajes recibidos
-     */
     const handleReceiveMessage = (message: any) => {
-      console.log('📩 Nuevo mensaje:', message);
+      console.log('[useChat] Mensaje recibido:', message);
 
-      // Solo agregar mensajes de OTROS usuarios
-      if (message.profileId !== profile.id) {
-        const newMessage: Message = {
-          fromUserId: message.profileId,
-          text: message.message,
-          nickname: message.nickname,
-          photoUrl: message.photoUrl,
-        };
-
-        setMessages(prev => [...prev, newMessage]);
-        messagesRef.current = [...messagesRef.current, newMessage];
+      // Solo añadir mensajes de OTROS usuarios
+      if (message.profileId !== profile?.id) {
+        setMessages(prev => [
+          ...prev,
+          {
+            fromUserId: message.profileId,
+            text: message.message,
+            nickname: message.nickname,
+            photoUrl: message.photoUrl || null
+          }
+        ]);
       }
     };
 
-    // Registrar listener
     socket.on('receiveMessage', handleReceiveMessage);
 
-    // Cleanup
     return () => {
       socket.off('receiveMessage', handleReceiveMessage);
     };
-  }, [profile?.id]); // ✅ SOLO profile.id - NO messages
+  }, [profile?.id]);
 
-  /**
-   * ============================================
-   * FUNCIÓN PARA ENVIAR MENSAJES
-   * ============================================
-   */
-  const sendMessage = useCallback((text: string) => {
-    if (!text.trim() || !profile || !roomCode) return;
+  // ✅ 2. FUNCIÓN PARA ENVIAR MENSAJES
+  const sendMessage = (text: string) => {
+    if (!text.trim() || !profile?.id || !roomCode) return;
 
-    console.log('📤 Enviando mensaje:', text);
+    console.log('[useChat] Enviando mensaje:', text);
 
-    // Emitir al servidor
     socket.emit('sendMessage', {
       room_code: roomCode,
-      message: text.trim(),
-      profileId: profile.id,
+      message: text,
+      profileId: profile.id
     });
 
-    // Agregar mensaje propio a la lista
-    const newMessage: Message = {
-      fromUserId: profile.id,
-      text: text.trim(),
-      nickname: profile.nickname,
-      photoUrl: profile.photoUrl,
-    };
+    // Añadir PROPIO mensaje a la lista
+    setMessages(prev => [
+      ...prev,
+      {
+        fromUserId: profile.id,
+        text,
+        nickname: profile.nickname || 'Tú',
+        photoUrl: profile.photoUrl || null
+      }
+    ]);
+  };
 
-    setMessages(prev => [...prev, newMessage]);
-    messagesRef.current = [...messagesRef.current, newMessage];
-
-  }, [profile, roomCode]); // ✅ Solo profile y roomCode
-
-  /**
-   * ============================================
-   * RETORNO DEL HOOK
-   * ============================================
-   */
   return {
-    // Estados
     messages,
     profile,
-    user,
-    
-    // Funciones
-    sendMessage,
+    sendMessage
   };
 };
